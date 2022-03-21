@@ -1,0 +1,15 @@
+Checks: '
+*,
+-abseil-string-find-str-contains,
+-altera-id-dependant-backward-branch,
+-altera-struct-pack-align,
+-altera-unroll-loops,
+-android-cloexec-pipe,
+-*-braces-around-statements,
+-cert-env33-c,
+-*-magic-numbers,
+-fuchsia-default-arguments-calls,
+-readability-else-after-return,
+-modernize-use-trailing-return-type,
+-google-runtime-int
+'

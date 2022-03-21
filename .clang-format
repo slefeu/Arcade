@@ -1,0 +1,15 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+---
+Language: Cpp
+DerivePointerAlignment: false
+PointerAlignment: Left
+ColumnLimit: 100
+UseTab: Never
+
+#Align
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros: true
+AlignEscapedNewlines: true
+AllowShortFunctionsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false

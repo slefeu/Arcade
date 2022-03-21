@@ -8,13 +8,28 @@
 #ifndef IGAME_HPP_
 #define IGAME_HPP_
 
-class Igame {
+#include "Agraphic.hpp"
+#include <memory>
+
+namespace arcade
+{
+    class Igame
+    {
     public:
-        Igame();
-        ~Igame();
+        Igame(){};
+
+        Igame(Igame &&) = delete;
+        Igame(const Igame &) = delete;
+        Igame &operator=(Igame &&) = delete;
+        Igame &operator=(const Igame &) = delete;
+
+        virtual std::unique_ptr<Agraphic> &&
+        exec(std::unique_ptr<Agraphic> &&) = 0;
+        virtual bool status(void) = 0;
 
     protected:
-    private:
-};
+        std::unique_ptr<Agraphic> lib;
+    };
+} // namespace arcade
 
 #endif /* !IGAME_HPP_ */
