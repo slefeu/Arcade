@@ -5,23 +5,20 @@
 ** ASound
 */
 
-#ifndef ASOUND_HPP_
-#define ASOUND_HPP_
+#pragma once
 
 #include "State.hpp"
 
 namespace arcade {
 class ASound {
   public:
-    ASound();
-    virtual ~ASound();
+    ASound() = default;
+    virtual ~ASound() = default;
 
   protected:
-    std::string path_ = "";
-    int volume_       = 0;
+    std::string path = "";
+    int volume       = 0;
 
   private:
 };
 } // namespace arcade
-
-#endif /* !ASOUND_HPP_ */
