@@ -7,8 +7,11 @@
 
 #include "SfGraphic.hpp"
 
+namespace arcade {
 SfGraphic::SfGraphic() {
+    this->window = std::make_unique<SfWindow>();
 }
 
 SfGraphic::~SfGraphic() {
 }
+} // namespace arcade

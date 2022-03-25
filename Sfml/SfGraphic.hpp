@@ -9,6 +9,7 @@
 #define SFGRAPHIC_HPP_
 
 #include "Agraphic.hpp"
+#include "SfWindow.hpp"
 
 namespace arcade {
 class SfGraphic : public Agraphic {

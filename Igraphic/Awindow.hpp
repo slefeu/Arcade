@@ -16,14 +16,16 @@
 #include <memory>
 
 namespace arcade {
+
+constexpr int charSize = 21;
 class AWindow {
   public:
     AWindow();
     virtual ~AWindow();
 
-    virtual void display(void)     = 0;
-    virtual void clear(void)       = 0;
-    virtual Events pollEvent(void) = 0;
+    virtual void display(void)      = 0;
+    virtual void clear(void)        = 0;
+    virtual bool pollEvent(Events&) = 0;
     bool status(void) {
         return status_;
     };

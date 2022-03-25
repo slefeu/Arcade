@@ -9,6 +9,6 @@
 #define CORE_HPP_
 
 #include "Igame.hpp"
-#include "Igraphic.hpp"
+#include "Agraphic.hpp"
 
 #endif /* !CORE_HPP_ */

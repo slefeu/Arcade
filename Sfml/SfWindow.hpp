@@ -9,6 +9,7 @@
 #define SFWINDOW_HPP_
 
 #include "Awindow.hpp"
+#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 namespace arcade {
@@ -18,7 +19,7 @@ class SfWindow : public AWindow {
     ~SfWindow();
     virtual void display(void) override;
     virtual void clear(void) override;
-    virtual Events pollEvent(void) override;
+    virtual bool pollEvent(Events&) override;
     bool status(void) {
         return status_;
     };
@@ -35,8 +36,9 @@ class SfWindow : public AWindow {
 
   protected:
   private:
-    sf::Window window_;
-    vec2int size_ = {-1, -1};
+    sf::RenderWindow window_;
+    vec2int size_     = {-1, -1};
+    std::string title = "";
 };
 } // namespace arcade
 
