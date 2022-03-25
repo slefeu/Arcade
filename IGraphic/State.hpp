@@ -5,8 +5,7 @@
 ** State
 */
 
-#ifndef EVENT_HPP_
-#define EVENT_HPP_
+#pragma once
 
 #include <iostream>
 #include <stdbool.h>
@@ -120,32 +119,43 @@ enum Key {
     F14,          ///< The F14 key
     F15,          ///< The F15 key
     Pause,        ///< The Pause key
-
     KeyCount, ///< Keep last -- the total number of keyboard keys
 };
-enum WindowType { Term, Window };
+
+enum WindowType {
+    Term,
+    Window
+};
+
 struct vec2int {
     int x;
     int y;
 };
+
 class Events {
   public:
-    bool isPressed(Key key);
-    Events& operator<<(const Events& event);
+    Events() = default;
+    ~Events() = default;
+
+    bool isPressed(Key) const;
+    std::vector<Key> getKeyPressed() const;
+    void setKeyPressed(std::vector<Key>&);
+    Events& operator<<(const Events&);
+
     struct {
         vec2int pos = {0, 0};
         bool right  = false;
         bool left   = false;
         bool middle = false;
     } mouse;
-    bool has_to_stop = false;
-    std::vector<Key> key_pressed;
+    bool stopGame = false;
+  private:
+    std::vector<Key> keyPressed;
 };
+
 struct color_uint8 {
     unsigned char r;
     unsigned char g;
     unsigned char b;
 };
 } // namespace arcade
-
-#endif /* !EVENT_HPP_ */
