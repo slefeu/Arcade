@@ -20,9 +20,9 @@ class Agraphic {
 
     virtual bool status(void)                                = 0;
     virtual void changeInfos(std::string name, vec2int size) = 0;
-    std::unique_ptr<Awindow> getWindow() const;
+    std::unique_ptr<AWindow> getWindow() const;
 
   protected:
-    std::unique_ptr<Awindow> window;
+    std::unique_ptr<AWindow> window;
 };
 } // namespace arcade

@@ -1,17 +1,13 @@
 /*
 ** EPITECH PROJECT, 2022
-** B-OOP-400-BDX-4-1-arcade-solene.lefeu
+** arcade-Ashley
 ** File description:
-** State
+** core
 */
 
-#ifndef EVENT_HPP_
-#define EVENT_HPP_
+#ifndef CORE_HPP_
+#define CORE_HPP_
 
-#include <iostream>
-#include <stdbool.h>
-#include <string>
-#include <utility>
 #include <vector>
 
 namespace arcade {
@@ -163,4 +159,4 @@ struct color_uint8 {
 };
 } // namespace arcade
 
-#endif /* !EVENT_HPP_ */
+#endif /* !CORE_HPP_ */
