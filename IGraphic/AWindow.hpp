@@ -5,8 +5,7 @@
 ** Awindow
 */
 
-#ifndef IWINDOW_HPP_
-#define IWINDOW_HPP_
+#pragma once
 
 #include "Asound.hpp"
 #include "Asprite.hpp"
@@ -17,20 +16,19 @@
 
 namespace arcade {
 
-constexpr int charSize = 21;
 class AWindow {
   public:
-    AWindow();
-    virtual ~AWindow();
+    AWindow() = default;
+    virtual ~AWindow() = default;
 
-    virtual void display(void)      = 0;
-    virtual void clear(void)        = 0;
+    virtual void display() = 0;
+    virtual void clear() = 0;
     virtual bool pollEvent(Events&) = 0;
-    bool status(void) {
-        return status_;
-    };
+
     virtual void setTitle(const std::string& title) = 0;
     virtual void setSize(const vec2int& size)       = 0;
+    constexpr int getCharSize() const;
+    bool getStatus() const;
 
     virtual void draw(const Line&)      = 0;
     virtual void draw(const Point&)     = 0;
@@ -41,8 +39,9 @@ class AWindow {
     virtual void play(const ASound&)    = 0;
 
   protected:
-    bool status_ = true;
+    bool status = true;
+  private:
+    constexpr int charSize = 21;
+
 };
 } // namespace arcade
-
-#endif /* !IWINDOW_HPP_ */
