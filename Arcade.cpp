@@ -35,5 +35,10 @@ void Arcade::usage()
 
 void Arcade::launchGame()
 {
-    core
+    arcadeCore->executeLoop();
+}
+
+Arcade::~Arcade()
+{
+    //doit close toutes nos libraires en faisant une boucle sur allLibraries
 }
