@@ -6,6 +6,7 @@
 */
 
 #include "Arcade.hpp"
+
 int main(int ac, char **av)
 {
     try {

@@ -5,8 +5,7 @@
 ** Loader
 */
 
-#ifndef LOADER_HPP_
-#define LOADER_HPP_
+#pragma once
 
 #include "Awindow.hpp"
 #include "Error.hpp"
@@ -25,5 +24,3 @@ class Loader {
       protected:
       private:
 };
-
-#endif /* !LOADER_HPP_ */

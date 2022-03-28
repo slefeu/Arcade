@@ -13,7 +13,7 @@ Arcade::Arcade(int ac, char **av)
     allGames = getGames();
     if (allGames.empty)
         throw Error("No games found in folder lib/");
-    //init le core ici !!!
+    arcadeCore = std::make_unique<Arcade::Core>(initLib, allLibraries, allGames);
 }
 
 std::vector<std::unique_ptr<arcade::AGame>> Arcade::getGames()
@@ -23,6 +23,7 @@ std::vector<std::unique_ptr<arcade::AGame>> Arcade::getGames()
 
 std::vector<std::unique_ptr<arcade::AWindow>> Arcade::getLibraries()
 {
+}
 
 void Arcade::usage()
 {
@@ -31,5 +32,8 @@ void Arcade::usage()
 	<< "This will be the library used to start the arcade" << std::endl
     << "It must be located in the lib folder" << std::endl;
 }
-    
+
+void Arcade::launchGame()
+{
+    core
 }
