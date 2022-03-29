@@ -3,3 +3,4 @@ a.out
 build
 .history
 CMakeFiles
+lib/

@@ -21,15 +21,16 @@ set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
 add_subdirectory(IGraphic)
 add_subdirectory(SFML)
 
-
-add_executable (${PROJECT_NAME}
+add_executable(${PROJECT_NAME}
     main.cpp
     Loader/Loader.cpp
     AGame/AGame.cpp
     AGame/Core.cpp
     AGame/Arcade.cpp
     Error/Error.cpp
-    ${HEADER_FILES})
+    ${HEADER_FILES}
+)
+
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
     "${CMAKE_SOURCE_DIR}/AGame"
     "${CMAKE_SOURCE_DIR}/Loader"

@@ -22,8 +22,6 @@ public:
 
 protected:
     std::unique_ptr<AWindow> window = nullptr;
-
-protected:
 private:
 };
 }

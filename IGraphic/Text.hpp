@@ -5,44 +5,29 @@
 ** Text
 */
 
-#ifndef TEXT_HPP_
-#define TEXT_HPP_
-
+#pragma once
 #include "State.hpp"
 
 namespace arcade {
 class Text {
   public:
-    Text() = default;
-    Text(const vec2int& pos, const std::string_view& txt,
-         const color_uint8& color = {255, 255, 255}, const color_uint8 back_color = {0, 0, 0})
-        : pos_(pos), txt_(txt), color_(color), back_color_(back_color){};
-    ~Text() = default;
+    Text() noexcept = default;
+    Text(const vec2int& pos, const std::string_view &, const color_uint8 &, const color_uint8);
+    Text(const Text &other) noexcept = default;
+    Text(Text &&other) noexcept = default;
+    ~Text() noexcept = default;
 
-    void setString(const std::string& txt) {
-        txt_ = txt;
-    };
-    std::string getString() const {
-        return txt_;
-    };
-    void setColor(const color_uint8& color) {
-        color_ = color;
-    };
-    color_uint8 getColor() const {
-        return color_;
-    };
-    void setBackColor(const color_uint8& back_color) {
-        back_color_ = back_color;
-    };
-    color_uint8 getBackColor() const {
-        return back_color_;
-    };
-    void setPos(const vec2int& pos) {
-        pos_ = pos;
-    };
-    vec2int getPos() const {
-        return pos_;
-    };
+    Text &operator=(const Text &rhs) noexcept = default;
+    Text &operator=(Text &&rhs) noexcept = default;
+
+    void setString(const std::string &);
+    std::string getString() const;
+    void setColor(const color_uint8 &);
+    color_uint8 getColor() const;
+    void setBackColor(const color_uint8& back_color);
+    color_uint8 getBackColor() const;
+    void setPos(const vec2int& pos);
+    vec2int getPos() const;
 
   protected:
     vec2int pos_            = {0, 0};
@@ -51,5 +36,3 @@ class Text {
     color_uint8 back_color_ = {0, 0, 0};
 };
 } // namespace arcade
-
-#endif /* !TEXT_HPP_ */
