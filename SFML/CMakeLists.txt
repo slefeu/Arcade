@@ -7,7 +7,6 @@ add_library(
 )
 
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
-set(CXX_FLAGS "-lsfml-graphics -lsfml-window")
 find_package(SFML 2.5
   REQUIRED
     system window graphics network audio)
@@ -15,4 +14,6 @@ find_package(SFML 2.5
 set_property(TARGET arcade_sfml PROPERTY CXX_STANDARD 20)
 target_include_directories(arcade_sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/IGraphic")
 
+target_link_libraries(arcade_sfml Igraphic)
+target_link_libraries(arcade_sfml sfml-graphics sfml-window sfml-audio)
 target_link_libraries(arcade_sfml ${SFML_LIBRARIES})
