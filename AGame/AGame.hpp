@@ -5,21 +5,25 @@
 #include <memory>
 
 namespace arcade {
-    class AGame {
-        public:
-            AGame() = default;
-            ~AGame() = default;
-            AGame(AGame &&) = delete;
-            AGame(const AGame &) = delete;
+class AGame
+{
+public:
+    AGame() noexcept = default;
+    AGame(const AGame &) noexcept = delete;
+    AGame(AGame &&) noexcept = delete;
+    ~AGame() noexcept = default;
 
-            AGame &operator=(AGame &&) = delete;
-            AGame &operator=(const AGame &) = delete;
-            virtual void exec() = 0;
-            virtual bool status() = 0;
-            void setWindow(std::unique_ptr<AWindow> &&);
+    AGame &operator=(const AGame &rhs) noexcept = delete;
+    AGame &operator=(AGame &&rhs) noexcept = delete;
 
-        protected:
-            std::unique_ptr<AWindow> window = nullptr;
-        private:
-    };
+    virtual void exec() = 0;
+    virtual bool status() = 0;
+    void setWindow(std::unique_ptr<AWindow> &&);
+
+protected:
+    std::unique_ptr<AWindow> window = nullptr;
+
+protected:
+private:
+};
 }
