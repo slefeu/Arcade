@@ -16,7 +16,7 @@ namespace arcade {
             AGame &operator=(const AGame &) = delete;
             virtual void exec() = 0;
             virtual bool status() = 0;
-            void setWindow(std::unique_ptr<AWindow> &&win);
+            void setWindow(std::unique_ptr<AWindow> &&);
 
         protected:
             std::unique_ptr<AWindow> window = nullptr;
