@@ -7,16 +7,16 @@ namespace arcade {
 class Arcade {
     public:
         Arcade(int ac, char **av);
-        ~Arcade() = default noexcept;
+        ~Arcade() = default;
 
         void launchGame();
+        std::vector<std::string> &Arcade::getLibFiles();
 
     private:
         //methods
     	void usage() noexcept;
         std::vector<std::unique_ptr<AGame>> getGames();
         std::vector<std::unique_ptr<AWindow>> getLibraries();
-        std::vector<std::string> &Arcade::getDirectoryFiles();
         //atributes
         std::vector<std::unique_ptr<AWindow>> allLibraries;
         std::vector<std::unique_ptr<AGame>> allGames;

@@ -17,11 +17,12 @@ endif()
 
 #set(HEADERS ${PROJECT_SOURCE_DIR}/Acomponent/Acomponent.hpp)
 
-add_subdirectory(Igraphic)
-#add_subdirectory(Igame)
+add_subdirectory(IGraphic)
+add_subdirectory(AGame)
 add_subdirectory(Sfml)
+add_subdirectory(Error)
 #add_executable (${PROJECT_NAME} main.cpp ${HEADER_FILES})
-add_executable (${PROJECT_NAME} main.cpp core.cpp)
+add_executable (${PROJECT_NAME} main.cpp)
 #target_link_libraries(${PROJECT_NAME} PUBLIC Igame)
 #target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 

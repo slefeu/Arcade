@@ -10,9 +10,10 @@
 int main(int ac, char **av)
 {
     try {
-        Arcade arcade(ac, av); 
+        arcade::Arcade arcade(ac, av);
+        arcade.getDirectoryFiles();
     } catch (Error) {
         return (84);
     }
-    return 0;
+    return (0);
 }

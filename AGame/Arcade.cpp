@@ -18,7 +18,7 @@ Arcade::Arcade(int ac, char **av)
     arcadeCore = std::make_unique<Arcade::Core>(initLib, allLibraries, allGames);
 }
 
-std::vector<std::string> &Arcade::getDirectoryFiles()
+std::vector<std::string> &Arcade::getLibFiles()
 {
     const std::string path = "lib";
     std::vector<std::string> allFiles = std::vector<std::string>();
@@ -27,16 +27,20 @@ std::vector<std::string> &Arcade::getDirectoryFiles()
 
     if (dir != nullptr) {
         while ((ent = readdir(dir)) != nullptr) {
-            printf ("%s\n", ent->d_name);
+            printf("test %s\n", ent->d_name);
         }
     closedir(dir);
+    return (*allFiles);
     } else
         throw(Error("Could not open the folder lib"));
 }
 
 std::vector<std::unique_ptr<arcade::AGame>> Arcade::getGames()
 {
+    std::vector<std::string> allFiles = getDirectoryFiles();
 
+    for (const auto &allFiles : allFiles) {
+    }
 }
 
 std::vector<std::unique_ptr<arcade::AWindow>> Arcade::getLibraries()
@@ -46,7 +50,7 @@ std::vector<std::unique_ptr<arcade::AWindow>> Arcade::getLibraries()
 void Arcade::usage()
 {
     std::cout << "USAGE for ARCADE:" << std::endl
-    << "\t./arcade " << "./lib/library.so" << std::endl << std::endl 
+    << "\t./arcade " << "./lib/library.so" << std::endl << std::endl
 	<< "This will be the library used to start the arcade" << std::endl
     << "It must be located in the lib folder" << std::endl;
 }

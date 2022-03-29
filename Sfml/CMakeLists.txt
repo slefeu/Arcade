@@ -4,12 +4,11 @@ add_library(
     Sfml
     SHARED
     SfWindow.cpp
-    SfGraphic.cpp
 )
 
 set(CXX_FLAGS "-lsfml-graphics -lsfml-window")
-find_package(SFML 2.5 
-  REQUIRED 
+find_package(SFML 2.5
+  REQUIRED
     system window graphics network audio)
 
 set_property(TARGET Sfml PROPERTY CXX_STANDARD 20)
