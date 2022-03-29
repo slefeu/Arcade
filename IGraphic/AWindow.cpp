@@ -1,5 +1,7 @@
 #include "AWindow.hpp"
 
+namespace arcade {
+
 constexpr int AWindow::getCharSize() const
 {
     return (charSize);
@@ -7,5 +9,12 @@ constexpr int AWindow::getCharSize() const
 
 bool AWindow::getStatus() const
 {
-        return (status);
+    return (status);
 }
+
+void AWindow::setStatus(const bool newStatus)
+{
+    status = newStatus;
+}
+
+};

@@ -30,6 +30,7 @@ class AWindow {
     virtual void setSize(const vec2int& size)       = 0;
     constexpr int getCharSize() const;
     bool getStatus() const;
+    void setStatus(const bool);
 
     virtual void draw(const Line&)      = 0;
     virtual void draw(const Point&)     = 0;
