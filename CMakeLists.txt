@@ -19,7 +19,10 @@ endif()
 set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
 
 add_subdirectory(IGraphic)
+add_subdirectory(AGame)
 add_subdirectory(SFML)
+add_subdirectory(Error)
+add_subdirectory(Loader)
 
 add_executable(${PROJECT_NAME}
     main.cpp
@@ -30,6 +33,8 @@ add_executable(${PROJECT_NAME}
     Error/Error.cpp
     ${HEADER_FILES}
 )
+
+target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
     "${CMAKE_SOURCE_DIR}/AGame"
