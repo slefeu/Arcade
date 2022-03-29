@@ -5,10 +5,10 @@
 ** core
 */
 
-#ifndef CORE_HPP_
-#define CORE_HPP_
+#pragma once
 
-#include "Igame.hpp"
-#include "Agraphic.hpp"
+namespace arcade {
+    class Core {
 
-#endif /* !CORE_HPP_ */
+    };
+} // namespace arcade

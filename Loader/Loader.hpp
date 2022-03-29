@@ -5,8 +5,7 @@
 ** Loader
 */
 
-#ifndef LOADER_HPP_
-#define LOADER_HPP_
+#pragma once
 
 #include "AWindow.hpp"
 #include "Error.hpp"
@@ -17,13 +16,11 @@
 
 class Loader {
     public:
-        Loader();
-        ~Loader();
-        static std::unique_ptr<arcade::AWindow> loadLibrairy(std::string fileName);
+        Loader() = delete;
+        ~Loader() = delete;
 
+        static void *loadLibrary(std::string fileName);
+        static void closeLibrary(void *library);
       protected:
       private:
-        void *openShared(std::string fileName);
 };
-
-#endif /* !LOADER_HPP_ */
