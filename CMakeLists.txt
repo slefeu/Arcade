@@ -18,7 +18,7 @@ endif()
 set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
 
 add_subdirectory(IGraphic)
-add_subdirectory(Sfml)
+add_subdirectory(SFML)
 
 add_executable (${PROJECT_NAME}
     main.cpp

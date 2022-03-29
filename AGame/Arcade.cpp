@@ -9,7 +9,7 @@ Arcade::Arcade(int ac, char **av)
 {
     if (ac != 2) {
         usage();
-        throw Error("Please start again with the right arguments.");
+        throw ArgumentError("Please start again with the right arguments.");
     }
     void *initLib = Loader::loadLibrary(av[1]); // faire un try and catch ???
     allLibraries = getLibraries();

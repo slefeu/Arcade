@@ -26,3 +26,18 @@ protected:
 private:
   std::string message_;
 };
+
+class ArgumentError : public Error
+{
+public:
+  ArgumentError(std::string const &message);
+  ArgumentError(const ArgumentError &other) noexcept = default;
+  ArgumentError(ArgumentError &&other) noexcept = default;
+  ~ArgumentError() noexcept = default;
+
+  ArgumentError &operator=(const ArgumentError &rhs) noexcept = default;
+  ArgumentError &operator=(ArgumentError &&rhs) noexcept = default;
+
+protected:
+private:
+};

@@ -13,3 +13,5 @@ const char *Error::what() const noexcept
 {
     return (message_.c_str());
 }
+
+ArgumentError::ArgumentError(std::string const &message) : Error(message){};

@@ -13,7 +13,7 @@ find_package(SFML 2.5
     system window graphics network audio)
 
 set_property(TARGET arcade_sfml PROPERTY CXX_STANDARD 20)
-target_include_directories(arcade_sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/Sfml")
+target_include_directories(arcade_sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/SFML")
 target_include_directories(arcade_sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/IGraphic")
 
 target_link_libraries(arcade_sfml ${SFML_LIBRARIES})
