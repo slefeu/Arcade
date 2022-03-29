@@ -9,6 +9,7 @@
 #define NCWINDOW_HPP_
 
 #include "AWindow.hpp"
+#include <ncurses.h>
 
 namespace arcade {
 class NcWindow : public AWindow {

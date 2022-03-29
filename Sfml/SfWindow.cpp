@@ -16,6 +16,7 @@ extern "C" std::unique_ptr<AWindow> createLib() {
 SfWindow::SfWindow()
 {
     this->window_.create(sf::VideoMode(800, 600), "SFML");
+    this->size_ = {800, 600};
 }
 
 SfWindow::~SfWindow()
