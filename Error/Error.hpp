@@ -10,12 +10,19 @@
 #include <exception>
 #include <string>
 
-class Errors : public std::exception
+class Error : public std::exception
 {
 public:
-    explicit Errors(std::string const &message);
-    const char *what() const noexcept override;
+  explicit Error(std::string const &) noexcept;
+  Error(const Error &other) noexcept = default;
+  Error(Error &&other) noexcept = default;
+  ~Error() noexcept = default;
 
+  Error &operator=(const Error &) noexcept = default;
+  Error &operator=(Error &&) noexcept = default;
+  const char *what() const noexcept override;
+
+protected:
 private:
-    std::string message_;
+  std::string message_;
 };

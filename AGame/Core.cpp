@@ -6,3 +6,11 @@
 */
 
 #include "Core.hpp"
+
+namespace arcade {
+
+void Core::executeLoop()
+{
+}
+
+} //namespace arcade

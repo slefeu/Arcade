@@ -8,7 +8,19 @@
 #pragma once
 
 namespace arcade {
-    class Core {
+class Core
+{
+public:
+    Core() noexcept = default;
+    Core(const Core &other) noexcept = default;
+    Core(Core &&other) noexcept = default;
+    ~Core() noexcept = default;
 
-    };
-} // namespace arcade
+    Core &operator=(const Core &rhs) noexcept = default;
+    Core &operator=(Core &&rhs) noexcept = default;
+    void executeLoop();
+
+protected:
+private:
+};
+} //namespace arcade
