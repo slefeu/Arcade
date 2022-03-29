@@ -7,9 +7,11 @@
 
 #include "Error.hpp"
 
-Errors::Errors(std::string const &message) : message_(message){};
+Error::Error(std::string const &message) noexcept : message_(message){};
 
-const char *Errors::what() const noexcept
+const char *Error::what() const noexcept
 {
     return (message_.c_str());
 }
+
+ArgumentError::ArgumentError(std::string const &message) : Error(message){};

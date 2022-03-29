@@ -18,12 +18,22 @@ endif()
 set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
 
 add_subdirectory(IGraphic)
-add_subdirectory(AGame)
-add_subdirectory(Sfml)
-add_subdirectory(Error)
-add_executable (${PROJECT_NAME} main.cpp ${HEADER_FILES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/AGame")
-target_link_libraries(${PROJECT_NAME} PUBLIC AGame)
+add_subdirectory(SFML)
+
+add_executable (${PROJECT_NAME}
+    main.cpp
+    Loader/Loader.cpp
+    AGame/AGame.cpp
+    AGame/Core.cpp
+    AGame/Arcade.cpp
+    Error/Error.cpp
+    ${HEADER_FILES})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+    "${CMAKE_SOURCE_DIR}/AGame"
+    "${CMAKE_SOURCE_DIR}/Loader"
+    "${CMAKE_SOURCE_DIR}/Error"
+    "${CMAKE_SOURCE_DIR}/IGraphic"
+)
 #add_executable (${PROJECT_NAME} main.cpp)
 #target_link_libraries(${PROJECT_NAME} PUBLIC Igame)
 #target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)

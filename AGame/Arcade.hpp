@@ -1,20 +1,19 @@
 #pragma once
 
+#include "AGame.hpp"
 #include "Error.hpp"
-#include "Core.hpp"
+
 #include <vector>
 #include <memory>
-#include "AGame.hpp"
-#include "AWindow.hpp"
 
 namespace arcade {
 class Arcade {
     public:
         Arcade(int ac, char **av);
-        ~Arcade() = default;
+        ~Arcade();
 
         void launchGame();
-        std::vector<std::string> &Arcade::getLibFiles();
+        std::vector<std::string> getLibFiles();
 
     private:
         //methods
