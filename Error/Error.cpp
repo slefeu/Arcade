@@ -7,6 +7,9 @@
 
 #include "Error.hpp"
 
-Error::Error(std::string msg) {
-    this->msg = std::move(msg);
+Errors::Errors(std::string const &message) : message_(message){};
+
+const char *Errors::what() const noexcept
+{
+    return (message_.c_str());
 }

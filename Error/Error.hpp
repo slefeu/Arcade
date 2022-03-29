@@ -5,25 +5,17 @@
 ** Error
 */
 
-#ifndef ERROR_HPP_
-#define ERROR_HPP_
+#pragma once
 
 #include <exception>
-#include <iostream>
-#include <utility>
+#include <string>
 
-class Error : public std::exception {
-  public:
-    Error(std::string msg);
-    Error()  = default;
-    ~Error() = default;
-    const char* what() const noexcept {
-        return msg.c_str();
-    };
+class Errors : public std::exception
+{
+public:
+    explicit Errors(std::string const &message);
+    const char *what() const noexcept override;
 
-  protected:
-  private:
-    std::string msg;
+private:
+    std::string message_;
 };
-
-#endif /* !ERROR_HPP_ */
