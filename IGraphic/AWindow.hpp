@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "Asound.hpp"
-#include "Asprite.hpp"
-#include "Shape.hpp"
+#include "ASound.hpp"
+#include "ASprite.hpp"
+#include "AShape.hpp"
 #include "State.hpp"
 #include "Text.hpp"
 #include <memory>

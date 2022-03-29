@@ -8,7 +8,7 @@
 #ifndef SFWINDOW_HPP_
 #define SFWINDOW_HPP_
 
-#include "Awindow.hpp"
+#include "AWindow.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 

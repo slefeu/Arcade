@@ -8,7 +8,7 @@
 #ifndef LOADER_HPP_
 #define LOADER_HPP_
 
-#include "Awindow.hpp"
+#include "AWindow.hpp"
 #include "Error.hpp"
 #include <dlfcn.h>
 #include <fstream>
