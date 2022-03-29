@@ -1,17 +1,19 @@
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 add_library(
-    Sfml
+    arcade_sfml
     SHARED
     SfWindow.cpp
 )
 
+set(CMAKE_SHARED_LIBRARY_PREFIX "")
 set(CXX_FLAGS "-lsfml-graphics -lsfml-window")
 find_package(SFML 2.5
   REQUIRED
     system window graphics network audio)
 
-set_property(TARGET Sfml PROPERTY CXX_STANDARD 20)
-target_include_directories(Sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/Sfml")
-target_include_directories(Sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/Igraphic")
-target_link_libraries(Sfml ${SFML_LIBRARIES})
+set_property(TARGET arcade_sfml PROPERTY CXX_STANDARD 20)
+target_include_directories(arcade_sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/Sfml")
+target_include_directories(arcade_sfml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} "${CMAKE_SOURCE_DIR}/IGraphic")
+
+target_link_libraries(arcade_sfml ${SFML_LIBRARIES})
