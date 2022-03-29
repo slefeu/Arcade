@@ -1,5 +1,7 @@
 #include "Arcade.hpp"
 #include "Loader.hpp"
+#include <dirent.hpp>
+
 Arcade::Arcade(int ac, char **av)
 {
     if (ac != 2) {
@@ -14,6 +16,22 @@ Arcade::Arcade(int ac, char **av)
     if (allGames.empty)
         throw Error("No games found in folder lib/");
     arcadeCore = std::make_unique<Arcade::Core>(initLib, allLibraries, allGames);
+}
+
+std::vector<std::string> &Arcade::getDirectoryFiles()
+{
+    const std::string path = "lib";
+    std::vector<std::string> allFiles = std::vector<std::string>();
+    DIR *dir = opendir(path.c_str());
+    struct dirent *ent;
+
+    if (dir != nullptr) {
+        while ((ent = readdir(dir)) != nullptr) {
+            printf ("%s\n", ent->d_name);
+        }
+    closedir(dir);
+    } else
+        throw(Error("Could not open the folder lib"));
 }
 
 std::vector<std::unique_ptr<arcade::AGame>> Arcade::getGames()

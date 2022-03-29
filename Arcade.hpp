@@ -16,6 +16,7 @@ class Arcade {
     	void usage() noexcept;
         std::vector<std::unique_ptr<AGame>> getGames();
         std::vector<std::unique_ptr<AWindow>> getLibraries();
+        std::vector<std::string> &Arcade::getDirectoryFiles();
         //atributes
         std::vector<std::unique_ptr<AWindow>> allLibraries;
         std::vector<std::unique_ptr<AGame>> allGames;
