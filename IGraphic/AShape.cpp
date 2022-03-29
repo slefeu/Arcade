@@ -33,19 +33,19 @@ vec2int AShape::getPosition() const
     return (shapePosition);
 }
 
-Rectangle::Rectangle(const vec2int& pos, const vec2int& size, const color_uint8& color = {255, 255, 255}, bool filled = true)
-        : AShape(pos, color), isFilled(filled), rectangleSize(size)
+Rectangle::Rectangle(const vec2int& pos, const vec2int& newSize, const color_uint8& color = {255, 255, 255}, bool filled = true)
+        : AShape(pos, color), isFilled(filled), size(newSize)
 {
 };
 
-void Rectangle::setRectangleSize(const vec2int& newSize)
+void Rectangle::setSize(const vec2int& newSize)
 {
-    rectangleSize = newSize;
+    size = newSize;
 }
 
-vec2int Rectangle::getRectangleSize() const
+vec2int Rectangle::getSize() const
 {
-    return (rectangleSize);
+    return (size);
 }
 
 void Rectangle::setFillValue(bool newValue)
