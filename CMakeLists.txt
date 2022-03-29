@@ -44,7 +44,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 )
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 #add_executable (${PROJECT_NAME} main.cpp)
-#target_link_libraries(${PROJECT_NAME} PUBLIC Igame)
 #target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${CXX_FLAGS})
