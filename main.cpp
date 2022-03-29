@@ -11,7 +11,7 @@ int main(int ac, char **av)
 {
     try {
         arcade::Arcade arcade(ac, av);
-        arcade.getDirectoryFiles();
+        //arcade.getDirectoryFiles();
     } catch (Error) {
         return (84);
     }

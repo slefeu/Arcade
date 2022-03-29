@@ -2,6 +2,10 @@
 
 #include "Error.hpp"
 #include "Core.hpp"
+#include <vector>
+#include <memory>
+#include "AGame.hpp"
+#include "AWindow.hpp"
 
 namespace arcade {
 class Arcade {
