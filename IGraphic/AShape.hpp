@@ -31,14 +31,14 @@ class Rectangle : public AShape {
     Rectangle(const vec2int&, const vec2int&, const color_uint8&, bool);
     ~Rectangle() = default;
 
-    void setRectangleSize(const vec2int&);
-    vec2int getRectangleSize() const;
+    void setSize(const vec2int&);
+    vec2int getSize() const;
     void setFillValue(bool);
     bool getFillValue() const;
 
   private:
     bool isFilled = true;
-    vec2int rectangleSize = {0, 0};
+    vec2int size = {0, 0};
 };
 
 class Point : public AShape {

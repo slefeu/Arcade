@@ -21,7 +21,7 @@ class SfWindow : public AWindow {
     virtual void clear(void) override;
     virtual bool pollEvent(Events&) override;
     bool status(void) {
-        return status_;
+        return status;
     };
     virtual void setTitle(const std::string& title) override;
     virtual void setSize(const vec2int& size) override;

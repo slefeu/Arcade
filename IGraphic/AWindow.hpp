@@ -15,8 +15,9 @@
 #include <memory>
 
 namespace arcade {
-
+constexpr int charSize = 21;
 class AWindow {
+
   public:
     AWindow() = default;
     virtual ~AWindow() = default;
@@ -41,7 +42,6 @@ class AWindow {
   protected:
     bool status = true;
   private:
-    constexpr int charSize = 21;
 
 };
 } // namespace arcade

@@ -16,7 +16,7 @@ void *Loader::loadLibrary(std::string fileName)
     return (myLibrary);
 }
 
-static void Loader::closeLibrary(void *library);
+void Loader::closeLibrary(void *library)
 {
     dlclose(library);
 }

@@ -6,7 +6,6 @@ project(arcade VERSION 0.1 LANGUAGES CXX)
 #set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 option(OPTIMIZE_ACADE "Optimize arcade" ON)
 

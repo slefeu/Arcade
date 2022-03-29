@@ -8,6 +8,11 @@
 #include "SfWindow.hpp"
 
 namespace arcade {
+
+extern "C" std::unique_ptr<AWindow> createLib() {
+    return std::make_unique<SfWindow>;
+}
+
 SfWindow::SfWindow() {
     this->window_.create(sf::VideoMode(800, 600), "SFML");
 }
@@ -27,10 +32,10 @@ void SfWindow::setSize(const vec2int& size) {
 }
 
 void SfWindow::draw(const Line& infoLine) {
-    sf::Vertex line[] = {
-        sf::Vertex(sf::Vector2f(infoLine.getPos().x * charSize, infoLine.getPos().y * charSize)),
-        sf::Vertex(sf::Vector2f(infoLine.getSecondPos().x * charSize,
-                                infoLine.getSecondPos().y * charSize))};
+    sf::Vertex line[] = {sf::Vertex(sf::Vector2f(infoLine.getPosition().x * charSize,
+                                                 infoLine.getPosition().y * charSize)),
+                         sf::Vertex(sf::Vector2f(infoLine.getLineEnd().x * charSize,
+                                                 infoLine.getLineEnd().y * charSize))};
 
     window_.draw(line, 2, sf::Lines);
 }
@@ -41,7 +46,7 @@ void SfWindow::draw(const Point&) {
 void SfWindow::draw(const Circle& infoCircle) {
     sf::CircleShape circle(infoCircle.getRadius() * charSize);
     circle.setPosition(
-        sf::Vector2f(infoCircle.getPos().x * charSize, infoCircle.getPos().y * charSize));
+        sf::Vector2f(infoCircle.getPosition().x * charSize, infoCircle.getPosition().y * charSize));
     window_.draw(circle);
 }
 
@@ -49,7 +54,7 @@ void SfWindow::draw(const Rectangle& infoReactangle) {
     sf::RectangleShape rectangle(
         sf::Vector2f(infoReactangle.getSize().x * charSize, infoReactangle.getSize().y * charSize));
     rectangle.setPosition(
-        sf::Vector2f(infoReactangle.getPos().x * charSize, infoReactangle.getPos().y * charSize));
+        sf::Vector2f(infoReactangle.getPosition().x * charSize, infoReactangle.getPosition().y * charSize));
     window_.draw(rectangle);
 }
 
@@ -86,10 +91,10 @@ bool SfWindow::pollEvent(Events& rEvent) {
     while (window_.pollEvent(event)) {
         switch (event.type) {
         case sf::Event::KeyPressed:
-            rEvent.key_pressed.push_back(Key(event.key.code));
+            rEvent.getKeyPressed().push_back(Key(event.key.code));
             return true;
         case sf::Event::Closed:
-            rEvent.has_to_stop = true;
+            rEvent.stopGame = true;
             return true;
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
