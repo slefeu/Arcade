@@ -9,15 +9,17 @@
 
 #include "State.hpp"
 
-namespace arcade {
-class ASound {
+namespace arcade
+{
+class ASound
+{
   public:
     ASound() = default;
     virtual ~ASound() = default;
 
   protected:
     std::string path = "";
-    int volume       = 0;
+    int volume = 0;
 
   private:
 };

@@ -7,11 +7,11 @@
 
 #include "AShape.hpp"
 
-namespace arcade {
-
-AShape::AShape(const vec2int& pos, const color_uint8& color) : shapePosition(pos), shapeColor(color)
+namespace arcade
 {
-};
+AShape::AShape(const vec2int& pos, const color_uint8& color)
+  : shapePosition(pos)
+  , shapeColor(color){};
 
 void AShape::setPosition(const vec2int& newPosition)
 {
@@ -33,10 +33,13 @@ vec2int AShape::getPosition() const
     return (shapePosition);
 }
 
-Rectangle::Rectangle(const vec2int& pos, const vec2int& newSize, const color_uint8& color = {255, 255, 255}, bool filled = true)
-        : AShape(pos, color), isFilled(filled), size(newSize)
-{
-};
+Rectangle::Rectangle(const vec2int& pos,
+    const vec2int& newSize,
+    const color_uint8& color = {255, 255, 255},
+    bool filled = true)
+  : AShape(pos, color)
+  , isFilled(filled)
+  , size(newSize){};
 
 void Rectangle::setSize(const vec2int& newSize)
 {
@@ -58,15 +61,17 @@ bool Rectangle::getFillValue() const
     return (isFilled);
 }
 
-Point::Point(const vec2int& position, const color_uint8& color = {255, 255, 255}) : AShape(position, color)
-{
-};
+Point::Point(
+    const vec2int& position, const color_uint8& color = {255, 255, 255})
+  : AShape(position, color){};
 
-Circle::Circle(const vec2int& pos, const unsigned int& radius,
-           const color_uint8& color = {255, 255, 255}, bool filled = true)
-        : AShape(pos, color), isFilled(filled), circleRadius(radius)
-{
-};
+Circle::Circle(const vec2int& pos,
+    const unsigned int& radius,
+    const color_uint8& color = {255, 255, 255},
+    bool filled = true)
+  : AShape(pos, color)
+  , isFilled(filled)
+  , circleRadius(radius){};
 
 void Circle::setRadius(const unsigned int newRadius)
 {
@@ -88,10 +93,11 @@ bool Circle::getFillValue() const
     return (isFilled);
 }
 
-Line::Line(const vec2int& positionStart, const vec2int& positionEnd, const color_uint8& color = {255, 255, 255})
-        : AShape(positionStart, color), endLinePosition(positionEnd)
-{
-};
+Line::Line(const vec2int& positionStart,
+    const vec2int& positionEnd,
+    const color_uint8& color = {255, 255, 255})
+  : AShape(positionStart, color)
+  , endLinePosition(positionEnd){};
 
 void Line::setLineEnd(const vec2int& newPosition)
 {

@@ -8,22 +8,23 @@
 #pragma once
 
 #include <dlfcn.h>
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
 class Loader
 {
-public:
-  Loader() = default;
-  ~Loader() = default;
+  public:
+    Loader() = default;
+    ~Loader() = default;
 
-  void *loadLibrary(std::string &, const char *);
-  void closeLibrary(void *);
-  void *getOpenedLib() const;
+    void* loadLibrary(std::string&, const char*);
+    void closeLibrary(void*);
+    void* getOpenedLib() const;
 
-protected:
-private:
-  void *openShared(std::string &);
-  void *openedLib = nullptr;
+  protected:
+  private:
+    void* openShared(std::string&);
+    void* openedLib = nullptr;
 };

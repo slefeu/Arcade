@@ -7,17 +7,19 @@
 
 #pragma once
 
-#include "ASound.hpp"
-#include "ASprite.hpp"
-#include "AShape.hpp"
-#include "State.hpp"
-#include "Text.hpp"
 #include <memory>
 
-namespace arcade {
-constexpr int charSize = 21;
-class AWindow {
+#include "AShape.hpp"
+#include "ASound.hpp"
+#include "ASprite.hpp"
+#include "State.hpp"
+#include "Text.hpp"
 
+namespace arcade
+{
+constexpr int charSize = 21;
+class AWindow
+{
   public:
     AWindow() = default;
     virtual ~AWindow() = default;
@@ -27,22 +29,21 @@ class AWindow {
     virtual bool pollEvent(Events&) = 0;
 
     virtual void setTitle(const std::string& title) = 0;
-    virtual void setSize(const vec2int& size)       = 0;
+    virtual void setSize(const vec2int& size) = 0;
     constexpr int getCharSize() const;
     bool getStatus() const;
     void setStatus(const bool);
 
-    virtual void draw(const Line&)      = 0;
-    virtual void draw(const Point&)     = 0;
-    virtual void draw(const Circle&)    = 0;
+    virtual void draw(const Line&) = 0;
+    virtual void draw(const Point&) = 0;
     virtual void draw(const Rectangle&) = 0;
-    virtual void draw(const Text&)      = 0;
-    virtual void draw(const ASprite&)   = 0;
-    virtual void play(const ASound&)    = 0;
+    virtual void draw(const Text&) = 0;
+    virtual void draw(const ASprite&) = 0;
+    virtual void play(const ASound&) = 0;
 
   protected:
     bool status = true;
-  private:
 
+  private:
 };
 } // namespace arcade

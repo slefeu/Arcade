@@ -7,9 +7,10 @@
 
 #include "SfWindow.hpp"
 
-namespace arcade {
-
-extern "C" std::unique_ptr<AWindow> createLib() {
+namespace arcade
+{
+extern "C" std::unique_ptr<AWindow> createLib()
+{
     return (std::make_unique<SfWindow>());
 }
 
@@ -38,10 +39,11 @@ void SfWindow::setSize(const vec2int& size)
 
 void SfWindow::draw(const Line& infoLine)
 {
-    sf::Vertex line[] = {sf::Vertex(sf::Vector2f(infoLine.getPosition().x * charSize,
-                                                 infoLine.getPosition().y * charSize)),
-                         sf::Vertex(sf::Vector2f(infoLine.getLineEnd().x * charSize,
-                                                 infoLine.getLineEnd().y * charSize))};
+    sf::Vertex line[] = {
+        sf::Vertex(sf::Vector2f(infoLine.getPosition().x * charSize,
+            infoLine.getPosition().y * charSize)),
+        sf::Vertex(sf::Vector2f(infoLine.getLineEnd().x * charSize,
+            infoLine.getLineEnd().y * charSize))};
 
     window_.draw(line, 2, sf::Lines);
 }
@@ -50,30 +52,26 @@ void SfWindow::draw(const Point&)
 {
 }
 
-void SfWindow::draw(const Circle& infoCircle)
-{
-    sf::CircleShape circle(infoCircle.getRadius() * charSize);
-    circle.setPosition(
-        sf::Vector2f(infoCircle.getPosition().x * charSize, infoCircle.getPosition().y * charSize));
-    window_.draw(circle);
-}
-
 void SfWindow::draw(const Rectangle& infoRectangle)
 {
     sf::RectangleShape rectangle(
-        sf::Vector2f(infoRectangle.getSize().x * charSize, infoRectangle.getSize().y * charSize));
-    rectangle.setPosition(
-        sf::Vector2f(infoRectangle.getPosition().x * charSize, infoRectangle.getPosition().y * charSize));
+        sf::Vector2f(infoRectangle.getSize().x * charSize,
+            infoRectangle.getSize().y * charSize));
+    rectangle.setPosition(sf::Vector2f(infoRectangle.getPosition().x * charSize,
+        infoRectangle.getPosition().y * charSize));
     window_.draw(rectangle);
 }
 
 void SfWindow::draw(const Text& infoText)
 {
     sf::Text text;
-    sf::Color color(infoText.getColor().r, infoText.getColor().g, infoText.getColor().b);
-    sf::Color backColor(infoText.getBackColor().r, infoText.getBackColor().g,
-                        infoText.getBackColor().b);
-    text.setPosition(sf::Vector2f(infoText.getPosition().x * charSize, infoText.getPosition().y * charSize));
+    sf::Color color(
+        infoText.getColor().r, infoText.getColor().g, infoText.getColor().b);
+    sf::Color backColor(infoText.getBackColor().r,
+        infoText.getBackColor().g,
+        infoText.getBackColor().b);
+    text.setPosition(sf::Vector2f(infoText.getPosition().x * charSize,
+        infoText.getPosition().y * charSize));
     text.setString(infoText.getString());
     text.setFillColor(color);
     text.setOutlineColor(backColor);
@@ -106,34 +104,33 @@ bool SfWindow::pollEvent(Events& rEvent)
 
     while (window_.pollEvent(event)) {
         switch (event.type) {
-        case sf::Event::KeyPressed:
-            rEvent.getKeyPressed().push_back(Key(event.key.code));
-            return true;
-        case sf::Event::Closed:
-            rEvent.stopGame = true;
-            return true;
-        case sf::Event::MouseButtonPressed:
-            switch (event.mouseButton.button) {
-            case sf::Mouse::Right:
-                rEvent.mouse.right = true;
-                rEvent.mouse.pos   = {event.mouseButton.x, event.mouseButton.y};
+            case sf::Event::KeyPressed:
+                rEvent.getKeyPressed().push_back(Key(event.key.code));
                 return true;
-            case sf::Mouse::Middle:
-                rEvent.mouse.middle = true;
-                rEvent.mouse.pos    = {event.mouseButton.x, event.mouseButton.y};
+            case sf::Event::Closed: rEvent.stopGame = true; return true;
+            case sf::Event::MouseButtonPressed:
+                switch (event.mouseButton.button) {
+                    case sf::Mouse::Right:
+                        rEvent.mouse.right = true;
+                        rEvent.mouse.pos = {
+                            event.mouseButton.x, event.mouseButton.y};
+                        return true;
+                    case sf::Mouse::Middle:
+                        rEvent.mouse.middle = true;
+                        rEvent.mouse.pos = {
+                            event.mouseButton.x, event.mouseButton.y};
+                        return true;
+                    case sf::Mouse::Left:
+                        rEvent.mouse.left = true;
+                        rEvent.mouse.pos = {
+                            event.mouseButton.x, event.mouseButton.y};
+                        return true;
+                    default: return false;
+                }
+            case sf::Event::MouseMoved:
+                rEvent.mouse.pos = {event.mouseMove.x, event.mouseMove.y};
                 return true;
-            case sf::Mouse::Left:
-                rEvent.mouse.left = true;
-                rEvent.mouse.pos  = {event.mouseButton.x, event.mouseButton.y};
-                return true;
-            default:
-                return false;
-            }
-        case sf::Event::MouseMoved:
-            rEvent.mouse.pos = {event.mouseMove.x, event.mouseMove.y};
-            return true;
-        default:
-            return false;
+            default: return false;
         };
     }
     return false;

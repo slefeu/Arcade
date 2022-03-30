@@ -7,16 +7,18 @@
 
 #pragma once
 
-#include <iostream>
 #include <stdbool.h>
+
+#include <iostream>
 #include <string>
 #include <utility>
 #include <vector>
 
-namespace arcade {
+namespace arcade
+{
 enum Key {
     Unknown = -1, ///< Unhandled key
-    A       = 0,  ///< The A key
+    A = 0,        ///< The A key
     B,            ///< The B key
     C,            ///< The C key
     D,            ///< The D key
@@ -119,20 +121,18 @@ enum Key {
     F14,          ///< The F14 key
     F15,          ///< The F15 key
     Pause,        ///< The Pause key
-    KeyCount, ///< Keep last -- the total number of keyboard keys
+    KeyCount,     ///< Keep last -- the total number of keyboard keys
 };
 
-enum WindowType {
-    Term,
-    Window
-};
+enum WindowType { Term, Window };
 
 struct vec2int {
     int x;
     int y;
 };
 
-class Events {
+class Events
+{
   public:
     Events() = default;
     ~Events() = default;
@@ -144,11 +144,12 @@ class Events {
 
     struct {
         vec2int pos = {0, 0};
-        bool right  = false;
-        bool left   = false;
+        bool right = false;
+        bool left = false;
         bool middle = false;
     } mouse;
     bool stopGame = false;
+
   private:
     std::vector<Key> keyPressed;
 };

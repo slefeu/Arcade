@@ -9,7 +9,6 @@
 
 namespace arcade
 {
-
 std::vector<Key> Events::getKeyPressed() const
 {
     return (keyPressed);

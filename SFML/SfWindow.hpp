@@ -7,13 +7,15 @@
 
 #pragma once
 
-#include "AWindow.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-namespace arcade {
+#include "AWindow.hpp"
 
-class SfWindow : public AWindow {
+namespace arcade
+{
+class SfWindow : public AWindow
+{
   public:
     SfWindow();
     ~SfWindow();
@@ -23,7 +25,6 @@ class SfWindow : public AWindow {
     void setTitle(const std::string&) final;
     void setSize(const vec2int&) final;
     void draw(const Line&) final;
-    void draw(const Circle&) final;
     void draw(const Rectangle&) final;
     void draw(const Point&) final;
     void draw(const Text&) final;
@@ -33,7 +34,7 @@ class SfWindow : public AWindow {
   protected:
   private:
     sf::RenderWindow window_;
-    vec2int size_     = {-1, -1};
+    vec2int size_ = {-1, -1};
     std::string title = "";
 };
 } // namespace arcade

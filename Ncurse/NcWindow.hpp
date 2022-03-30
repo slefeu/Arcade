@@ -8,31 +8,33 @@
 #ifndef NCWINDOW_HPP_
 #define NCWINDOW_HPP_
 
-#include "AWindow.hpp"
 #include <ncurses.h>
 
-namespace arcade {
-class NcWindow : public AWindow {
-    public:
-        NcWindow();
-        ~NcWindow();
-        void display() final;
-        void clear() final;
-        bool pollEvent(Events&) final;
-        void setTitle(const std::string&) final;
-        void setSize(const vec2int&) final;
-        void draw(const Line&) final;
-        void draw(const Circle&) final;
-        void draw(const Rectangle&) final;
-        void draw(const Point&) final;
-        void draw(const Text&) final;
-        void draw(const ASprite&) final;
-        void play(const ASound&) final;
+#include "AWindow.hpp"
 
-      protected:
-      private:
-        vec2int size_     = {-1, -1};
-        std::string title = "";
+namespace arcade
+{
+class NcWindow : public AWindow
+{
+  public:
+    NcWindow();
+    ~NcWindow();
+    void display() final;
+    void clear() final;
+    bool pollEvent(Events&) final;
+    void setTitle(const std::string&) final;
+    void setSize(const vec2int&) final;
+    void draw(const Line&) final;
+    void draw(const Rectangle&) final;
+    void draw(const Point&) final;
+    void draw(const Text&) final;
+    void draw(const ASprite&) final;
+    void play(const ASound&) final;
+
+  protected:
+  private:
+    vec2int size_ = {-1, -1};
+    std::string title = "";
 };
 }
 

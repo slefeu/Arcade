@@ -1,7 +1,7 @@
 #include "AWindow.hpp"
 
-namespace arcade {
-
+namespace arcade
+{
 constexpr int AWindow::getCharSize() const
 {
     return (charSize);
