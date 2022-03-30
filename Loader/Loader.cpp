@@ -6,17 +6,35 @@
 */
 
 #include "Loader.hpp"
+#include "Error.hpp"
 
-void *Loader::loadLibrary(std::string fileName)
+void* Loader::loadLibrary(std::string& filename, const char* functionName)
 {
-    void *myLibrary = dlopen(fileName.c_str(), RTLD_NOW);
+  void* createLib = nullptr;
+  openedLib = openShared(filename);
+  dlerror();
+  createLib = dlsym(openedLib, functionName);
 
-    if (!myLibrary)
-        throw Error(fileName + " :" + dlerror());
-    return (myLibrary);
+  if (dlerror() != nullptr)
+    throw(Error("Library format not compatible, dlsym failed."));
+  return (createLib);
 }
 
-void Loader::closeLibrary(void *library)
+void* Loader::openShared(std::string& filename)
 {
-    dlclose(library);
+  void* myLibrary = dlopen(filename.c_str(), RTLD_NOW);
+
+  if (!myLibrary)
+    throw Error(dlerror());
+  return (myLibrary);
+}
+
+void Loader::closeLibrary(void* library)
+{
+  dlclose(library);
+}
+
+void* Loader::getOpenedLib() const
+{
+  return (openedLib);
 }

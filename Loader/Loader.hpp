@@ -7,20 +7,23 @@
 
 #pragma once
 
-#include "AWindow.hpp"
-#include "Error.hpp"
 #include <dlfcn.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-class Loader {
-    public:
-        Loader() = delete;
-        ~Loader() = delete;
+class Loader
+{
+public:
+  Loader() = default;
+  ~Loader() = default;
 
-        static void *loadLibrary(std::string fileName);
-        static void closeLibrary(void *library);
-      protected:
-      private:
+  void *loadLibrary(std::string &, const char *);
+  void closeLibrary(void *);
+  void *getOpenedLib() const;
+
+protected:
+private:
+  void *openShared(std::string &);
+  void *openedLib = nullptr;
 };
