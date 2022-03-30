@@ -1,22 +1,19 @@
 /*
 ** EPITECH PROJECT, 2022
-** B-OOP-400-BDX-4-1-arcade-solene.lefeu
+** arcade-Ashley
 ** File description:
-** State
+** Global
 */
 
 #pragma once
-
-#include <iostream>
-#include <stdbool.h>
-#include <string>
-#include <utility>
+#include <memory>
 #include <vector>
 
-namespace arcade {
+namespace arcade
+{
 enum Key {
     Unknown = -1, ///< Unhandled key
-    A       = 0,  ///< The A key
+    A = 0,        ///< The A key
     B,            ///< The B key
     C,            ///< The C key
     D,            ///< The D key
@@ -119,12 +116,8 @@ enum Key {
     F14,          ///< The F14 key
     F15,          ///< The F15 key
     Pause,        ///< The Pause key
-    KeyCount, ///< Keep last -- the total number of keyboard keys
-};
 
-enum WindowType {
-    Term,
-    Window
+    KeyCount, ///< Keep last -- the total number of keyboard keys
 };
 
 struct vec2int {
@@ -132,25 +125,32 @@ struct vec2int {
     int y;
 };
 
-class Events {
-  public:
-    Events() = default;
-    ~Events() = default;
+enum Status {
+    Nothing,
+    Previous_graphics,
+    Next_graphics,
+    Previous_game,
+    Next_game,
+    Restart,
+    Back_to_menu,
+    Exit,
+    Crash
+};
 
-    bool isPressed(Key) const;
-    std::vector<Key> getKeyPressed() const;
-    void setKeyPressed(std::vector<Key>&);
-    Events& operator<<(const Events&);
+class Events
+{
+  public:
+    bool isPressed(const Key) const noexcept;
+    Status getStatus() const noexcept;
+    Events& operator<<(const Events& event);
 
     struct {
         vec2int pos = {0, 0};
-        bool right  = false;
-        bool left   = false;
+        bool right = false;
+        bool left = false;
         bool middle = false;
     } mouse;
-    bool stopGame = false;
-  private:
-    std::vector<Key> keyPressed;
+    std::vector<Key> key_pressed;
 };
 
 struct color_uint8 {
@@ -158,4 +158,7 @@ struct color_uint8 {
     unsigned char g;
     unsigned char b;
 };
+
+constexpr color_uint8 COLOR_WHITE = {255, 255, 255};
+constexpr color_uint8 COLOR_BLACK = {0, 0, 0};
 } // namespace arcade
