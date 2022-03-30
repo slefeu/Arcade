@@ -10,7 +10,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
 option(OPTIMIZE_ACADE "Optimize arcade" ON)
 
 if(OPTIMIZE_ACADE)
-    set(CXX_FLAGS "-fconcepts-ts")
+    set(CXX_FLAGS "-fconcepts-ts" "-fno-gnu-unique")
 else ()
     set(CXX_FLAGS "-ggdb3")
 endif()
