@@ -15,16 +15,9 @@ void* Loader::loadLibrary(std::string& filename, const char* functionName)
   dlerror();
   createLib = dlsym(openedLib, functionName);
 
-<<<<<<< HEAD
-    if (!myLibrary)
-        throw Error(fileName + " :" + dlerror());
-    return (myLibrary);
-    std::string error = std::string(dlerror());
-=======
   if (dlerror() != nullptr)
     throw(Error("Library format not compatible, dlsym failed."));
   return (createLib);
->>>>>>> eb7b8644ef95def3d71ff90f1b5def985e155475
 }
 
 void* Loader::openShared(std::string& filename)
