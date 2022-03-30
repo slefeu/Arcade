@@ -49,15 +49,24 @@ class AShape
   protected:
     vec2int shapePosition = {-1, -1};
     color_uint8 shapeColor = {0, 0, 0};
-
-  private:
 };
 
 class Rectangle : public AShape
 {
   public:
     Rectangle() noexcept = default;
-    Rectangle(const vec2int&, const vec2int&, const color_uint8&, bool);
+    /**
+     * @brief Construct a new Rectangle object
+     *
+     * @param position
+     * @param size
+     * @param color
+     * @param filled is the rectangle filled or empty
+     */
+    Rectangle(const vec2int& position,
+        const vec2int& size,
+        const color_uint8& color = {255, 255, 255},
+        bool filled = true);
     Rectangle(const Rectangle&) noexcept = default;
     Rectangle(Rectangle&&) noexcept = default;
     ~Rectangle() noexcept = default;
@@ -98,16 +107,42 @@ class Point : public AShape
 {
   public:
     Point() = default;
-    Point(const vec2int&, const color_uint8&);
-    ~Point() = default;
+    /**
+     * @brief Construct a new Point object
+     *
+     * @param position
+     * @param color
+     */
+    Point(const vec2int& position, const color_uint8& color = {255, 255, 255});
+    Point(const Point& other) noexcept = default;
+    Point(Point&& other) noexcept = default;
+    ~Point() noexcept = default;
+
+    Point& operator=(const Point& rhs) noexcept = default;
+    Point& operator=(Point&& rhs) noexcept = default;
 };
 
 class Line : public AShape
 {
   public:
     Line() = default;
-    Line(const vec2int&, const vec2int&, const color_uint8&);
-    ~Line() = default;
+    /**
+     * @brief Construct a new Line object
+     *
+     * @param firstPosition
+     * @param LastPosition
+     * @param color
+     */
+    Line(const vec2int& firstPosition,
+        const vec2int& LastPosition,
+        const color_uint8& color = {255, 255, 255});
+    Line(const Line& other) noexcept = default;
+    Line(Line&& other) noexcept = default;
+    ~Line() noexcept = default;
+
+    Line& operator=(const Line& rhs) noexcept = default;
+    Line& operator=(Line&& rhs) noexcept = default;
+
     /**
      * @brief Set the Line End object
      *

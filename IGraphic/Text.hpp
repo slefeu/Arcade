@@ -15,9 +15,9 @@ class Text
   public:
     Text() noexcept = default;
     Text(const vec2int& pos,
-        const std::string_view&,
-        const color_uint8&,
-        const color_uint8);
+        const std::string_view& txt,
+        const color_uint8& color = {255, 255, 255},
+        const color_uint8 back_color = {0, 0, 0});
     Text(const Text& other) noexcept = default;
     Text(Text&& other) noexcept = default;
     ~Text() noexcept = default;

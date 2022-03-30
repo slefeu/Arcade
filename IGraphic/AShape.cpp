@@ -35,8 +35,8 @@ vec2int AShape::getPosition() const
 
 Rectangle::Rectangle(const vec2int& pos,
     const vec2int& newSize,
-    const color_uint8& color = {255, 255, 255},
-    bool filled = true)
+    const color_uint8& color,
+    bool filled)
     : AShape(pos, color)
     , isFilled(filled)
     , size(newSize){};
@@ -62,12 +62,12 @@ bool Rectangle::getFillValue() const
 }
 
 Point::Point(
-    const vec2int& position, const color_uint8& color = {255, 255, 255})
+    const vec2int& position, const color_uint8& color)
     : AShape(position, color){};
 
 Line::Line(const vec2int& positionStart,
     const vec2int& positionEnd,
-    const color_uint8& color = {255, 255, 255})
+    const color_uint8& color)
     : AShape(positionStart, color)
     , endLinePosition(positionEnd){};
 
