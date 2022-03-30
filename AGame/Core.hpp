@@ -6,21 +6,31 @@
 */
 
 #pragma once
+#include <memory>
+#include <vector>
 
-namespace arcade {
+#include "AWindow.hpp"
+#include "AGame.hpp"
+
+namespace arcade
+{
 class Core
 {
 public:
-    Core() noexcept = default;
-    Core(const Core &other) noexcept = default;
-    Core(Core &&other) noexcept = default;
-    ~Core() noexcept = default;
+  Core(std::unique_ptr<AWindow>, std::vector<std::string> &, std::vector<std::string> &) noexcept;
+  Core(const Core& other) noexcept = default;
+  Core(Core&& other) noexcept = default;
+  ~Core() noexcept = default;
 
-    Core &operator=(const Core &rhs) noexcept = default;
-    Core &operator=(Core &&rhs) noexcept = default;
-    void executeLoop();
+  Core& operator=(const Core& rhs) noexcept = default;
+  Core& operator=(Core&& rhs) noexcept = default;
+  void executeLoop();
 
 protected:
 private:
+  std::unique_ptr<AWindow> usedLib;
+  std::vector<std::string> allLibs;
+  std::vector<std::string> allGames;
+  // std::unique_ptr<AGame> chosenGame;
 };
-} //namespace arcade
+} // namespace arcade
