@@ -11,7 +11,6 @@ int main(int ac, char **av)
 {
     try {
         arcade::Arcade arcade(ac, av);
-        arcade.getLibFiles();
     } catch (Error const& error) {
         std::cerr << error.what() << std::endl;
         return (84);

@@ -4,3 +4,5 @@ build
 .history
 CMakeFiles
 lib/
+trash.cpp
+arcade
