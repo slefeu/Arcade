@@ -31,6 +31,8 @@ class NcWindow : public AWindow {
 
       protected:
       private:
+        vec2int size_     = {-1, -1};
+        std::string title = "";
 };
 }
 

@@ -27,10 +27,10 @@ void Text::setBackColor(const color_uint8& back_color) {
 color_uint8 Text::getBackColor() const {
     return back_color_;
 };
-void Text::setPos(const vec2int& pos) {
+void Text::setPosition(const vec2int& pos) {
     pos_ = pos;
 };
-vec2int Text::getPos() const {
+vec2int Text::getPosition() const {
     return pos_;
 };
 }

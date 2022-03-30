@@ -14,6 +14,7 @@ void *Loader::loadLibrary(std::string fileName)
     if (!myLibrary)
         throw Error(fileName + " :" + dlerror());
     return (myLibrary);
+    std::string error = std::string(dlerror());
 }
 
 void Loader::closeLibrary(void *library)

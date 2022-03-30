@@ -26,8 +26,8 @@ class Text {
     color_uint8 getColor() const;
     void setBackColor(const color_uint8& back_color);
     color_uint8 getBackColor() const;
-    void setPos(const vec2int& pos);
-    vec2int getPos() const;
+    void setPosition(const vec2int& pos);
+    vec2int getPosition() const;
 
   protected:
     vec2int pos_            = {0, 0};

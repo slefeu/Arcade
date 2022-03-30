@@ -73,7 +73,7 @@ void SfWindow::draw(const Text& infoText)
     sf::Color color(infoText.getColor().r, infoText.getColor().g, infoText.getColor().b);
     sf::Color backColor(infoText.getBackColor().r, infoText.getBackColor().g,
                         infoText.getBackColor().b);
-    text.setPosition(sf::Vector2f(infoText.getPos().x * charSize, infoText.getPos().y * charSize));
+    text.setPosition(sf::Vector2f(infoText.getPosition().x * charSize, infoText.getPosition().y * charSize));
     text.setString(infoText.getString());
     text.setFillColor(color);
     text.setOutlineColor(backColor);
