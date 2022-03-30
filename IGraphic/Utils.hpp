@@ -1,17 +1,12 @@
 /*
 ** EPITECH PROJECT, 2022
-** B-OOP-400-BDX-4-1-arcade-solene.lefeu
+** arcade-Ashley
 ** File description:
-** State
+** Global
 */
 
 #pragma once
-
-#include <stdbool.h>
-
-#include <iostream>
-#include <string>
-#include <utility>
+#include <memory>
 #include <vector>
 
 namespace arcade
@@ -121,26 +116,33 @@ enum Key {
     F14,          ///< The F14 key
     F15,          ///< The F15 key
     Pause,        ///< The Pause key
-    KeyCount,     ///< Keep last -- the total number of keyboard keys
-};
 
-enum WindowType { Term, Window };
+    KeyCount, ///< Keep last -- the total number of keyboard keys
+};
 
 struct vec2int {
     int x;
     int y;
 };
 
+enum Status {
+    Nothing,
+    Previous_graphics,
+    Next_graphics,
+    Previous_game,
+    Next_game,
+    Restart,
+    Back_to_menu,
+    Exit,
+    Crash
+};
+
 class Events
 {
   public:
-    Events() = default;
-    ~Events() = default;
-
-    bool isPressed(Key) const;
-    std::vector<Key> getKeyPressed() const;
-    void setKeyPressed(std::vector<Key>&);
-    Events& operator<<(const Events&);
+    bool isPressed(const Key) const noexcept;
+    Status getStatus() const noexcept;
+    Events& operator<<(const Events& event);
 
     struct {
         vec2int pos = {0, 0};
@@ -148,10 +150,7 @@ class Events
         bool left = false;
         bool middle = false;
     } mouse;
-    bool stopGame = false;
-
-  private:
-    std::vector<Key> keyPressed;
+    std::vector<Key> key_pressed;
 };
 
 struct color_uint8 {
@@ -159,4 +158,7 @@ struct color_uint8 {
     unsigned char g;
     unsigned char b;
 };
+
+constexpr color_uint8 COLOR_WHITE = {255, 255, 255};
+constexpr color_uint8 COLOR_BLACK = {0, 0, 0};
 } // namespace arcade

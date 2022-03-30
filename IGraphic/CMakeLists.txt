@@ -1,6 +1,6 @@
 add_library(
     Igraphic
-    State.cpp
+    Utils.cpp
     AWindow.cpp
     AShape.cpp
     Text.cpp
