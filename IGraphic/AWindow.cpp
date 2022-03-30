@@ -2,19 +2,12 @@
 
 namespace arcade
 {
-constexpr int AWindow::getCharSize() const
+Status AWindow::getStatus()
 {
-    return (charSize);
-}
+    Status tmp = status;
 
-bool AWindow::getStatus() const
-{
-    return (status);
+    if (status < Exit)
+        status = Nothing;
+    return tmp;
 }
-
-void AWindow::setStatus(const bool newStatus)
-{
-    status = newStatus;
-}
-
 };

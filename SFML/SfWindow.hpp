@@ -14,6 +14,8 @@
 
 namespace arcade
 {
+constexpr int charSize = 21;
+
 class SfWindow : public AWindow
 {
   public:
@@ -28,7 +30,6 @@ class SfWindow : public AWindow
     void draw(const Rectangle&) final;
     void draw(const Point&) final;
     void draw(const Text&) final;
-    void draw(const ASprite&) final;
     void play(const ASound&) final;
 
   protected:

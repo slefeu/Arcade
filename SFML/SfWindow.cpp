@@ -78,10 +78,6 @@ void SfWindow::draw(const Text& infoText)
     window_.draw(text);
 }
 
-void SfWindow::draw(const ASprite& sprite)
-{
-}
-
 void SfWindow::play(const ASound& sound)
 {
 }
@@ -105,9 +101,9 @@ bool SfWindow::pollEvent(Events& rEvent)
     while (window_.pollEvent(event)) {
         switch (event.type) {
             case sf::Event::KeyPressed:
-                rEvent.getKeyPressed().push_back(Key(event.key.code));
+                rEvent.key_pressed.push_back(Key(event.key.code));
                 return true;
-            case sf::Event::Closed: rEvent.stopGame = true; return true;
+            case sf::Event::Closed: status = Exit; return true;
             case sf::Event::MouseButtonPressed:
                 switch (event.mouseButton.button) {
                     case sf::Mouse::Right:

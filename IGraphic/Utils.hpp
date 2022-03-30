@@ -140,9 +140,17 @@ enum Status {
 class Events
 {
   public:
+    Events() noexcept = default;
+    Events(const Events& other) noexcept = default;
+    Events(Events&& other) noexcept = default;
+    ~Events() noexcept = default;
+
+    Events& operator=(const Events&) noexcept = default;
+    Events& operator=(Events&&) noexcept = default;
+    Events& operator<<(const Events&);
+
     bool isPressed(const Key) const noexcept;
     Status getStatus() const noexcept;
-    Events& operator<<(const Events& event);
 
     struct {
         vec2int pos = {0, 0};
@@ -151,6 +159,9 @@ class Events
         bool middle = false;
     } mouse;
     std::vector<Key> key_pressed;
+
+  protected:
+  private:
 };
 
 struct color_uint8 {
