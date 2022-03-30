@@ -40,7 +40,7 @@ void NcWindow::setTitle(const std::string& newTitle) {
 }
 
 void NcWindow::setSize(const vec2int& newSize) {
-    this->size_ = newSize
+    this->size_ = newSize;
 }
 
 void NcWindow::draw(const Line& infoLine) {
