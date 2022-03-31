@@ -8,7 +8,7 @@
 #include "Error.hpp"
 
 Error::Error(std::string const& message) noexcept
-  : message_(message){};
+    : message_(message){};
 
 const char* Error::what() const noexcept
 {
@@ -16,4 +16,4 @@ const char* Error::what() const noexcept
 }
 
 ArgumentError::ArgumentError(std::string const& message)
-  : Error(message){};
+    : Error(message){};

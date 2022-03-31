@@ -19,23 +19,20 @@ endif()
 set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
 
 add_subdirectory(IGraphic)
-add_subdirectory(AGame)
 add_subdirectory(SFML)
 add_subdirectory(Ncurse)
 add_subdirectory(Error)
 add_subdirectory(Loader)
+add_subdirectory(AGame)
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    Loader/Loader.cpp
-    AGame/AGame.cpp
-    AGame/Core.cpp
-    AGame/Arcade.cpp
-    Error/Error.cpp
     ${HEADER_FILES}
 )
 
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
+target_link_libraries(${PROJECT_NAME} AGame)
+target_link_libraries(${PROJECT_NAME} Error)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
     "${CMAKE_SOURCE_DIR}/AGame"
