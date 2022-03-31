@@ -30,7 +30,6 @@ class NcWindow : public IWindow
     void draw(const Text&) final;
     void play(const ASound&) final;
     Status getStatus() final;
-
   protected:
     Status status;
 

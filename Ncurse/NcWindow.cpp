@@ -6,15 +6,22 @@
 */
 
 #include "NcWindow.hpp"
+#include <unistd.h>
 
 namespace arcade
 {
+
+extern "C" std::unique_ptr<IWindow> createLib()
+{
+    return (std::make_unique<NcWindow>());
+}
+
 NcWindow::NcWindow()
 {
     WINDOW *win = initscr();
     keypad(stdscr, TRUE);
     noecho();
-    nodelay(win, 1);
+    nodelay(win, 1); //ajouter du délais ? pour que l'affichage se fasse correctement
     start_color();
 }
 
@@ -25,13 +32,13 @@ NcWindow::~NcWindow()
 
 void NcWindow::display()
 {
+    // usleep(10000); à enlever quand on aura trouvé le bon délais
     refresh();
 }
 
 void NcWindow::clear()
 {
-    clear();
-    erase();
+    ::clear();
 }
 
 bool insertkey(Key key, Events& event)
