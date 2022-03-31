@@ -10,14 +10,13 @@
 #include <vector>
 
 #include "AGame.hpp"
-#include "AWindow.hpp"
-
+#include "Utils.hpp"
 namespace arcade
 {
 class Core
 {
   public:
-    Core(std::unique_ptr<AWindow>,
+    Core(std::unique_ptr<IWindow>,
         std::vector<std::string>&,
         std::vector<std::string>&) noexcept;
     Core(const Core& other) noexcept = default;
@@ -30,9 +29,17 @@ class Core
 
   protected:
   private:
-    std::unique_ptr<AWindow> usedLib;
+    std::unique_ptr<IWindow> usedLib;
     std::vector<std::string> allLibs;
     std::vector<std::string> allGames;
-    // std::unique_ptr<AGame> chosenGame;
+    std::unique_ptr<AGame> chosenGame = nullptr;
+    bool isEnd = false;
+    bool isMenu = true;
+    std::string playerName;
+
+    void displayMenu(Status &) noexcept;
+    void displayGame(Status &) noexcept;
+    void changePlayerName(Events &) noexcept;
+    bool isLetter(Key &key) const noexcept;
 };
 } // namespace arcade

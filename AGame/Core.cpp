@@ -6,20 +6,64 @@
 */
 
 #include "Core.hpp"
+#include "Text.hpp"
 
 namespace arcade
 {
-Core::Core(std::unique_ptr<AWindow> lib,
+Core::Core(std::unique_ptr<IWindow> lib,
     std::vector<std::string>& libs,
     std::vector<std::string>& games) noexcept
-  : usedLib(std::move(lib))
-  , allLibs(libs)
-  , allGames(games)
+    : usedLib(std::move(lib))
+    , allLibs(libs)
+    , allGames(games)
+    , isEnd(false)
+    , playerName("")
 {
+}
+
+void Core::displayGame(Status& input) noexcept
+{
+}
+
+bool Core::isLetter(Key& key) const noexcept
+{
+    if (key >= A && key <= Z)
+        return (true);
+    return (false);
+}
+void Core::changePlayerName(Events& event) noexcept
+{
+    for (int i = 0; i < event.key_pressed.size(); i++) {
+        if (isLetter(event.key_pressed[i]) && playerName.size() < 10)
+            playerName += event.key_pressed[i] + 'A';
+        if (event.key_pressed[i] == Backspace && !playerName.empty())
+            playerName.pop_back();
+    }
+}
+
+void Core::displayMenu(Status& input) noexcept
+{
+    Events event;
+
+    usedLib->draw(Text({35, 0}, ("MENU")));
+    usedLib->pollEvent(event);
+    changePlayerName(event);
+    if (playerName != "")
+        usedLib->draw(Text({35, 10}, playerName));
 }
 
 void Core::executeLoop()
 {
+    while (!isEnd) {
+        usedLib->clear();
+        Status input = usedLib->getStatus();
+        if (isMenu)
+            displayMenu(input);
+        else
+            displayGame(input);
+        usedLib->display();
+    }
+    usedLib->destroy();
 }
 
-} // namespace arcade
+} // namespace arcadeundefined reference to `arcade::Core::displayGame
