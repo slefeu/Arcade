@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-OOP-400-BDX-4-1-arcade-solene.lefeu
 ** File description:
-** Awindow
+** IWindow
 */
 
 #pragma once
@@ -15,11 +15,11 @@
 
 namespace arcade
 {
-class AWindow
+class IWindow
 {
   public:
-    AWindow() = default;
-    virtual ~AWindow() = default;
+    IWindow() = default;
+    virtual ~IWindow() = default;
 
     /**
      * @brief Display all previously drawn elements on the window
@@ -55,7 +55,7 @@ class AWindow
      *
      * @return Status The curent status of the window
      */
-    Status getStatus();
+    virtual Status getStatus() = 0;
     /**
      * @brief Draw a drawable object
      *
@@ -64,13 +64,12 @@ class AWindow
     virtual void draw(const Point&) = 0;
     virtual void draw(const Rectangle&) = 0;
     virtual void draw(const Text&) = 0;
+    virtual void destroy() = 0;
     /**
      * @brief Play a sound
      *
      */
     virtual void play(const ASound&) = 0;
 
-  protected:
-    Status status = Nothing;
 };
 } // namespace arcade

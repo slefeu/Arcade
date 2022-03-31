@@ -2,8 +2,7 @@
 
 #include <memory>
 
-#include "AWindow.hpp"
-#include "Core.hpp"
+#include "IWindow.hpp"
 
 namespace arcade
 {
@@ -35,7 +34,7 @@ class AGame
      *
      * @param window The graphic librairy that the game will use
      */
-    void setWindow(std::unique_ptr<AWindow>&&) noexcept;
+    void setWindow(std::unique_ptr<IWindow>&&) noexcept;
     /**
      * @brief return the ownership of the window
      *        (Be careful to not exec the game after calling that
@@ -43,10 +42,10 @@ class AGame
      *
      * @return The graphique librairy that the game used
      */
-    std::unique_ptr<AWindow>&& getWindow() noexcept;
+    std::unique_ptr<IWindow>&& getWindow() noexcept;
 
   protected:
-    std::unique_ptr<AWindow> window = nullptr;
+    std::unique_ptr<IWindow> window = nullptr;
 
   private:
 };
