@@ -61,8 +61,7 @@ bool Rectangle::getFillValue() const
     return (isFilled);
 }
 
-Point::Point(
-    const vec2int& position, const color_uint8& color)
+Point::Point(const vec2int& position, const color_uint8& color)
     : AShape(position, color){};
 
 Line::Line(const vec2int& positionStart,

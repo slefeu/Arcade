@@ -7,17 +7,19 @@
 
 #include "SfWindow.hpp"
 
+#include <iostream>
+
 namespace arcade
 {
-extern "C" std::unique_ptr<AWindow> createLib()
+extern "C" std::unique_ptr<IWindow> createLib()
 {
     return (std::make_unique<SfWindow>());
 }
 
 SfWindow::SfWindow()
 {
-    this->window_.create(sf::VideoMode(800, 600), "SFML");
-    this->size_ = {800, 600};
+    window_.create(sf::VideoMode(size_.x, size_.y, 32), "Arcade");
+    font.loadFromFile("Font/Minecraft.ttf");
 }
 
 SfWindow::~SfWindow()
@@ -28,13 +30,13 @@ SfWindow::~SfWindow()
 
 void SfWindow::setTitle(const std::string& title)
 {
-    this->window_.setTitle(title);
+    window_.setTitle(title);
 }
 
 void SfWindow::setSize(const vec2int& size)
 {
-    this->size_ = size;
-    this->window_.setSize(sf::Vector2u(size.x, size.y));
+    size_ = size;
+    window_.setSize(sf::Vector2u(size.x, size.y));
 }
 
 void SfWindow::draw(const Line& infoLine)
@@ -72,7 +74,9 @@ void SfWindow::draw(const Text& infoText)
         infoText.getBackColor().b);
     text.setPosition(sf::Vector2f(infoText.getPosition().x * charSize,
         infoText.getPosition().y * charSize));
+    text.setFont(this->font);
     text.setString(infoText.getString());
+    text.setCharacterSize(50);
     text.setFillColor(color);
     text.setOutlineColor(backColor);
     window_.draw(text);
@@ -84,14 +88,26 @@ void SfWindow::play(const ASound& sound)
 
 void SfWindow::display()
 {
-    window_.create(sf::VideoMode(this->size_.x, this->size_.y), "SFML");
-    if (this->title != "")
-        window_.setTitle(this->title);
+    window_.display();
 }
 
 void SfWindow::clear()
 {
     window_.clear();
+}
+
+Status SfWindow::getStatus()
+{
+    Status tmp = status;
+
+    if (status < Exit)
+        status = Nothing;
+    return tmp;
+}
+
+void SfWindow::destroy()
+{
+    window_.close();
 }
 
 bool SfWindow::pollEvent(Events& rEvent)

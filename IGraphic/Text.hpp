@@ -7,6 +7,8 @@
 
 #pragma once
 #include "Utils.hpp"
+#include <string_view>
+#include <string>
 
 namespace arcade
 {
