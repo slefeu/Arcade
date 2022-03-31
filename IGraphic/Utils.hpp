@@ -170,6 +170,6 @@ struct color_uint8 {
     unsigned char b;
 };
 
-constexpr color_uint8 COLOR_WHITE = {255, 255, 255};
-constexpr color_uint8 COLOR_BLACK = {0, 0, 0};
+constexpr color_uint8 WHITE_COLOR = {255, 255, 255};
+constexpr color_uint8 BLACK_COLOR = {0, 0, 0};
 } // namespace arcade

@@ -21,6 +21,7 @@ set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
 add_subdirectory(IGraphic)
 add_subdirectory(AGame)
 add_subdirectory(SFML)
+add_subdirectory(Ncurse)
 add_subdirectory(Error)
 add_subdirectory(Loader)
 

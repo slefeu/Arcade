@@ -28,11 +28,11 @@ class NcWindow : public AWindow
     void draw(const Rectangle&) final;
     void draw(const Point&) final;
     void draw(const Text&) final;
-    void draw(const ASprite&) final;
     void play(const ASound&) final;
 
   protected:
   private:
+    WINDOW *win;
     vec2int size_ = {-1, -1};
     std::string title = "";
 };
