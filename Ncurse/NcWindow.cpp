@@ -40,6 +40,15 @@ bool insertkey(Key key, Events& event)
     return true;
 }
 
+Status NcWindow::getStatus()
+{
+    Status tmp = status;
+
+    if (status < Exit)
+        status = Nothing;
+    return tmp;
+}
+
 bool NcWindow::pollEvent(Events& event)
 {
     int ch = 0;
@@ -67,7 +76,7 @@ bool NcWindow::pollEvent(Events& event)
             return insertkey(Insert, event);
         case KEY_END:
             return insertkey(End, event);
-        case KEY_EXIT: 
+        case KEY_EXIT:
             status = Exit;
             return insertkey(Escape, event);
         case KEY_NPAGE:
@@ -101,7 +110,7 @@ bool NcWindow::pollEvent(Events& event)
         case 'h':
             return insertkey(H, event);
         case 'I':
-        case 'i': 
+        case 'i':
             return insertkey(I, event);
         case 'J':
         case 'j':
