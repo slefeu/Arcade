@@ -105,11 +105,6 @@ Status SfWindow::getStatus()
     return tmp;
 }
 
-void SfWindow::destroy()
-{
-    window_.close();
-}
-
 bool SfWindow::pollEvent(Events& rEvent)
 {
     sf::Event event;

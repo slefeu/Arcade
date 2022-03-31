@@ -64,7 +64,6 @@ class IWindow
     virtual void draw(const Point&) = 0;
     virtual void draw(const Rectangle&) = 0;
     virtual void draw(const Text&) = 0;
-    virtual void destroy() = 0;
     /**
      * @brief Play a sound
      *

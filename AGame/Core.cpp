@@ -63,7 +63,6 @@ void Core::executeLoop()
             displayGame(input);
         usedLib->display();
     }
-    usedLib->destroy();
 }
 
 } // namespace arcadeundefined reference to `arcade::Core::displayGame
