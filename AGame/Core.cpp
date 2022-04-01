@@ -47,6 +47,10 @@ void Core::displayMenu(Status& input) noexcept
 
     usedLib->draw(Text({35, 0}, ("MENU")));
     usedLib->pollEvent(event);
+    if (event.getStatus() == Exit) {
+        isEnd = true;
+        return;
+    }
     changePlayerName(event);
     usedLib->draw(Text({35, 5}, "Player Name: "));
     if (playerName != "")
