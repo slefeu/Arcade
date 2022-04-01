@@ -10,7 +10,7 @@
 
 namespace arcade
 {
-Core::Core(std::unique_ptr<IWindow> lib,
+Core::Core(std::unique_ptr<AWindow> lib,
     std::vector<std::string>& libs,
     std::vector<std::string>& games) noexcept
     : usedLib(std::move(lib))

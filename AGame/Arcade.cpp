@@ -6,7 +6,7 @@ namespace arcade
 {
 Arcade::Arcade(int ac, char** av)
 {
-    std::unique_ptr<IWindow> (*createLib)();
+    std::unique_ptr<AWindow> (*createLib)();
 
     if (ac != 2) {
         usage();
@@ -22,7 +22,7 @@ Arcade::Arcade(int ac, char** av)
     //   if (allGames.empty())
     //     throw Error("No games found in folder lib");
     std::string libStart = getFirstLibName(av[1]);
-    createLib = reinterpret_cast<std::unique_ptr<IWindow> (*)()>(
+    createLib = reinterpret_cast<std::unique_ptr<AWindow> (*)()>(
         libLoader.loadLibrary(libStart, "createLib"));
     arcadeCore = std::make_unique<Core>(createLib(), allLibs, allGames);
 }

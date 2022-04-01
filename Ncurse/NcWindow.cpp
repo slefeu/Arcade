@@ -11,7 +11,7 @@
 namespace arcade
 {
 
-extern "C" std::unique_ptr<IWindow> createLib()
+extern "C" std::unique_ptr<AWindow> createLib()
 {
     return (std::make_unique<NcWindow>());
 }

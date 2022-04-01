@@ -2,20 +2,20 @@
 
 #include <memory>
 
-#include "IWindow.hpp"
+#include "AWindow.hpp"
 
 namespace arcade
 {
-class IGame
+class AGame
 {
   public:
-    IGame() noexcept = default;
-    IGame(const IGame&) noexcept = delete;
-    IGame(IGame&&) noexcept = delete;
-    virtual ~IGame() noexcept = default;
+    AGame() noexcept = default;
+    AGame(const AGame&) noexcept = delete;
+    AGame(AGame&&) noexcept = delete;
+    virtual ~AGame() noexcept = default;
 
-    IGame& operator=(const IGame& rhs) noexcept = delete;
-    IGame& operator=(IGame&& rhs) noexcept = delete;
+    AGame& operator=(const AGame& rhs) noexcept = delete;
+    AGame& operator=(AGame&& rhs) noexcept = delete;
 
     /**
      * @brief Execute one tick of the game
@@ -35,7 +35,7 @@ class IGame
      *
      * @param window The graphic librairy that the game will use
      */
-    void setWindow(std::unique_ptr<IWindow>&&) noexcept;
+    void setWindow(std::unique_ptr<AWindow>&&) noexcept;
     /**
      * @brief return the ownership of the window
      *        (Be careful to not exec the game after calling that
@@ -43,10 +43,18 @@ class IGame
      *
      * @return The graphic librairy that the game used
      */
-    std::unique_ptr<IWindow>&& getWindow() noexcept;
+    std::unique_ptr<AWindow>&& getWindow() noexcept;
+
+    /**
+     * @brief Get the Score object
+     * 
+     * @return int the value of the score
+     */
+    int getScore() noexcept;
 
   protected:
-    std::unique_ptr<IWindow> window = nullptr;
+    std::unique_ptr<AWindow> window = nullptr;
+    int score = 0;
 
   private:
 };

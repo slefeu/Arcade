@@ -11,14 +11,14 @@
 
 namespace arcade
 {
-extern "C" std::unique_ptr<IWindow> createLib()
+extern "C" std::unique_ptr<AWindow> createLib()
 {
     return (std::make_unique<SfWindow>());
 }
 
 SfWindow::SfWindow()
 {
-    window_.create(sf::VideoMode(size_.x, size_.y, 32), "Arcade");
+    window_.create(sf::VideoMode(size_.x * charSize, size_.y *charSize, 32), "Arcade");
     font.loadFromFile("Font/Minecraft.ttf");
 }
 
@@ -36,7 +36,7 @@ void SfWindow::setTitle(const std::string& title)
 void SfWindow::setSize(const vec2int& size)
 {
     size_ = size;
-    window_.setSize(sf::Vector2u(size.x, size.y));
+    window_.setSize(sf::Vector2u(size.x * charSize, size.y * charSize));
 }
 
 void SfWindow::draw(const Line& infoLine)
@@ -50,8 +50,14 @@ void SfWindow::draw(const Line& infoLine)
     window_.draw(line, 2, sf::Lines);
 }
 
-void SfWindow::draw(const Point&)
+void SfWindow::draw(const Point& infoPoint)
 {
+    Rectangle rect;
+    rect.setPosition(infoPoint.getPosition());
+    rect.setColor(infoPoint.getColor());
+    rect.setFillValue(false);
+    rect.setSize({1, 1});
+    draw(rect);
 }
 
 void SfWindow::draw(const Rectangle& infoRectangle)
@@ -59,6 +65,16 @@ void SfWindow::draw(const Rectangle& infoRectangle)
     sf::RectangleShape rectangle(
         sf::Vector2f(infoRectangle.getSize().x * charSize,
             infoRectangle.getSize().y * charSize));
+    sf::Color color(infoRectangle.getColor().r,
+        infoRectangle.getColor().g,
+        infoRectangle.getColor().b);
+    rectangle.setOutlineColor(color);
+    rectangle.setOutlineThickness(-charSize);
+    if (!infoRectangle.getFillValue())
+        rectangle.setFillColor(sf::Color::Transparent);
+    else {
+        rectangle.setFillColor(color);
+    }
     rectangle.setPosition(sf::Vector2f(infoRectangle.getPosition().x * charSize,
         infoRectangle.getPosition().y * charSize));
     window_.draw(rectangle);

@@ -10,11 +10,11 @@
 
 #include <ncurses.h>
 
-#include "IWindow.hpp"
+#include "AWindow.hpp"
 
 namespace arcade
 {
-class NcWindow : public IWindow
+class NcWindow : public AWindow
 {
   public:
     NcWindow();
@@ -35,7 +35,6 @@ class NcWindow : public IWindow
 
   private:
     WINDOW* win;
-    vec2int size_ = {-1, -1};
     std::string title = "";
 };
 }
