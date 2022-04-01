@@ -48,8 +48,31 @@ void Core::displayMenu(Status& input) noexcept
     usedLib->draw(Text({35, 0}, ("MENU")));
     usedLib->pollEvent(event);
     changePlayerName(event);
+    usedLib->draw(Text({35, 5}, "Player Name: "));
     if (playerName != "")
-        usedLib->draw(Text({35, 10}, playerName));
+        usedLib->draw(Text({35, 7}, playerName));
+    displayAvailableLibs();
+}
+
+void Core::displayAvailableLibs() const noexcept
+{
+    int position = 5;
+
+    usedLib->draw(Text({0, position}, "Graphic libraries availables :"));
+    for (int i = 0; i < allLibs.size(); i++) {
+        position += 2;
+        usedLib->draw(Text({0, position}, allLibs[i]));
+    }
+    usedLib->draw(Text({0, position + 10}, "Games availables :"));
+    for (int i = 0; i < allGames.size(); i++) {
+        position += 2;
+        usedLib->draw(Text({42, position}, allGames[i]));
+    }
+}
+
+void changeGraphicLib()
+{
+
 }
 
 void Core::executeLoop()
@@ -64,5 +87,4 @@ void Core::executeLoop()
         usedLib->display();
     }
 }
-
-} // namespace arcadeundefined reference to `arcade::Core::displayGame
+} // namespace arcade

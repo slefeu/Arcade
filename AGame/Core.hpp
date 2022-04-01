@@ -37,9 +37,10 @@ class Core
     bool isMenu = true;
     std::string playerName;
 
-    void displayMenu(Status &) noexcept;
-    void displayGame(Status &) noexcept;
-    void changePlayerName(Events &) noexcept;
-    bool isLetter(Key &key) const noexcept;
+    void displayMenu(Status&) noexcept;
+    void displayGame(Status&) noexcept;
+    void changePlayerName(Events&) noexcept;
+    bool isLetter(Key& key) const noexcept;
+    void displayAvailableLibs() const noexcept;
 };
 } // namespace arcade
