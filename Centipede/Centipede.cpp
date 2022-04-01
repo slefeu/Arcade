@@ -35,10 +35,10 @@ void Centipede::start() {
     std::vector<Obstacle> newObstacleList = {};
     for (int i = 0; i < NbOstacle; i++) {
         int x = rand() % WindowX;
-        int y = rand() % WindowY;
+        int y = rand() % static_cast<int>(WindowY * 0.8);
         while (obstacleContain(newObstacleList, {5, {x, y}})) {
             x = rand() % WindowX;
-            y = rand() % WindowY;
+            y = rand() % static_cast<int>(WindowY * 0.8);
         }
         newObstacleList.push_back({x, y});
     }
