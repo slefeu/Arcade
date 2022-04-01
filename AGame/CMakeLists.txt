@@ -1,7 +1,7 @@
 add_library(
     AGame
     Core.cpp
-    AGame.cpp
+    IGame.cpp
     Arcade.cpp
 )
 

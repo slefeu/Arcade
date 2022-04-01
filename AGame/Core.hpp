@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "AGame.hpp"
+#include "IGame.hpp"
 #include "Utils.hpp"
 namespace arcade
 {
@@ -32,7 +32,7 @@ class Core
     std::unique_ptr<IWindow> usedLib;
     std::vector<std::string> allLibs;
     std::vector<std::string> allGames;
-    std::unique_ptr<AGame> chosenGame = nullptr;
+    std::unique_ptr<IGame> chosenGame = nullptr;
     bool isEnd = false;
     bool isMenu = true;
     std::string playerName;

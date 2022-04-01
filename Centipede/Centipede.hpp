@@ -8,9 +8,9 @@
 #ifndef CENTIPEDE_HPP_
 #define CENTIPEDE_HPP_
 
-#include "AGame.hpp"
+#include "IGame.hpp"
 
-class Centipede : public arcade::AGame {
+class Centipede : public arcade::IGame {
   public:
     Centipede();
     ~Centipede();

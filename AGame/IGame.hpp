@@ -6,16 +6,16 @@
 
 namespace arcade
 {
-class AGame
+class IGame
 {
   public:
-    AGame() noexcept = default;
-    AGame(const AGame&) noexcept = delete;
-    AGame(AGame&&) noexcept = delete;
-    virtual ~AGame() noexcept = default;
+    IGame() noexcept = default;
+    IGame(const IGame&) noexcept = delete;
+    IGame(IGame&&) noexcept = delete;
+    virtual ~IGame() noexcept = default;
 
-    AGame& operator=(const AGame& rhs) noexcept = delete;
-    AGame& operator=(AGame&& rhs) noexcept = delete;
+    IGame& operator=(const IGame& rhs) noexcept = delete;
+    IGame& operator=(IGame&& rhs) noexcept = delete;
 
     /**
      * @brief Execute one tick of the game
