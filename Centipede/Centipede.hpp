@@ -12,16 +12,22 @@
 #include "Utils.hpp"
 
 namespace arcade {
+
+constexpr int WindowX = 30;
+constexpr int WindowY = 25;
+constexpr int NbOstacle = 40;
 class Centipede : public AGame {
   public:
     Centipede();
     ~Centipede();
-    int exec(void);
+    void exec(void);
     arcade::Status getStatus(void);
   protected:
   private:
-    std::vector<Snake> snakeList;
-    std::vector<Obstacle> obstacleList;
+    void start(void) noexcept;
+    void displayObstacle(void) noexcept;
+    std::vector<Snake> snakeList = {};
+    std::vector<Obstacle> obstacleList = {};
 };
 
 class Snake {
@@ -34,13 +40,14 @@ class Snake {
         Snake();
         Snake(std::vector<vec2int> body);
         ~Snake();
-        void updateMove() noexcept;
-        void display(std::unique_ptr<AWindow> window) noexcept;
+        void updateMove(std::vector<Obstacle> obstacleList, int length, int height) noexcept;
+        std::vector<Point> getBodyPoint() noexcept;
         void split(std::vector<Snake> snakeList, vec2int pos) noexcept;
         std::vector<vec2int> getBody() const noexcept;
 
       private:
-        std::vector<vec2int> body;
+        std::vector<vec2int> body = {};
+        Direction dir = Start;
 };
 
 struct Obstacle {

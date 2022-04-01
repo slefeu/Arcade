@@ -7,44 +7,138 @@
 
 #include "Centipede.hpp"
 
-namespace arcade {
-
-
-Centipede::Centipede()
+namespace arcade
 {
+Centipede::Centipede()
+{ 
 }
 
 Centipede::~Centipede()
 {
 }
 
-int Centipede::exec(void)
+bool isTheSamePos(vec2int first, vec2int two)
 {
+    return (first.x == two.x && first.y == two.y);
+}
+
+bool obstacleContain(std::vector<Obstacle> list, Obstacle obs)
+{
+    for (int i = 0; i < list.size(); i++) {
+        if (isTheSamePos(list.at(i).pos, obs.pos))
+            return true;
+    }
+    return false;
+}
+
+void Centipede::start() {
+    std::vector<Obstacle> newObstacleList = {};
+    for (int i = 0; i < NbOstacle; i++) {
+        int x = rand() % WindowX;
+        int y = rand() % WindowY;
+        while (obstacleContain(newObstacleList, {5, {x, y}})) {
+            x = rand() % WindowX;
+            y = rand() % WindowY;
+        }
+        newObstacleList.push_back({x, y});
+    }
+    this->obstacleList = newObstacleList;
+}
+
+void Centipede::displayObstacle() {
+    for (Obstacle obs : obstacleList) {
+        Point point;
+        point.setPosition(obs.pos);
+        point.setColor({0, 20 * obs.life, 20 * obs.life});
+        this->window->draw(point);
+    }
+}
+
+void Centipede::exec(void)
+{
+    displayObstacle();
+    for (Snake snake : snakeList) {
+        snake.updateMove(obstacleList, WindowX, WindowY);
+    }
+    for (Snake snake : snakeList) {
+        for (Point point : snake.getBodyPoint()) {
+            window->draw(point);
+        }
+    }
 }
 
 Status Centipede::getStatus(void)
 {
 }
 
-void Snake::updateMove() {
-    
+void Snake::updateMove(
+    std::vector<Obstacle> obstacleList, int length, int height)
+{
+    if (dir == Start) {
+        if (rand() % 2 == 0)
+            dir = Right;
+        else
+            dir = Left;
+    }
+    if (dir == Right) {
+        if (this->body.at(0).x + 1 >= length) {
+            this->body.emplace(this->body.begin(),
+                vec2int{this->body.at(0).x, this->body.at(0).y + 1});
+            this->body.pop_back();
+            dir = Left;
+            return;
+        }
+        for (Obstacle obs : obstacleList) {
+            if (isTheSamePos(
+                    {this->body.at(0).x + 1, this->body.at(0).y}, obs.pos)) {
+                this->body.emplace(this->body.begin(),
+                    vec2int{this->body.at(0).x, this->body.at(0).y + 1});
+                this->body.pop_back();
+                dir = Left;
+                return;
+            }
+        }
+        this->body.emplace(this->body.begin(),
+            vec2int{this->body.at(0).x + 1, this->body.at(0).y});
+        this->body.pop_back();
+        return;
+    }
+    if (dir == Left) {
+        if (this->body.at(0).x - 1 <= 0) {
+            this->body.emplace(this->body.begin(),
+                vec2int{this->body.at(0).x, this->body.at(0).y + 1});
+            this->body.pop_back();
+            dir = Right;
+            return;
+        }
+        for (Obstacle obs : obstacleList) {
+            if (isTheSamePos(
+                    {this->body.at(0).x - 1, this->body.at(0).y}, obs.pos)) {
+                this->body.emplace(this->body.begin(),
+                    vec2int{this->body.at(0).x, this->body.at(0).y + 1});
+                this->body.pop_back();
+                dir = Right;
+                return;
+            }
+        }
+        this->body.emplace(this->body.begin(),
+            vec2int{this->body.at(0).x - 1, this->body.at(0).y});
+        this->body.pop_back();
+    }
 }
 
-void Snake::display(std::unique_ptr<AWindow> window)
+std::vector<Point> Snake::getBodyPoint()
 {
     Point bodyFragment;
+    std::vector<Point> newBody;
     bodyFragment.setColor({200, 10, 10});
     for (int i = 0; i < body.size(); i++) {
         bodyFragment.setPosition(body.at(i));
         if (i == 1)
             bodyFragment.setColor({250, 10, 10});
-        window->draw(bodyFragment);
+        newBody.push_back(bodyFragment);
     }
-}
-
-bool isTheSamePos(vec2int first, vec2int two)
-{
-    return (first.x == two.x && first.y == two.y);
+    return newBody;
 }
 
 void Snake::split(std::vector<Snake> snakeList, vec2int pos)
@@ -61,12 +155,17 @@ void Snake::split(std::vector<Snake> snakeList, vec2int pos)
     }
     for (int i = 0; i < newBody.size(); i++)
         body.pop_back();
-    body.pop_back(); //remove fragment who was hit
+    body.pop_back(); // remove fragment who was hit
     Snake newSnake = Snake(newBody);
+    if (this->dir == Right)
+        newSnake.dir == Left;
+    else
+        newSnake.dir == Right;
     snakeList.push_back(newSnake);
     if (body.size() == 0) {
         for (int i = 0; i < snakeList.size(); i++) {
-            if (isTheSamePos(snakeList.at(i).getBody().at(0), this->body.at(0))) {
+            if (isTheSamePos(
+                    snakeList.at(i).getBody().at(0), this->body.at(0))) {
                 snakeList.erase(snakeList.begin() + i);
                 break;
             }
@@ -74,8 +173,25 @@ void Snake::split(std::vector<Snake> snakeList, vec2int pos)
     }
 }
 
-std::vector<vec2int> Snake::getBody() const {
+std::vector<vec2int> Snake::getBody() const
+{
     return this->body;
+}
+
+Snake::Snake() {
+    this->body = {
+        {WindowX / 2, 0},
+        {WindowX / 2, -1},
+        {WindowX / 2, -2},
+        {WindowX / 2, -3},
+        {WindowX / 2, -4},
+        {WindowX / 2, -5},
+        {WindowX / 2, -6},
+        {WindowX / 2, -7},
+        {WindowX / 2, -8},
+        {WindowX / 2, -9},
+    };
+    this->dir = Start;
 }
 
 };
