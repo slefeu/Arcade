@@ -129,7 +129,9 @@ bool SfWindow::pollEvent(Events& rEvent)
             case sf::Event::KeyPressed:
                 rEvent.key_pressed.push_back(Key(event.key.code));
                 return true;
-            case sf::Event::Closed: status = Exit; return true;
+            case sf::Event::Closed:
+                status = Exit;
+                return true;
             case sf::Event::MouseButtonPressed:
                 switch (event.mouseButton.button) {
                     case sf::Mouse::Right:

@@ -47,7 +47,7 @@ void Core::displayMenu(Status& input) noexcept
 
     usedLib->draw(Text({35, 0}, ("MENU")));
     usedLib->pollEvent(event);
-    if (event.getStatus() == Exit) {
+    if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
         isEnd = true;
         return;
     }
