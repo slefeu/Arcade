@@ -43,6 +43,7 @@ void Centipede::start() {
         newObstacleList.push_back({x, y});
     }
     this->obstacleList = newObstacleList;
+    this->window->setSize({WindowX, WindowY});
 }
 
 void Centipede::displayObstacle() {
@@ -56,6 +57,8 @@ void Centipede::displayObstacle() {
 
 void Centipede::exec(void)
 {
+    if (tick == 0)
+        start();
     displayObstacle();
     for (Snake snake : snakeList) {
         snake.updateMove(obstacleList, WindowX, WindowY);
@@ -65,6 +68,7 @@ void Centipede::exec(void)
             window->draw(point);
         }
     }
+    tick++;
 }
 
 Status Centipede::getStatus(void)
