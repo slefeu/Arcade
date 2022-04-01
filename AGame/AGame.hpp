@@ -20,8 +20,9 @@ class AGame
     /**
      * @brief Execute one tick of the game
      * (Call the setWindow function before calling that function)
+     * @return the score of the player
      */
-    virtual void exec(void) = 0;
+    virtual int exec(void) = 0;
     /**
      * @brief
      *
