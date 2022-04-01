@@ -41,7 +41,7 @@ class IGame
      *        (Be careful to not exec the game after calling that
      * function)
      *
-     * @return The graphique librairy that the game used
+     * @return The graphic librairy that the game used
      */
     std::unique_ptr<IWindow>&& getWindow() noexcept;
 

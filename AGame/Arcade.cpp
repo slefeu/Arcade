@@ -70,7 +70,9 @@ bool Arcade::isGraphicLibrary(std::string& filename) noexcept
         "arcade_xlib.so",
         "arcade_gtk+.so",
         "arcade_sfml.so",
-        "arcade_irrlicht.so"
+        "arcade_ncurses.so",
+        "arcade_sdl2.so",
+        "arcade_irrlicht.so",
         "arcade_opengl.so",
         "arcade_vulkan.so",
         "arcade_qt5.so"};

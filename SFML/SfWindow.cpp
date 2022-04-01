@@ -76,7 +76,6 @@ void SfWindow::draw(const Text& infoText)
         infoText.getPosition().y * charSize));
     text.setFont(this->font);
     text.setString(infoText.getString());
-    text.setCharacterSize(50);
     text.setFillColor(color);
     text.setOutlineColor(backColor);
     window_.draw(text);
