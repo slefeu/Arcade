@@ -172,6 +172,16 @@ bool NcWindow::pollEvent(Events& event)
             return insertkey(Z, event);
         case ' ':
             return insertkey(Space, event);
+        case KEY_F(1):
+            return insertkey(F1, event);
+        case KEY_F(2):
+            return insertkey(F2, event);
+        case KEY_F(3):
+            return insertkey(F3, event);
+        case KEY_F(4):
+            return insertkey(F4, event);
+        case KEY_F(5): 
+            return insertkey(F5, event);
         default:
             return false;
     }

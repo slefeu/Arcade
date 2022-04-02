@@ -26,9 +26,11 @@ class Centipede : public AGame {
   private:
     void start(void) noexcept;
     void displayObstacle(void) noexcept;
+    void movePlayer(void) noexcept;
     std::vector<Snake> snakeList = {};
     std::vector<Obstacle> obstacleList = {};
     int tick = 0;
+    vec2int player = {WindowX / 2, WindowY - 1};
 };
 
 class Snake {
