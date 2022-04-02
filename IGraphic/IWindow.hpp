@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-OOP-400-BDX-4-1-arcade-solene.lefeu
 ** File description:
-** AWindow
+** IWindow
 */
 
 #pragma once
@@ -15,11 +15,11 @@
 
 namespace arcade
 {
-class AWindow
+class IWindow
 {
   public:
-    AWindow() = default;
-    virtual ~AWindow() = default;
+    IWindow() = default;
+    virtual ~IWindow() = default;
 
     /**
      * @brief Display all previously drawn elements on the window
@@ -69,7 +69,5 @@ class AWindow
      *
      */
     virtual void play(const ASound&) = 0;
-  protected:
-    vec2int size_ = {50, 35};
 };
 } // namespace arcade

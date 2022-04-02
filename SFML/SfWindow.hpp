@@ -10,13 +10,13 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-#include "AWindow.hpp"
+#include "IWindow.hpp"
 
 namespace arcade
 {
 constexpr int charSize = 21;
 
-class SfWindow : public AWindow
+class SfWindow : public IWindow
 {
   public:
     SfWindow();
@@ -39,5 +39,6 @@ class SfWindow : public AWindow
     sf::RenderWindow window_;
     std::string title = "Arcade";
     sf::Font font;
+    vec2int size_ = {50, 35};
 };
 } // namespace arcade

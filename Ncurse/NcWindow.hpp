@@ -5,20 +5,25 @@
 ** NcWindow
 */
 
-#ifndef NCWINDOW_HPP_
-#define NCWINDOW_HPP_
-
+#pragma once
 #include <ncurses.h>
 
-#include "AWindow.hpp"
+#include "IWindow.hpp"
 
 namespace arcade
 {
-class NcWindow : public AWindow
+
+class NcWindow : public IWindow
 {
   public:
-    NcWindow();
-    ~NcWindow();
+    NcWindow() noexcept;
+    NcWindow(const NcWindow&) noexcept = default;
+    NcWindow(NcWindow&&) noexcept = default;
+    virtual ~NcWindow() noexcept;
+
+    NcWindow& operator=(const NcWindow& rhs) noexcept = default;
+    NcWindow& operator=(NcWindow&& rhs) noexcept = default;
+
     void display() final;
     void clear() final;
     bool pollEvent(Events&) final;
@@ -30,13 +35,13 @@ class NcWindow : public AWindow
     void draw(const Text&) final;
     void play(const ASound&) final;
     Status getStatus() final;
+
   protected:
     Status status;
 
   private:
-    WINDOW* win;
+    WINDOW* window;
     std::string title = "";
+    vec2int size_ = {50, 35};
 };
 }
-
-#endif /* !NCWINDOW_HPP_ */

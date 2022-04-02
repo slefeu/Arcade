@@ -11,17 +11,17 @@
 namespace arcade
 {
 
-extern "C" std::unique_ptr<AWindow> createLib()
+extern "C" std::unique_ptr<IWindow> createLib()
 {
     return (std::make_unique<NcWindow>());
 }
 
-NcWindow::NcWindow()
+NcWindow::NcWindow() noexcept
 {
-    WINDOW *win = initscr();
+    window = initscr();
     keypad(stdscr, TRUE);
     noecho();
-    nodelay(win, 1); //ajouter du délais ? pour que l'affichage se fasse correctement
+    nodelay(window, 1); //ajouter du délais ? pour que l'affichage se fasse correctement
     start_color();
 }
 
@@ -32,7 +32,8 @@ NcWindow::~NcWindow()
 
 void NcWindow::display()
 {
-    // usleep(10000); à enlever quand on aura trouvé le bon délais
+    // usleep(10000);
+    // à enlever quand on aura trouvé le bon délais
     refresh();
 }
 
@@ -196,7 +197,7 @@ void NcWindow::setTitle(const std::string& newTitle)
 void NcWindow::setSize(const vec2int& newSize)
 {
     this->size_ = newSize;
-    wresize(win, newSize.y, newSize.x);
+    wresize(window, newSize.y, newSize.x);
 }
 
 void NcWindow::draw(const Line& infoLine)
