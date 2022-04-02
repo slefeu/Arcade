@@ -16,15 +16,19 @@
 class Loader
 {
   public:
-    Loader() = default;
-    ~Loader() = default;
+    Loader() noexcept = default;
+    Loader(const Loader&) noexcept = delete;      //copy constructor
+    Loader(Loader&&) noexcept = default;          //move constructor
+    ~Loader() noexcept = default;
 
-    void* loadLibrary(std::string&, const char*);
-    void closeLibrary(void*);
-    void* getOpenedLib() const;
+    Loader& operator=(const Loader&) noexcept = delete;     //= par copy
+    Loader& operator=(Loader&&) noexcept = default;         //= par move
+
+    void* loadLibrary(const std::string&, const char*);
+    void closeLibrary();
 
   protected:
   private:
-    void* openShared(std::string&);
+    void* openShared(const std::string&);
     void* openedLib = nullptr;
 };

@@ -30,8 +30,5 @@ class Arcade
 
     // attributes
     std::unique_ptr<Core> arcadeCore;
-    std::vector<std::string> allLibs;
-    std::vector<std::string> allGames;
-    Loader libLoader;
 };
 } // namespace arcade

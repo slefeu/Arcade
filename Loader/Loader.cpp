@@ -6,12 +6,14 @@
 */
 
 #include "Loader.hpp"
-
 #include "Error.hpp"
 
-void* Loader::loadLibrary(std::string& filename, const char* functionName)
+void* Loader::loadLibrary(const std::string& filename, const char* functionName)
 {
     void* createLib = nullptr;
+
+    if (openedLib != nullptr)
+        closeLibrary();
     openedLib = openShared(filename);
     dlerror();
     createLib = dlsym(openedLib, functionName);
@@ -21,7 +23,7 @@ void* Loader::loadLibrary(std::string& filename, const char* functionName)
     return (createLib);
 }
 
-void* Loader::openShared(std::string& filename)
+void* Loader::openShared(const std::string& filename)
 {
     void* myLibrary = dlopen(filename.c_str(), RTLD_NOW);
 
@@ -30,12 +32,9 @@ void* Loader::openShared(std::string& filename)
     return (myLibrary);
 }
 
-void Loader::closeLibrary(void* library)
+void Loader::closeLibrary()
 {
-    dlclose(library);
-}
-
-void* Loader::getOpenedLib() const
-{
-    return (openedLib);
+    if (dlclose(openedLib) != 0)
+        throw(Error(dlerror()));
+    openedLib = nullptr;
 }

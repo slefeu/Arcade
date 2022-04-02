@@ -6,8 +6,6 @@ namespace arcade
 {
 Arcade::Arcade(int ac, char** av)
 {
-    std::unique_ptr<AWindow> (*createLib)();
-
     if (ac != 2) {
         usage();
         throw ArgumentError("Please start again with the right arguments.");
@@ -16,20 +14,18 @@ Arcade::Arcade(int ac, char** av)
     std::vector<std::string> allLibs = setLibraries(allFiles);
     if (allLibs.empty())
         throw Error("No libraries found in folder lib");
-    //   if (allLibs.size() < 3)
-    //     throw Error("Not enough graphic libraries found in folder lib");
+      if (allLibs.size() < 2)
+        throw Error("Not enough graphic libraries found in folder lib");
     std::vector<std::string> allGames = setGames(allFiles);
     //   if (allGames.empty())
     //     throw Error("No games found in folder lib");
     std::string libStart = getFirstLibName(av[1]);
-    createLib = reinterpret_cast<std::unique_ptr<AWindow> (*)()>(
-        libLoader.loadLibrary(libStart, "createLib"));
-    arcadeCore = std::make_unique<Core>(createLib(), allLibs, allGames);
+    arcadeCore = std::make_unique<Core>(allLibs, allGames, libStart);
 }
 
 std::string Arcade::getFirstLibName(const std::string& name) noexcept
 {
-    std::string filename = name.substr(name.find("lib"));
+    std::string filename = name.substr(name.find("arcade_"));
     return (filename);
 }
 

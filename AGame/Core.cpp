@@ -7,6 +7,7 @@
 
 #include "Core.hpp"
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -16,22 +17,15 @@
 
 namespace arcade
 {
-Core::Core(std::unique_ptr<AWindow> lib,
-    std::vector<std::string>& libs,
-    std::vector<std::string>& games) noexcept
-    : usedLib(std::move(lib))
-    , allLibs(libs)
+Core::Core(std::vector<std::string>& libs,
+    std::vector<std::string>& games,
+    std::string& libStart)
+    : allLibs(libs)
     , allGames(games)
-    , playerName("")
 {
+    loadGraphicLib(libStart);
     scoreInfos.score = 0;
     scoreInfos.scoreboard = getScores();
-}
-
-Core::~Core()
-{
-    changeScore();
-    storeScore();
 }
 
 void Core::executeLoop()
@@ -45,29 +39,106 @@ void Core::executeLoop()
             displayGame(input);
         usedLib->display();
     }
+    storeScore();
 }
 
-void Core::displayGame(Status& input) noexcept
+void Core::loadGraphicLib(std::string& libName)
 {
-    // faire la loop de jeu
-    //à la fin de la loop de jeu, appeller la méthode changeScore() pour checker
-    // si le score du joueur peut aller dans le scoreboard;
+    std::unique_ptr<AWindow> (*createLib)();
+    const std::string path = "lib/" + libName;
+
+    usedLib.reset(nullptr);
+    auto a = libLoader.loadLibrary(path, "createLib");
+    createLib = reinterpret_cast<std::unique_ptr<AWindow> (*)()>(a);
+    usedLib = createLib();
+    usedLibName = libName;
 }
 
-void Core::displayMenu(Status& input) noexcept
+int Core::findIndexPrevious(
+    const int i, const bool isPrevious, const int sizeLib) noexcept
+{
+    if (isPrevious) {
+        if (i == 0)
+            return (sizeLib - 1);
+        return (i - 1);
+    } else {
+        if (i == sizeLib - 1)
+            return (0);
+        return (i + 1);
+    }
+}
+
+int Core::getLibIndex(std::string& libName,
+    std::vector<std::string>& allLib,
+    bool isPrevious) noexcept
+{
+    auto iterator = std::find(begin(allLib), end(allLib), libName);
+    if (iterator != std::end(allLib))
+        return (findIndexPrevious(
+            (iterator - begin(allLib)), isPrevious, allLib.size()));
+    return (-1);
+}
+
+bool Core::isLetter(Key& key) const noexcept
+{
+    if (key >= A && key <= Z)
+        return (true);
+    return (false);
+}
+
+bool Core::changePlayerName(Key &key_pressed) noexcept
+{
+    if (isLetter(key_pressed) && playerName.size() < 10) {
+        playerName += key_pressed + 'A';
+        return true;
+    }
+    if (key_pressed == Backspace && !playerName.empty()) {
+        playerName.pop_back();
+        return true;
+    }
+    return false;
+}
+
+void Core::handleMenuEvents(Status& input) noexcept
 {
     Events event;
 
-    usedLib->draw(Text({35, 0}, ("MENU")));
     usedLib->pollEvent(event);
     if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
         isEnd = true;
         return;
     }
-    changePlayerName(event);
-    usedLib->draw(Text({35, 5}, "Player Name: "));
+    for (int i = 0; i < event.key_pressed.size(); i++) {
+        if (event.key_pressed[i] == F4) {       // next_graphics
+            int index = getLibIndex(usedLibName, allLibs, false);
+            if (index != -1)
+                loadGraphicLib(allLibs[index]);
+            return;
+        } else if (event.key_pressed[i] == F5) { // previous_graphics
+            int index = getLibIndex(usedLibName, allLibs, true);
+            if (index != -1)
+                loadGraphicLib(allLibs[index]);
+            return;
+        }
+        if (changePlayerName(event.key_pressed[i]))
+            return;
+    }
+}
+
+void Core::displayGame(Status& input) noexcept
+{
+    // faire la loop de jeu
+    //à la fin de la loop de jeu, appeller la méthode changeScore() pour
+    // checker si le score du joueur peut aller dans le scoreboard;
+}
+
+void Core::displayMenu(Status& input) noexcept
+{
+    handleMenuEvents(input);
+    usedLib->draw(Text({23, 0}, "MENU: "));
+    usedLib->draw(Text({30, 5}, "Player Name: "));
     if (playerName != "")
-        usedLib->draw(Text({35, 7}, playerName));
+        usedLib->draw(Text({30, 7}, playerName));
     displayAvailableLibs();
     displayScore();
 }
@@ -87,10 +158,6 @@ void Core::displayAvailableLibs() const noexcept
         usedLib->draw(Text({42, position}, allGames[i]));
     }
 }
-
-// void changeGraphicLib()
-// {
-// }
 
 void Core::changeScore() noexcept
 {
@@ -113,10 +180,10 @@ void Core::displayScore() const noexcept
 {
     int playerPos = 10;
 
-    usedLib->draw(Text({35, playerPos}, "Scoreboard :"));
+    usedLib->draw(Text({30, playerPos}, "Scoreboard :"));
     for (int i = 0; i < scoreInfos.scoreboard.size(); i++) {
         playerPos += 2;
-        usedLib->draw(Text({35, playerPos}, scoreInfos.scoreboard[i].first));
+        usedLib->draw(Text({30, playerPos}, scoreInfos.scoreboard[i].first));
         usedLib->draw(Text(
             {45, playerPos}, std::to_string(scoreInfos.scoreboard[i].second)));
     }
@@ -187,22 +254,5 @@ std::vector<std::pair<std::string, int>> Core::getScores()
         return (scoreboard);
     } else
         throw(Error("Score file could not be opened correctly"));
-}
-
-bool Core::isLetter(Key& key) const noexcept
-{
-    if (key >= A && key <= Z)
-        return (true);
-    return (false);
-}
-
-void Core::changePlayerName(Events& event) noexcept
-{
-    for (int i = 0; i < event.key_pressed.size(); i++) {
-        if (isLetter(event.key_pressed[i]) && playerName.size() < 10)
-            playerName += event.key_pressed[i] + 'A';
-        if (event.key_pressed[i] == Backspace && !playerName.empty())
-            playerName.pop_back();
-    }
 }
 } // namespace arcade

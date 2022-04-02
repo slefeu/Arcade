@@ -10,7 +10,9 @@
 #include <vector>
 
 #include "AGame.hpp"
+#include "Loader.hpp"
 #include "Utils.hpp"
+
 namespace arcade
 {
 
@@ -24,12 +26,13 @@ constexpr int scoreBoardSize = 5;
 class Core
 {
   public:
-    Core(std::unique_ptr<AWindow>,
+    Core(
         std::vector<std::string>&,
-        std::vector<std::string>&) noexcept;
+        std::vector<std::string>&,
+        std::string&);
     Core(const Core& other) noexcept = default;
     Core(Core&& other) noexcept = default;
-    ~Core();
+    ~Core() noexcept = default;
 
     Core& operator=(const Core& rhs) noexcept = default;
     Core& operator=(Core&& rhs) noexcept = default;
@@ -38,20 +41,26 @@ class Core
   protected:
   private:
     std::unique_ptr<AWindow> usedLib;
+    std::string usedLibName;
     std::vector<std::string> allLibs;
     std::vector<std::string> allGames;
     std::unique_ptr<AGame> chosenGame = nullptr;
     bool isEnd = false;
     bool isMenu = true;
-    std::string playerName;
+    std::string playerName = "";
     score scoreInfos;
+    Loader libLoader;
 
     // methods
     void displayMenu(Status&) noexcept;
     void displayGame(Status&) noexcept;
-    void changePlayerName(Events&) noexcept;
-    bool isLetter(Key& key) const noexcept;
-    bool isLetter() const noexcept;
+    void handleMenuEvents(Status&) noexcept;
+    bool changePlayerName(Key &) noexcept;
+    bool isLetter(Key&) const noexcept;
+    int findIndexPrevious(const int, const bool, const int) noexcept;
+    int getLibIndex(
+        std::string&, std::vector<std::string>&, bool) noexcept;
+    void loadGraphicLib(std::string&);
     void displayAvailableLibs() const noexcept;
     void storeScore();
     void changeScore() noexcept;
