@@ -26,10 +26,7 @@ constexpr int scoreBoardSize = 5;
 class Core
 {
   public:
-    Core(
-        std::vector<std::string>&,
-        std::vector<std::string>&,
-        std::string&);
+    Core(std::vector<std::string>&, std::vector<std::string>&, std::string&);
     Core(const Core& other) noexcept = default;
     Core(Core&& other) noexcept = default;
     ~Core() noexcept = default;
@@ -40,7 +37,7 @@ class Core
 
   protected:
   private:
-    std::unique_ptr<AWindow> usedLib;
+    std::unique_ptr<IWindow> usedLib;
     std::string usedLibName;
     std::vector<std::string> allLibs;
     std::vector<std::string> allGames;
@@ -50,16 +47,17 @@ class Core
     std::string playerName = "";
     score scoreInfos;
     Loader libLoader;
+    std::string prevGameName = "";
 
     // methods
     void displayMenu(Status&) noexcept;
     void displayGame(Status&) noexcept;
     void handleMenuEvents(Status&) noexcept;
-    bool changePlayerName(Key &) noexcept;
+    void handleGameEvents() noexcept;
+    bool changePlayerName(Key&) noexcept;
     bool isLetter(Key&) const noexcept;
     int findIndexPrevious(const int, const bool, const int) noexcept;
-    int getLibIndex(
-        std::string&, std::vector<std::string>&, bool) noexcept;
+    int getLibIndex(std::string&, std::vector<std::string>&, bool) noexcept;
     void loadGraphicLib(std::string&);
     void displayAvailableLibs() const noexcept;
     void storeScore();
@@ -70,6 +68,7 @@ class Core
     int findScoreinLine(const std::string&) noexcept;
     std::string isStorableStr(
         const std::string&, const std::string&) const noexcept;
+    unsigned int isDigitEvent(const Key& key) const noexcept;
 };
 
 } // namespace arcade

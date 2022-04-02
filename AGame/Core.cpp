@@ -44,12 +44,12 @@ void Core::executeLoop()
 
 void Core::loadGraphicLib(std::string& libName)
 {
-    std::unique_ptr<AWindow> (*createLib)();
+    std::unique_ptr<IWindow> (*createLib)();
     const std::string path = "lib/" + libName;
 
     usedLib.reset(nullptr);
     auto a = libLoader.loadLibrary(path, "createLib");
-    createLib = reinterpret_cast<std::unique_ptr<AWindow> (*)()>(a);
+    createLib = reinterpret_cast<std::unique_ptr<IWindow> (*)()>(a);
     usedLib = createLib();
     usedLibName = libName;
 }
@@ -86,7 +86,7 @@ bool Core::isLetter(Key& key) const noexcept
     return (false);
 }
 
-bool Core::changePlayerName(Key &key_pressed) noexcept
+bool Core::changePlayerName(Key& key_pressed) noexcept
 {
     if (isLetter(key_pressed) && playerName.size() < 10) {
         playerName += key_pressed + 'A';
@@ -99,6 +99,41 @@ bool Core::changePlayerName(Key &key_pressed) noexcept
     return false;
 }
 
+void Core::handleGameEvents() noexcept
+{
+    Events event;
+
+    usedLib->pollEvent(event);
+    for (int i = 0; i < event.key_pressed.size(); i++) {
+        if (event.key_pressed[i] == F2) { // next game
+            if (prevGameName == "")
+                int index = getLibIndex(allGames[0], allGames, false);
+            else
+                int index = getLibIndex(prevGameName, allGames, false);
+            // puis load le jeu
+        }
+        if (event.key_pressed[i] == F3) { // previous game
+            if (prevGameName == "")
+                int index = getLibIndex(allGames[0], allGames, false);
+            else
+                int index = getLibIndex(prevGameName, allGames, false);
+            // puis load le jeu
+        }
+    }
+}
+
+unsigned int Core::isDigitEvent(const Key& key) const noexcept
+{
+    const std::string digits = "0123456789";
+
+    for (int i = 0; i < digits.size(); i++) {
+        if (key == digits[i]) {
+            return (digits[i]);
+        }
+    }
+    return (-1);
+}
+
 void Core::handleMenuEvents(Status& input) noexcept
 {
     Events event;
@@ -109,12 +144,13 @@ void Core::handleMenuEvents(Status& input) noexcept
         return;
     }
     for (int i = 0; i < event.key_pressed.size(); i++) {
-        if (event.key_pressed[i] == F4) {       // next_graphics
+        if (event.key_pressed[i] == F4) { // next_graphics
             int index = getLibIndex(usedLibName, allLibs, false);
             if (index != -1)
                 loadGraphicLib(allLibs[index]);
             return;
-        } else if (event.key_pressed[i] == F5) { // previous_graphics
+        }
+        if (event.key_pressed[i] == F5) { // previous_graphics
             int index = getLibIndex(usedLibName, allLibs, true);
             if (index != -1)
                 loadGraphicLib(allLibs[index]);
@@ -122,6 +158,11 @@ void Core::handleMenuEvents(Status& input) noexcept
         }
         if (changePlayerName(event.key_pressed[i]))
             return;
+        if (int i = isDigitEvent(event.key_pressed[i]) != -1) {
+            isMenu = false;
+            // launch game that corresponds to allGames[i];
+            return;
+        }
     }
 }
 
@@ -155,7 +196,8 @@ void Core::displayAvailableLibs() const noexcept
     usedLib->draw(Text({0, position + 10}, "Games availables :"));
     for (int i = 0; i < allGames.size(); i++) {
         position += 2;
-        usedLib->draw(Text({42, position}, allGames[i]));
+        usedLib->draw(
+            Text({42, position}, allGames[i] + " press " + std::to_string(i)));
     }
 }
 
