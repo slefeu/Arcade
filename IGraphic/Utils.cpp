@@ -17,15 +17,15 @@ Status Events::getStatus() const noexcept
         return Exit;
     if (isPressed(Backspace))
         return Back_to_menu;
-    if (isPressed(R))
+    if (isPressed(F1))
         return Restart;
-    if (isPressed(P))
+    if (isPressed(F2))
         return Next_game;
-    if (isPressed(O))
+    if (isPressed(F3))
         return Previous_game;
-    if (isPressed(M))
+    if (isPressed(F4))
         return Next_graphics;
-    if (isPressed(L))
+    if (isPressed(F5))
         return Previous_graphics;
     return Nothing;
 }
