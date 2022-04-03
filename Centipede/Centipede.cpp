@@ -9,6 +9,11 @@
 
 namespace arcade
 {
+extern "C" std::unique_ptr<AGame> createGame()
+{
+    return (std::make_unique<Centipede>());
+}
+
 Centipede::Centipede()
 {
 }
@@ -78,8 +83,14 @@ void Centipede::exec(void)
         start();
     displayObstacle();
     if (tick % 10 == 0) {
+        if (snakeList.size() == 0)
+            snakeList.push_back(Snake());
         for (Snake snake : snakeList) {
             snake.updateMove(obstacleList, WindowX, WindowY);
+            if (snake.getBody().at(0).y > WindowY) {
+                snake.dead(snakeList);
+                score = score - 100;
+            }
         }
     }
     for (Snake snake : snakeList) {
@@ -197,6 +208,16 @@ std::vector<Point> Snake::getBodyPoint() noexcept
     return newBody;
 }
 
+void Snake::dead(std::vector<Snake> snakeList) noexcept {
+    for (int i = 0; i < snakeList.size(); i++) {
+        if (isTheSamePos(snakeList.at(i).getBody().at(0), this->body.at(0))
+            && snakeList.at(i).getBody().size() == 0) {
+            snakeList.erase(snakeList.begin() + i);
+            break;
+        }
+    }
+}
+
 void Snake::split(std::vector<Snake> snakeList, vec2int pos) noexcept
 {
     std::vector<vec2int> newBody;
@@ -219,13 +240,7 @@ void Snake::split(std::vector<Snake> snakeList, vec2int pos) noexcept
         newSnake.dir == Right;
     snakeList.push_back(newSnake);
     if (body.size() == 0) {
-        for (int i = 0; i < snakeList.size(); i++) {
-            if (isTheSamePos(
-                    snakeList.at(i).getBody().at(0), this->body.at(0))) {
-                snakeList.erase(snakeList.begin() + i);
-                break;
-            }
-        }
+        dead(snakeList);
     }
 }
 

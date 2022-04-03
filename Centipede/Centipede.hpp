@@ -38,6 +38,7 @@ class Snake
     std::vector<Point> getBodyPoint() noexcept;
     void split(std::vector<Snake> snakeList, vec2int pos) noexcept;
     std::vector<vec2int> getBody() const noexcept;
+    void dead(std::vector<Snake> snakeList) noexcept;
 
   private:
     std::vector<vec2int> body = {};
