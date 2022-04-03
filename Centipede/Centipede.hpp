@@ -56,13 +56,23 @@ class Centipede : public AGame
   private:
     void start(void) noexcept;
     void displayObstacle(void) noexcept;
-    void updatePlayer() noexcept;
+    void displayFire(void) noexcept;
+    void updatePlayer(void) noexcept;
     void movePlayer(Events& event) noexcept;
+    void tryShoot(Events& event) noexcept;
+    void updateShoot(void) noexcept;
+    bool colideSnake(void) noexcept;
+    bool colideObstacle(void) noexcept;
+    bool didPlayerCollide(vec2int loc) noexcept;
+    bool isPlayerHit() noexcept;
+    void damageObstacle(Obstacle) noexcept;
     std::vector<Snake> snakeList = {};
     std::vector<Obstacle> obstacleList = {};
     int tick = 0;
     vec2int player = {WindowX / 2, WindowY - 1};
     bool isDead = false;
+    bool hasMooved = false;
+    vec2int fire = {-1, -1};
 };
 
 };

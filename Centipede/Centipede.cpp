@@ -64,13 +64,96 @@ void Centipede::displayObstacle() noexcept
     }
 }
 
+bool isStartingPos(vec2int pos) {
+    return (pos.x == -1 && pos.y == -1);
+}
+
+void Centipede::tryShoot(Events& event) noexcept {
+    if (event.isPressed(Space) && isStartingPos(fire)) {
+        fire.x = player.x;
+        fire.y = player.y;
+    }
+}
+
+bool Centipede::colideSnake(void) noexcept {
+    for (Snake snake : snakeList) {
+        for (vec2int fragment : snake.getBody()) {
+            if (fragment.x == fire.x && fragment.y == fire.y) {
+                snake.split(snakeList, fragment);
+                obstacleList.push_back({5, {fire.x, fire.y}});
+                score = score + 20;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+void Centipede::damageObstacle(Obstacle obstacle) noexcept {
+    obstacle.life = obstacle.life - 1;
+    if (obstacle.life == 0) {
+        score = score + 10;
+        for (int i = 0; i < obstacleList.size(); i++) {
+            if (obstacleList.at(i).pos.x == obstacle.pos.x && obstacleList.at(i).pos.y == obstacle.pos.y) {
+                obstacleList.erase(obstacleList.begin() + i);
+                return;
+            }
+        }
+    }
+}
+
+bool Centipede::colideObstacle(void) noexcept {
+    for (Obstacle obstacle : obstacleList) {
+        if (obstacle.pos.x != fire.x)
+            continue;
+        if (obstacle.pos.y == fire.y) {
+            damageObstacle(obstacle);
+            return true;;
+        }
+    }
+    return false;
+}
+
+void Centipede::updateShoot(void) noexcept {
+    if (isStartingPos(fire))
+        return;
+    fire = {fire.x, fire.y - 1};
+    if (fire.y < 0 || colideObstacle() || colideSnake()) {
+        fire = {-1, -1};
+        return;
+    }
+}
+
+void Centipede::displayFire() noexcept {
+    if (isStartingPos(fire))
+        return;
+    Point fireDisplay;
+    fireDisplay.setPosition(fire);
+    fireDisplay.setColor({255, 255, 51});
+    window->draw(fireDisplay);
+}
+
+bool Centipede::isPlayerHit(void) noexcept {
+    for (Snake snake : snakeList) {
+        for (vec2int fragment : snake.getBody()) {
+            if (fragment.x == player.x && fragment.y == player.y) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void Centipede::updatePlayer() noexcept
 {
-    if (tick % 10) {
-        Events event;
-        window->pollEvent(event);
-        movePlayer(event);
-    }
+    Events event;
+    window->pollEvent(event);
+    movePlayer(event);
+    if (isPlayerHit())
+        isDead = true;
+    tryShoot(event);
+    if (tick % 10 == 0)
+        hasMooved = false;
     Point playerPoint;
     playerPoint.setColor({100, 100, 100});
     playerPoint.setPosition(player);
@@ -82,6 +165,8 @@ void Centipede::exec(void)
     if (tick == 0)
         start();
     displayObstacle();
+    if (tick % 2 == 0)
+        updateShoot();
     if (tick % 10 == 0) {
         if (snakeList.size() == 0)
             snakeList.push_back(Snake());
@@ -98,34 +183,55 @@ void Centipede::exec(void)
             window->draw(point);
         }
     }
+    displayFire();
     updatePlayer();
     tick++;
 }
 
+bool Centipede::didPlayerCollide(vec2int loc) noexcept
+{
+    for (Obstacle obstacle : obstacleList) {
+        if (obstacle.pos.x != loc.x)
+            continue;
+        if (obstacle.pos.y == loc.y) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Centipede::movePlayer(Events& event) noexcept
 {
+    if (hasMooved)
+        return;
     int minY = WindowY * 0.8;
     if (event.isPressed(Up)) {
-        if (player.y - 1 >= minY) {
+        if (player.y - 1 >= minY && !didPlayerCollide({player.x, player.y - 1})) {
             player.y = player.y - 1;
+            hasMooved = true;
             return;
         }
     }
     if (event.isPressed(Down)) {
-        if (player.y + 1 <= WindowY) {
+        if (player.y + 1 <= WindowY
+            && !didPlayerCollide({player.x, player.y + 1})) {
             player.y = player.y + 1;
+            hasMooved = true;
             return;
         }
     }
     if (event.isPressed(Left)) {
-        if (player.x - 1 >= 0) {
+        if (player.x - 1 >= 0 && !didPlayerCollide({player.x - 1, player.y})) {
             player.x = player.x - 1;
+            hasMooved = true;
             return;
         }
     }
     if (event.isPressed(Right)) {
-        if (player.x + 1 <= WindowX) {
+        if (player.x + 1 <= WindowX
+            && !didPlayerCollide({player.x + 1, player.y})) {
             player.x = player.x + 1;
+            hasMooved = true;
             return;
         }
     }
