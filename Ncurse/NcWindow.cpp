@@ -40,7 +40,7 @@ void NcWindow::display()
 
 void NcWindow::clear()
 {
-    ::clear();
+    //::clear();
 }
 
 bool insertkey(Key key, Events& event)
