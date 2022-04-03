@@ -168,8 +168,12 @@ void Centipede::exec(void)
     if (tick % 2 == 0)
         updateShoot();
     if (tick % 10 == 0) {
-        if (snakeList.size() == 0)
+        if (snakeList.size() == 0) {
+            if (nbSnake == 20)
+                hasWin = true;
             snakeList.push_back(Snake());
+            nbSnake++;
+        }
         for (Snake snake : snakeList) {
             snake.updateMove(obstacleList, WindowX, WindowY);
             if (snake.getBody().at(0).y > WindowY) {
@@ -239,8 +243,14 @@ void Centipede::movePlayer(Events& event) noexcept
 
 Status Centipede::getStatus(void)
 {
-    if (isDead)
+    if (isDead) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         return Exit;
+    }
+    if (hasWin) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        return Exit;
+    }
     return Nothing;
 }
 

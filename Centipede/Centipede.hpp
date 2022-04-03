@@ -8,6 +8,8 @@
 #ifndef CENTIPEDE_HPP_
 #define CENTIPEDE_HPP_
 
+#include <chrono>
+#include <thread>
 #include "AGame.hpp"
 #include "Utils.hpp"
 
@@ -71,7 +73,9 @@ class Centipede : public AGame
     int tick = 0;
     vec2int player = {WindowX / 2, WindowY - 1};
     bool isDead = false;
+    bool hasWin = false;
     bool hasMooved = false;
+    int nbSnake = 0;
     vec2int fire = {-1, -1};
 };
 
