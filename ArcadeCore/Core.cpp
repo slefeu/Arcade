@@ -110,14 +110,14 @@ bool Core::changePlayerName(Key& key_pressed) noexcept
     return false;
 }
 
-void Core::handleGameEvents()
+Events Core::handleGameEvents()
 {
     Events event;
 
     usedLib->pollEvent(event);
     if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
         isEnd = true;
-        return;
+        return event;
     }
     for (int i = 0; i < event.key_pressed.size(); i++) {
         if (event.key_pressed[i] == F2) { // next game
@@ -135,6 +135,7 @@ void Core::handleGameEvents()
             // puis load le jeu
         }
     }
+    return event;
 }
 
 unsigned int Core::isDigitEvent(const Key& key) const noexcept
@@ -188,8 +189,8 @@ void Core::handleMenuEvents()
 void Core::displayGame()
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    handleGameEvents(); // des events à rajouter
-    usedLib = std::move(chosenGame->exec(std::move(usedLib)));
+    Events event = handleGameEvents(); // des events à rajouter
+    usedLib = std::move(chosenGame->exec(std::move(usedLib), event));
     //à la fin de la loop de jeu, appeller la méthode changeScore() pour
     // checker si le score du joueur peut aller dans le scoreboard;
 }

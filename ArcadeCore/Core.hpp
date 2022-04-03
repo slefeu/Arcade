@@ -56,7 +56,7 @@ class Core
     void displayMenu();
     void displayGame();
     void handleMenuEvents();
-    void handleGameEvents();
+    Events handleGameEvents();
     bool changePlayerName(Key&) noexcept;
     bool isLetter(Key&) const noexcept;
     int findIndexPrevious(const int, const bool, const int) noexcept;

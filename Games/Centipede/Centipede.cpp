@@ -154,8 +154,6 @@ bool Centipede::isPlayerHit(void) const noexcept
 
 void Centipede::updatePlayer() noexcept
 {
-    Events event;
-    window->pollEvent(event);
     movePlayer(event);
     if (isPlayerHit())
         isDead = true;
@@ -168,8 +166,9 @@ void Centipede::updatePlayer() noexcept
     window->draw(playerPoint);
 }
 
-std::unique_ptr<IWindow> Centipede::exec(std::unique_ptr<IWindow> uniqWindow) noexcept
+std::unique_ptr<IWindow> Centipede::exec(std::unique_ptr<IWindow> uniqWindow, Events& newEvent) noexcept
 {
+    this->event = newEvent;
     window = std::move(uniqWindow);
     if (tick == 0)
         start();
@@ -187,9 +186,9 @@ std::unique_ptr<IWindow> Centipede::exec(std::unique_ptr<IWindow> uniqWindow) no
         int sizeSnakeList = snakeList.size();
         for (int i = 0; i < sizeSnakeList; i++) {
             snakeList.at(i).updateMove(obstacleList, WindowX, WindowY);
-            printf("Snake heigth: %d\n", snakeList.at(i).getBody().at(0).y);
+            //printf("Snake heigth: %d\n", snakeList.at(i).getBody().at(0).y);
             if (snakeList.at(i).getBody().at(0).y > WindowY) {
-                printf("Die mother fucker\n");
+                //printf("Die mother fucker\n");
                 snakeList.at(i).dead(snakeList);
                 score = score - 100;
                 i--;
@@ -341,12 +340,13 @@ std::vector<Point> Snake::getBodyPoint() const noexcept
 
 void Snake::dead(std::vector<Snake>& snakeList) noexcept
 {
-    for (int i = 0; i < snakeList.size(); i++) {
+    int sizeSnakeList = snakeList.size();
+    for (int i = 0; i < sizeSnakeList; i++) {
         if (isTheSamePos(snakeList.at(i).getBody().at(0), body.at(0))
             && (snakeList.at(i).getBody().size() == 0
                 || snakeList.at(i).getBody().at(0).y > WindowY)) {
             snakeList.erase(snakeList.begin() + i);
-            break;
+            return;
         }
     }
 }
@@ -371,10 +371,13 @@ void Snake::split(std::vector<Snake>& snakeList, vec2int& pos) noexcept
         newSnake.direction == Left;
     else
         newSnake.direction == Right;
-    snakeList.push_back(newSnake);
+    if (newSnake.getBody().size() > 0)
+        snakeList.push_back(newSnake);
     if (body.size() == 0) {
+        //printf("Ok4\n");
         dead(snakeList);
     }
+    //printf("Ok5\n");
 }
 
 std::vector<vec2int> Snake::getBody() const noexcept
@@ -396,7 +399,7 @@ Snake::Snake() noexcept
         {WindowX / 2, -8},
         {WindowX / 2, -9},
     };
-    printf("Snake created\n");
+    //printf("Snake created\n");
 }
 
 Snake::Snake(const std::vector<vec2int>& newBody) noexcept

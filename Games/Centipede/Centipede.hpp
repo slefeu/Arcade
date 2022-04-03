@@ -65,7 +65,7 @@ class Centipede final : public IGame
     Centipede& operator=(const Centipede& rhs) noexcept = default;
     Centipede& operator=(Centipede&& rhs) noexcept = default;
 
-    std::unique_ptr<IWindow> exec(std::unique_ptr<IWindow>) noexcept final;
+    std::unique_ptr<IWindow> exec(std::unique_ptr<IWindow>, Events& event) noexcept final;
     Status getStatus();
 
   protected:
@@ -88,6 +88,7 @@ class Centipede final : public IGame
     bool isStartingPos(const vec2int&) const noexcept;
 
     // attributes
+    Events event;
     std::unique_ptr<IWindow> window;
     std::vector<Snake> snakeList = {};
     std::vector<Obstacle> obstacleList = {};
