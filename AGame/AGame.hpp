@@ -49,7 +49,7 @@ class AGame
      *
      * @return int the value of the score
      */
-    int getScore() noexcept;
+    int getScore() const noexcept;
 
   protected:
     std::unique_ptr<IWindow> window = nullptr;
