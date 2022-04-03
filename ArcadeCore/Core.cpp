@@ -190,7 +190,7 @@ void Core::displayGame()
 {
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     Events event = handleGameEvents(); // des events à rajouter
-    usedLib = std::move(chosenGame->exec(std::move(usedLib), event));
+    chosenGame->exec(*usedLib, event);
     //à la fin de la loop de jeu, appeller la méthode changeScore() pour
     // checker si le score du joueur peut aller dans le scoreboard;
 }
