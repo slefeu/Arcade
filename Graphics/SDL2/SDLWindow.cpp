@@ -20,6 +20,10 @@ SDLWindow::SDLWindow()
     SDL_ShowCursor(SDL_DISABLE);
 }
 
+void SDLWindow::setFramerate(int framerate) noexcept
+{
+}
+
 void SDLWindow::display()
 {
 }

@@ -36,6 +36,7 @@ bool Centipede::obstacleContain(
 
 void Centipede::start(IWindow& window) noexcept
 {
+    srand(time(NULL));
     std::vector<Obstacle> newObstacleList = {};
     for (int i = 0; i < NbOstacle; i++) {
         int x = rand() % WindowX;
@@ -48,6 +49,7 @@ void Centipede::start(IWindow& window) noexcept
     }
     obstacleList = newObstacleList;
     window.setSize({WindowX, WindowY});
+    window.setFramerate(120);
 }
 
 void Centipede::displayObstacle(IWindow& window) const noexcept

@@ -31,11 +31,18 @@ NcWindow::~NcWindow()
     endwin();
 }
 
+void NcWindow::setFramerate(int newFramerate) noexcept
+{
+    framerate = newFramerate;
+}
+
 void NcWindow::display()
 {
-    // usleep(10000);
-    // à enlever quand on aura trouvé le bon délais
+    std::chrono::milliseconds millisec_since_epoch = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+    if (millisec_since_epoch.count() - lastDisplay.count() < (60 / framerate) * 1000)
+        std::this_thread::sleep_for(std::chrono::milliseconds(((60 / framerate) * 1000) - (millisec_since_epoch.count() - lastDisplay.count())));
     refresh();
+    lastDisplay = millisec_since_epoch;
 }
 
 void NcWindow::clear()

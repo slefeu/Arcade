@@ -7,6 +7,10 @@
 
 #pragma once
 #include <ncurses.h>
+#include <sys/time.h>
+#include <chrono>
+#include <ctime>
+#include <thread>
 
 #include "IWindow.hpp"
 
@@ -33,12 +37,15 @@ class NcWindow : public IWindow
     void draw(const Point&) final;
     void draw(const Text&) final;
     void play(const ASound&) final;
+    void setFramerate(int framerate) noexcept final;
     Status getStatus() final;
 
   protected:
     Status status;
 
   private:
+    std::chrono::milliseconds lastDisplay {0};
+    int framerate = 0;
     WINDOW* window;
     std::string title = "";
     vec2int size_ = {50, 35};

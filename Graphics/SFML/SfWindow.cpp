@@ -29,6 +29,10 @@ SfWindow::~SfWindow()
         window_.close();
 }
 
+void SfWindow::setFramerate(int framerate) noexcept {
+    window_.setFramerateLimit(framerate);
+}
+
 void SfWindow::setTitle(const std::string& title)
 {
     window_.setTitle(title);

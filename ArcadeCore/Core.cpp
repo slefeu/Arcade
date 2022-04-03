@@ -188,7 +188,6 @@ void Core::handleMenuEvents()
 
 void Core::displayGame()
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     Events event = handleGameEvents(); // des events à rajouter
     chosenGame->exec(*usedLib, event);
     //à la fin de la loop de jeu, appeller la méthode changeScore() pour
