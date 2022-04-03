@@ -32,14 +32,25 @@ void Core::executeLoop()
 {
     while (!isEnd) {
         usedLib->clear();
-        Status input = usedLib->getStatus();
         if (isMenu)
-            displayMenu(input);
+            displayMenu();
         else
-            displayGame(input);
+            displayGame();
         usedLib->display();
     }
     storeScore();
+}
+
+void Core::loadGameLib(std::string& libName)
+{
+    std::unique_ptr<IGame> (*createGame)();
+    const std::string path = "lib/" + libName;
+
+    chosenGame.reset(nullptr);
+    auto a = gameLoader.loadLibrary(path, "createGame");
+    createGame = reinterpret_cast<std::unique_ptr<IGame> (*)()>(a);
+    chosenGame = createGame();
+    gameName = libName;
 }
 
 void Core::loadGraphicLib(std::string& libName)
@@ -99,11 +110,15 @@ bool Core::changePlayerName(Key& key_pressed) noexcept
     return false;
 }
 
-void Core::handleGameEvents() noexcept
+void Core::handleGameEvents()
 {
     Events event;
 
     usedLib->pollEvent(event);
+    if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
+        isEnd = true;
+        return;
+    }
     for (int i = 0; i < event.key_pressed.size(); i++) {
         if (event.key_pressed[i] == F2) { // next game
             if (prevGameName == "")
@@ -127,15 +142,17 @@ unsigned int Core::isDigitEvent(const Key& key) const noexcept
     const std::vector<Key> digits = {
         Num0, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9};
 
+    if (key > Num9 || key < Num0)
+        return (-1);
     for (int i = 0; i < digits.size(); i++) {
         if (key == digits.at(i)) {
-            return (digits.at(i) - 26);
+            return (i);
         }
     }
     return (-1);
 }
 
-void Core::handleMenuEvents(Status& input) noexcept
+void Core::handleMenuEvents()
 {
     Events event;
 
@@ -145,7 +162,6 @@ void Core::handleMenuEvents(Status& input) noexcept
         return;
     }
     for (int i = 0; i < event.key_pressed.size(); i++) {
-        printf("event : %d\n", event.key_pressed.at(i));
         if (event.key_pressed.at(i) == F4) { // next_graphics
             int index = getLibIndex(usedLibName, allLibs, false);
             if (index != -1)
@@ -160,26 +176,26 @@ void Core::handleMenuEvents(Status& input) noexcept
         }
         if (changePlayerName(event.key_pressed.at(i)))
             return;
-        if (int i = isDigitEvent(event.key_pressed.at(i)) != -1) {
+        int j = isDigitEvent(event.key_pressed.at(i));
+        if (j != -1) {
             isMenu = false;
-            // loadGraphicLib(allGames[i]);
+            loadGameLib(allGames[j]);
             return;
         }
     }
 }
 
-void Core::displayGame(Status& input) noexcept
+void Core::displayGame()
 {
-    handleGameEvents();         //des events à rajouter
-
-    // faire la loop de jeu
+    handleGameEvents(); // des events à rajouter
+    chosenGame->exec(*usedLib);
     //à la fin de la loop de jeu, appeller la méthode changeScore() pour
     // checker si le score du joueur peut aller dans le scoreboard;
 }
 
-void Core::displayMenu(Status& input) noexcept
+void Core::displayMenu()
 {
-    handleMenuEvents(input);
+    handleMenuEvents();
     usedLib->draw(Text({23, 0}, "MENU: "));
     usedLib->draw(Text({30, 5}, "Player Name: "));
     if (playerName != "")
@@ -247,7 +263,7 @@ std::string Core::isStorableStr(
 
 void Core::storeScore()
 {
-    const std::string scorePath = "Score/score.txt";
+    const std::string scorePath = "Games/Score/score.txt";
     std::ofstream file(scorePath);
 
     if (file) {
@@ -290,7 +306,7 @@ int Core::findScoreinLine(const std::string& line) noexcept
 
 std::vector<std::pair<std::string, int>> Core::getScores()
 {
-    const std::string scorePath = "Score/score.txt";
+    const std::string scorePath = "Games/Score/score.txt";
     std::ifstream file(scorePath.c_str());
     auto scoreboard = std::vector<std::pair<std::string, int>>();
 

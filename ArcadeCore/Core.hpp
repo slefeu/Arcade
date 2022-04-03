@@ -9,7 +9,7 @@
 #include <memory>
 #include <vector>
 
-#include "AGame.hpp"
+#include "IGame.hpp"
 #include "Loader.hpp"
 #include "Utils.hpp"
 
@@ -40,24 +40,27 @@ class Core
     std::string usedLibName;
     std::vector<std::string> allLibs;
     std::vector<std::string> allGames;
-    std::unique_ptr<AGame> chosenGame = nullptr;
+    std::unique_ptr<IGame> chosenGame = nullptr;
     bool isEnd = false;
     bool isMenu = true;
     std::string playerName = "";
+    std::string gameName = "";
     score scoreInfos;
     Loader libLoader;
+    Loader gameLoader;
     std::string prevGameName = "";
 
     // methods
-    void displayMenu(Status&) noexcept;
-    void displayGame(Status&) noexcept;
-    void handleMenuEvents(Status&) noexcept;
-    void handleGameEvents() noexcept;
+    void displayMenu();
+    void displayGame();
+    void handleMenuEvents();
+    void handleGameEvents();
     bool changePlayerName(Key&) noexcept;
     bool isLetter(Key&) const noexcept;
     int findIndexPrevious(const int, const bool, const int) noexcept;
     int getLibIndex(std::string&, std::vector<std::string>&, bool) noexcept;
     void loadGraphicLib(std::string&);
+    void loadGameLib(std::string&);
     void displayAvailableLibs() const noexcept;
     void storeScore();
     void changeScore() noexcept;
