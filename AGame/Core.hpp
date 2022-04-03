@@ -15,7 +15,6 @@
 
 namespace arcade
 {
-
 struct score {
     int score;
     std::vector<std::pair<std::string, int>> scoreboard;

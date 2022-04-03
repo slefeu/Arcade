@@ -2,7 +2,6 @@
 
 namespace arcade
 {
-
 bool Events::isPressed(const Key key) const noexcept
 {
     for (std::size_t i = 0; i < key_pressed.size(); i++)

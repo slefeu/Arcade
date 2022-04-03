@@ -25,6 +25,7 @@ add_subdirectory(SDL2)
 add_subdirectory(Error)
 add_subdirectory(Loader)
 add_subdirectory(AGame)
+add_subdirectory(Centipede)
 
 add_executable(${PROJECT_NAME}
     main.cpp

@@ -46,7 +46,7 @@ class AGame
 
     /**
      * @brief Get the Score object
-     * 
+     *
      * @return int the value of the score
      */
     int getScore() noexcept;

@@ -17,12 +17,12 @@ class Loader
 {
   public:
     Loader() noexcept = default;
-    Loader(const Loader&) noexcept = delete;      //copy constructor
-    Loader(Loader&&) noexcept = default;          //move constructor
+    Loader(const Loader&) noexcept = delete; // copy constructor
+    Loader(Loader&&) noexcept = default;     // move constructor
     ~Loader() noexcept = default;
 
-    Loader& operator=(const Loader&) noexcept = delete;     //= par copy
-    Loader& operator=(Loader&&) noexcept = default;         //= par move
+    Loader& operator=(const Loader&) noexcept = delete; //= par copy
+    Loader& operator=(Loader&&) noexcept = default;     //= par move
 
     void* loadLibrary(const std::string&, const char*);
     void closeLibrary();

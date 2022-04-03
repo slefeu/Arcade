@@ -6,9 +6,10 @@
 */
 
 #pragma once
-#include "Utils.hpp"
-#include <string_view>
 #include <string>
+#include <string_view>
+
+#include "Utils.hpp"
 
 namespace arcade
 {

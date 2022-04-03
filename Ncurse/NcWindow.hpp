@@ -12,7 +12,6 @@
 
 namespace arcade
 {
-
 class NcWindow : public IWindow
 {
   public:

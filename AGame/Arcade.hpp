@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
+#include "Core.hpp"
 #include "Error.hpp"
 #include "Loader.hpp"
-#include "Core.hpp"
 namespace arcade
 {
 class Arcade

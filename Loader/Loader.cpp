@@ -6,6 +6,7 @@
 */
 
 #include "Loader.hpp"
+
 #include "Error.hpp"
 
 void* Loader::loadLibrary(const std::string& filename, const char* functionName)

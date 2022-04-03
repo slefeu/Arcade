@@ -11,51 +11,57 @@
 #include "AGame.hpp"
 #include "Utils.hpp"
 
-namespace arcade {
-
+namespace arcade
+{
 constexpr int WindowX = 30;
 constexpr int WindowY = 25;
 constexpr int NbOstacle = 40;
-class Centipede : public AGame {
+
+struct Obstacle {
+    int life;
+    vec2int pos;
+};
+
+class Snake
+{
+  public:
+    enum Direction {
+        Left,
+        Right,
+        Start,
+    };
+    Snake();
+    Snake(std::vector<vec2int> body);
+    ~Snake();
+    void updateMove(
+        std::vector<Obstacle> obstacleList, int length, int height) noexcept;
+    std::vector<Point> getBodyPoint() noexcept;
+    void split(std::vector<Snake> snakeList, vec2int pos) noexcept;
+    std::vector<vec2int> getBody() const noexcept;
+
+  private:
+    std::vector<vec2int> body = {};
+    Direction dir = Start;
+};
+class Centipede : public AGame
+{
   public:
     Centipede();
     ~Centipede();
     void exec(void);
     arcade::Status getStatus(void);
+
   protected:
   private:
     void start(void) noexcept;
     void displayObstacle(void) noexcept;
-    void movePlayer(void) noexcept;
+    void updatePlayer() noexcept;
+    void movePlayer(Events& event) noexcept;
     std::vector<Snake> snakeList = {};
     std::vector<Obstacle> obstacleList = {};
     int tick = 0;
     vec2int player = {WindowX / 2, WindowY - 1};
-};
-
-class Snake {
-    public:
-        enum Direction {
-            Left,
-            Right,
-            Start,
-        };
-        Snake();
-        Snake(std::vector<vec2int> body);
-        ~Snake();
-        void updateMove(std::vector<Obstacle> obstacleList, int length, int height) noexcept;
-        std::vector<Point> getBodyPoint() noexcept;
-        void split(std::vector<Snake> snakeList, vec2int pos) noexcept;
-        std::vector<vec2int> getBody() const noexcept;
-
-      private:
-        std::vector<vec2int> body = {};
-        Direction dir = Start;
-};
-
-struct Obstacle {
-    int life;
-    vec2int pos;
+    bool isDead = false;
 };
 
 };
