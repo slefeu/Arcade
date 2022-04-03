@@ -171,7 +171,8 @@ void Centipede::exec(void)
         if (snakeList.size() == 0) {
             if (nbSnake == 20)
                 hasWin = true;
-            snakeList.push_back(Snake());
+            Snake newSnake = Snake();
+            snakeList.push_back(newSnake);
             nbSnake++;
         }
         for (Snake snake : snakeList) {
