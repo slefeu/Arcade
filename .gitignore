@@ -6,3 +6,6 @@ CMakeFiles
 lib/
 trash.cpp
 arcade
+vgcore*
+test
+test.cpp
