@@ -22,7 +22,7 @@ NcWindow::NcWindow() noexcept
     keypad(stdscr, TRUE);
     noecho();
     nodelay(window,
-        1); // ajouter du délais ? pour que l'affichage se fasse correctement
+        1);
     start_color();
 }
 
@@ -78,6 +78,16 @@ bool NcWindow::pollEvent(Events& event)
         case KEY_NPAGE: return insertkey(PageDown, event);
         case KEY_PPAGE: return insertkey(PageUp, event);
         case KEY_ENTER: return insertkey(Enter, event);
+        case '0': return insertkey(Num0, event);
+        case '1': return insertkey(Num1, event);
+        case '2': return insertkey(Num2, event);
+        case '3': return insertkey(Num3, event);
+        case '4': return insertkey(Num4, event);
+        case '5': return insertkey(Num5, event);
+        case '6': return insertkey(Num6, event);
+        case '7': return insertkey(Num7, event);
+        case '8': return insertkey(Num8, event);
+        case '9': return insertkey(Num9, event);
         case 'A':
         case 'a': return insertkey(A, event);
         case 'B':
