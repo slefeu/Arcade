@@ -31,7 +31,7 @@ class SDLWindow : public IWindow
     Status getStatus() final;
 
   protected:
-    Status status;
+    Status status = Nothing;
 
   private:
     SDL_Window* window;

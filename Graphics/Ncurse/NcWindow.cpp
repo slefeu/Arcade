@@ -21,6 +21,7 @@ NcWindow::NcWindow() noexcept
     window = initscr();
     keypad(stdscr, TRUE);
     noecho();
+    curs_set(0);
     nodelay(window,
         1);
     start_color();
@@ -85,6 +86,7 @@ bool NcWindow::pollEvent(Events& event)
         case KEY_NPAGE: return insertkey(PageDown, event);
         case KEY_PPAGE: return insertkey(PageUp, event);
         case KEY_ENTER: return insertkey(Enter, event);
+        case 27: return insertkey(Escape, event);
         case '0': return insertkey(Num0, event);
         case '1': return insertkey(Num1, event);
         case '2': return insertkey(Num2, event);

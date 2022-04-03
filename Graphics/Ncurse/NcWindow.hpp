@@ -41,11 +41,11 @@ class NcWindow : public IWindow
     Status getStatus() final;
 
   protected:
-    Status status;
+    Status status = Nothing;
 
   private:
     std::chrono::milliseconds lastDisplay {0};
-    int framerate = 0;
+    int framerate = 120;
     WINDOW* window;
     std::string title = "";
     vec2int size_ = {50, 35};
