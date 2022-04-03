@@ -16,16 +16,16 @@ else ()
 endif()
 
 
-set(HEADER_FILES ${PROJECT_SOURCE_DIR}/AGame/Arcade.hpp)
+set(HEADER_FILES ${PROJECT_SOURCE_DIR}/ArcadeCore/Arcade.hpp)
 
-add_subdirectory(IGraphic)
-add_subdirectory(SFML)
-add_subdirectory(Ncurse)
-add_subdirectory(SDL2)
+add_subdirectory(Graphics/IWindow)
+add_subdirectory(Graphics/SFML)
+add_subdirectory(Graphics/Ncurse)
+add_subdirectory(Graphics/SDL2)
 add_subdirectory(Error)
 add_subdirectory(Loader)
-add_subdirectory(AGame)
-add_subdirectory(Centipede)
+add_subdirectory(ArcadeCore)
+add_subdirectory(Games/Centipede)
 
 add_executable(${PROJECT_NAME}
     main.cpp
@@ -33,15 +33,16 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME} ${CMAKE_DL_LIBS})
-target_link_libraries(${PROJECT_NAME} AGame)
+target_link_libraries(${PROJECT_NAME} ArcadeCore)
 target_link_libraries(${PROJECT_NAME} Error)
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
-    "${CMAKE_SOURCE_DIR}/AGame"
+    "${CMAKE_SOURCE_DIR}/ArcadeCore"
     "${CMAKE_SOURCE_DIR}/Loader"
     "${CMAKE_SOURCE_DIR}/Error"
-    "${CMAKE_SOURCE_DIR}/IGraphic"
+    "${CMAKE_SOURCE_DIR}/Graphics/IWindow"
 )
+
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 #add_executable (${PROJECT_NAME} main.cpp)
 #target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
