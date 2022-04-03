@@ -9,25 +9,23 @@
 
 namespace arcade
 {
-extern "C" std::unique_ptr<AGame> createGame()
+extern "C" std::unique_ptr<IGame> createGame()
 {
     return (std::make_unique<Centipede>());
 }
 
-Centipede::Centipede()
+int Centipede::getScore() const noexcept
 {
+    return (score);
 }
 
-Centipede::~Centipede()
-{
-}
-
-bool isTheSamePos(vec2int first, vec2int two)
+static bool isTheSamePos(const vec2int& first, const vec2int& two) noexcept
 {
     return (first.x == two.x && first.y == two.y);
 }
 
-bool obstacleContain(std::vector<Obstacle> list, Obstacle obs)
+bool Centipede::obstacleContain(
+    const std::vector<Obstacle>& list, const Obstacle& obs) const noexcept
 {
     for (int i = 0; i < list.size(); i++) {
         if (isTheSamePos(list.at(i).pos, obs.pos))
@@ -36,7 +34,7 @@ bool obstacleContain(std::vector<Obstacle> list, Obstacle obs)
     return false;
 }
 
-void Centipede::start() noexcept
+void Centipede::start(IWindow& window) noexcept
 {
     std::vector<Obstacle> newObstacleList = {};
     for (int i = 0; i < NbOstacle; i++) {
@@ -48,11 +46,11 @@ void Centipede::start() noexcept
         }
         newObstacleList.push_back({x, y});
     }
-    this->obstacleList = newObstacleList;
-    this->window->setSize({WindowX, WindowY});
+    obstacleList = newObstacleList;
+    window.setSize({WindowX, WindowY});
 }
 
-void Centipede::displayObstacle() noexcept
+void Centipede::displayObstacle(IWindow& window) const noexcept
 {
     for (Obstacle obs : obstacleList) {
         Point point;
@@ -60,22 +58,25 @@ void Centipede::displayObstacle() noexcept
         point.setColor({0,
             (unsigned char)(20 * obs.life),
             (unsigned char)(20 * obs.life)});
-        this->window->draw(point);
+        window.draw(point);
     }
 }
 
-bool isStartingPos(vec2int pos) {
+bool Centipede::isStartingPos(const vec2int& pos) const noexcept
+{
     return (pos.x == -1 && pos.y == -1);
 }
 
-void Centipede::tryShoot(Events& event) noexcept {
+void Centipede::tryShoot(Events& event) noexcept
+{
     if (event.isPressed(Space) && isStartingPos(fire)) {
         fire.x = player.x;
         fire.y = player.y;
     }
 }
 
-bool Centipede::colideSnake(void) noexcept {
+bool Centipede::collideSnake(void) noexcept
+{
     for (Snake snake : snakeList) {
         for (vec2int fragment : snake.getBody()) {
             if (fragment.x == fire.x && fragment.y == fire.y) {
@@ -89,12 +90,14 @@ bool Centipede::colideSnake(void) noexcept {
     return false;
 }
 
-void Centipede::damageObstacle(Obstacle obstacle) noexcept {
+void Centipede::damageObstacle(Obstacle& obstacle) noexcept
+{
     obstacle.life = obstacle.life - 1;
     if (obstacle.life == 0) {
         score = score + 10;
         for (int i = 0; i < obstacleList.size(); i++) {
-            if (obstacleList.at(i).pos.x == obstacle.pos.x && obstacleList.at(i).pos.y == obstacle.pos.y) {
+            if (obstacleList.at(i).pos.x == obstacle.pos.x
+                && obstacleList.at(i).pos.y == obstacle.pos.y) {
                 obstacleList.erase(obstacleList.begin() + i);
                 return;
             }
@@ -102,38 +105,43 @@ void Centipede::damageObstacle(Obstacle obstacle) noexcept {
     }
 }
 
-bool Centipede::colideObstacle(void) noexcept {
+bool Centipede::collideObstacle() noexcept
+{
     for (Obstacle obstacle : obstacleList) {
         if (obstacle.pos.x != fire.x)
             continue;
         if (obstacle.pos.y == fire.y) {
             damageObstacle(obstacle);
-            return true;;
+            return true;
+            ;
         }
     }
     return false;
 }
 
-void Centipede::updateShoot(void) noexcept {
+void Centipede::updateShoot() noexcept
+{
     if (isStartingPos(fire))
         return;
     fire = {fire.x, fire.y - 1};
-    if (fire.y < 0 || colideObstacle() || colideSnake()) {
+    if (fire.y < 0 || collideObstacle() || collideSnake()) {
         fire = {-1, -1};
         return;
     }
 }
 
-void Centipede::displayFire() noexcept {
+void Centipede::displayFire(IWindow& window) const noexcept
+{
     if (isStartingPos(fire))
         return;
     Point fireDisplay;
     fireDisplay.setPosition(fire);
     fireDisplay.setColor({255, 255, 51});
-    window->draw(fireDisplay);
+    window.draw(fireDisplay);
 }
 
-bool Centipede::isPlayerHit(void) noexcept {
+bool Centipede::isPlayerHit(void) const noexcept
+{
     for (Snake snake : snakeList) {
         for (vec2int fragment : snake.getBody()) {
             if (fragment.x == player.x && fragment.y == player.y) {
@@ -144,27 +152,27 @@ bool Centipede::isPlayerHit(void) noexcept {
     return false;
 }
 
-void Centipede::updatePlayer() noexcept
+void Centipede::updatePlayer(IWindow& window) noexcept
 {
     Events event;
-    window->pollEvent(event);
+    window.pollEvent(event);
     movePlayer(event);
     if (isPlayerHit())
         isDead = true;
     tryShoot(event);
     if (tick % 10 == 0)
-        hasMooved = false;
+        hasMoved = false;
     Point playerPoint;
     playerPoint.setColor({100, 100, 100});
     playerPoint.setPosition(player);
-    window->draw(playerPoint);
+    window.draw(playerPoint);
 }
 
-void Centipede::exec(void)
+void Centipede::exec(IWindow& window)
 {
     if (tick == 0)
-        start();
-    displayObstacle();
+        start(window);
+    displayObstacle(window);
     if (tick % 2 == 0)
         updateShoot();
     if (tick % 10 == 0) {
@@ -185,15 +193,15 @@ void Centipede::exec(void)
     }
     for (Snake snake : snakeList) {
         for (Point point : snake.getBodyPoint()) {
-            window->draw(point);
+            window.draw(point);
         }
     }
-    displayFire();
-    updatePlayer();
+    displayFire(window);
+    updatePlayer(window);
     tick++;
 }
 
-bool Centipede::didPlayerCollide(vec2int loc) noexcept
+bool Centipede::didPlayerCollide(const vec2int& loc) noexcept
 {
     for (Obstacle obstacle : obstacleList) {
         if (obstacle.pos.x != loc.x)
@@ -207,13 +215,14 @@ bool Centipede::didPlayerCollide(vec2int loc) noexcept
 
 void Centipede::movePlayer(Events& event) noexcept
 {
-    if (hasMooved)
+    if (hasMoved)
         return;
     int minY = WindowY * 0.8;
     if (event.isPressed(Up)) {
-        if (player.y - 1 >= minY && !didPlayerCollide({player.x, player.y - 1})) {
+        if (player.y - 1 >= minY
+            && !didPlayerCollide({player.x, player.y - 1})) {
             player.y = player.y - 1;
-            hasMooved = true;
+            hasMoved = true;
             return;
         }
     }
@@ -221,14 +230,14 @@ void Centipede::movePlayer(Events& event) noexcept
         if (player.y + 1 <= WindowY
             && !didPlayerCollide({player.x, player.y + 1})) {
             player.y = player.y + 1;
-            hasMooved = true;
+            hasMoved = true;
             return;
         }
     }
     if (event.isPressed(Left)) {
         if (player.x - 1 >= 0 && !didPlayerCollide({player.x - 1, player.y})) {
             player.x = player.x - 1;
-            hasMooved = true;
+            hasMoved = true;
             return;
         }
     }
@@ -236,13 +245,13 @@ void Centipede::movePlayer(Events& event) noexcept
         if (player.x + 1 <= WindowX
             && !didPlayerCollide({player.x + 1, player.y})) {
             player.x = player.x + 1;
-            hasMooved = true;
+            hasMoved = true;
             return;
         }
     }
 }
 
-Status Centipede::getStatus(void)
+Status Centipede::getStatus()
 {
     if (isDead) {
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
@@ -256,62 +265,56 @@ Status Centipede::getStatus(void)
 }
 
 void Snake::updateMove(
-    std::vector<Obstacle> obstacleList, int length, int height) noexcept
+    std::vector<Obstacle>& obstacleList, int length, int height) noexcept
 {
-    if (dir == Start) {
+    if (direction == Start) {
         if (rand() % 2 == 0)
-            dir = Right;
+            direction = Right;
         else
-            dir = Left;
+            direction = Left;
     }
-    if (dir == Right) {
-        if (this->body.at(0).x + 1 >= length) {
-            this->body.emplace(this->body.begin(),
-                vec2int{this->body.at(0).x, this->body.at(0).y + 1});
-            this->body.pop_back();
-            dir = Left;
+    if (direction == Right) {
+        if (body.at(0).x + 1 >= length) {
+            body.emplace(body.begin(), vec2int{body.at(0).x, body.at(0).y + 1});
+            body.pop_back();
+            direction = Left;
             return;
         }
         for (Obstacle obs : obstacleList) {
-            if (isTheSamePos(
-                    {this->body.at(0).x + 1, this->body.at(0).y}, obs.pos)) {
-                this->body.emplace(this->body.begin(),
-                    vec2int{this->body.at(0).x, this->body.at(0).y + 1});
-                this->body.pop_back();
-                dir = Left;
+            if (isTheSamePos({body.at(0).x + 1, body.at(0).y}, obs.pos)) {
+                body.emplace(
+                    body.begin(), vec2int{body.at(0).x, body.at(0).y + 1});
+                body.pop_back();
+                direction = Left;
                 return;
             }
         }
-        this->body.emplace(this->body.begin(),
-            vec2int{this->body.at(0).x + 1, this->body.at(0).y});
-        this->body.pop_back();
+        body.emplace(body.begin(), vec2int{body.at(0).x + 1, body.at(0).y});
+        body.pop_back();
         return;
     }
-    if (dir == Left) {
-        if (this->body.at(0).x - 1 <= 0) {
-            this->body.emplace(this->body.begin(),
-                vec2int{this->body.at(0).x, this->body.at(0).y + 1});
-            this->body.pop_back();
-            dir = Right;
+    if (direction == Left) {
+        if (body.at(0).x - 1 <= 0) {
+            body.emplace(body.begin(), vec2int{body.at(0).x, body.at(0).y + 1});
+            body.pop_back();
+            direction = Right;
             return;
         }
         for (Obstacle obs : obstacleList) {
-            if (isTheSamePos(
-                    {this->body.at(0).x - 1, this->body.at(0).y}, obs.pos)) {
-                this->body.emplace(this->body.begin(),
-                    vec2int{this->body.at(0).x, this->body.at(0).y + 1});
-                this->body.pop_back();
-                dir = Right;
+            if (isTheSamePos({body.at(0).x - 1, body.at(0).y}, obs.pos)) {
+                body.emplace(
+                    body.begin(), vec2int{body.at(0).x, body.at(0).y + 1});
+                body.pop_back();
+                direction = Right;
                 return;
             }
         }
-        this->body.emplace(this->body.begin(),
-            vec2int{this->body.at(0).x - 1, this->body.at(0).y});
-        this->body.pop_back();
+        body.emplace(body.begin(), vec2int{body.at(0).x - 1, body.at(0).y});
+        body.pop_back();
     }
 }
 
-std::vector<Point> Snake::getBodyPoint() noexcept
+std::vector<Point> Snake::getBodyPoint() const noexcept
 {
     Point bodyFragment;
     std::vector<Point> newBody;
@@ -325,9 +328,10 @@ std::vector<Point> Snake::getBodyPoint() noexcept
     return newBody;
 }
 
-void Snake::dead(std::vector<Snake> snakeList) noexcept {
+void Snake::dead(std::vector<Snake>& snakeList) noexcept
+{
     for (int i = 0; i < snakeList.size(); i++) {
-        if (isTheSamePos(snakeList.at(i).getBody().at(0), this->body.at(0))
+        if (isTheSamePos(snakeList.at(i).getBody().at(0), body.at(0))
             && snakeList.at(i).getBody().size() == 0) {
             snakeList.erase(snakeList.begin() + i);
             break;
@@ -335,26 +339,26 @@ void Snake::dead(std::vector<Snake> snakeList) noexcept {
     }
 }
 
-void Snake::split(std::vector<Snake> snakeList, vec2int pos) noexcept
+void Snake::split(std::vector<Snake>& snakeList, vec2int& pos) noexcept
 {
     std::vector<vec2int> newBody;
-    bool finded = false;
+    bool found = false;
     for (int i = 0; i < body.size(); i++) {
         if (isTheSamePos(body.at(i), pos)) {
-            finded = true;
+            found = true;
             continue;
         }
-        if (finded)
+        if (found)
             newBody.push_back(body.at(i));
     }
     for (int i = 0; i < newBody.size(); i++)
         body.pop_back();
     body.pop_back(); // remove fragment who was hit
     Snake newSnake = Snake(newBody);
-    if (this->dir == Right)
-        newSnake.dir == Left;
+    if (direction == Right)
+        newSnake.direction == Left;
     else
-        newSnake.dir == Right;
+        newSnake.direction == Right;
     snakeList.push_back(newSnake);
     if (body.size() == 0) {
         dead(snakeList);
@@ -363,12 +367,12 @@ void Snake::split(std::vector<Snake> snakeList, vec2int pos) noexcept
 
 std::vector<vec2int> Snake::getBody() const noexcept
 {
-    return this->body;
+    return (body);
 }
 
-Snake::Snake()
+Snake::Snake() noexcept
 {
-    this->body = {
+    body = {
         {WindowX / 2, 0},
         {WindowX / 2, -1},
         {WindowX / 2, -2},
@@ -380,7 +384,11 @@ Snake::Snake()
         {WindowX / 2, -8},
         {WindowX / 2, -9},
     };
-    this->dir = Start;
+}
+
+Snake::Snake(const std::vector<vec2int>& newBody) noexcept
+    : body(newBody)
+{
 }
 
 };
