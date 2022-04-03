@@ -34,7 +34,7 @@ class SfWindow : public IWindow
     Status getStatus() final;
 
   protected:
-    Status status;
+    Status status = Nothing;
 
   private:
     sf::RenderWindow window_;

@@ -127,8 +127,8 @@ unsigned int Core::isDigitEvent(const Key& key) const noexcept
     const std::string digits = "0123456789";
 
     for (int i = 0; i < digits.size(); i++) {
-        if (key == digits[i]) {
-            return (digits[i]);
+        if (key == digits.at(i)) {
+            return (digits.at(i));
         }
     }
     return (-1);
@@ -144,21 +144,21 @@ void Core::handleMenuEvents(Status& input) noexcept
         return;
     }
     for (int i = 0; i < event.key_pressed.size(); i++) {
-        if (event.key_pressed[i] == F4) { // next_graphics
+        if (event.key_pressed.at(i) == F4) { // next_graphics
             int index = getLibIndex(usedLibName, allLibs, false);
             if (index != -1)
                 loadGraphicLib(allLibs[index]);
             return;
         }
-        if (event.key_pressed[i] == F5) { // previous_graphics
+        if (event.key_pressed.at(i) == F5) { // previous_graphics
             int index = getLibIndex(usedLibName, allLibs, true);
             if (index != -1)
                 loadGraphicLib(allLibs[index]);
             return;
         }
-        if (changePlayerName(event.key_pressed[i]))
+        if (changePlayerName(event.key_pressed.at(i)))
             return;
-        if (int i = isDigitEvent(event.key_pressed[i]) != -1) {
+        if (int i = isDigitEvent(event.key_pressed.at(i)) != -1) {
             isMenu = false;
             // launch game that corresponds to allGames[i];
             return;
@@ -193,11 +193,12 @@ void Core::displayAvailableLibs() const noexcept
         position += 2;
         usedLib->draw(Text({0, position}, allLibs[i]));
     }
-    usedLib->draw(Text({0, position + 10}, "Games availables :"));
+    position = position + 10;
+    usedLib->draw(Text({0, position}, "Games availables :"));
     for (int i = 0; i < allGames.size(); i++) {
         position += 2;
         usedLib->draw(
-            Text({42, position}, allGames[i] + " press " + std::to_string(i)));
+            Text({0, position}, allGames[i] + " press " + std::to_string(i)));
     }
 }
 

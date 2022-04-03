@@ -231,7 +231,7 @@ void NcWindow::draw(const Text& infoText)
     attron(COLOR_PAIR(2));
     for (int i = 0; i < infoText.getString().size(); i++)
         mvaddch(infoText.getPosition().y,
-            infoText.getPosition().x,
+            infoText.getPosition().x + i,
             infoText.getString().at(i));
     attroff(COLOR_PAIR(2));
 }

@@ -95,6 +95,7 @@ void SfWindow::draw(const Text& infoText)
     text.setString(infoText.getString());
     text.setFillColor(color);
     text.setOutlineColor(backColor);
+    text.setCharacterSize(21);
     window_.draw(text);
 }
 
