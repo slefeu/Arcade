@@ -21,7 +21,7 @@ class IGame
      * @brief Execute one tick of the game
      * (Call the setWindow function before calling that function)
      */
-    virtual void exec(IWindow&) = 0;
+    virtual std::unique_ptr<IWindow> exec(std::unique_ptr<IWindow>) = 0;
     /**
      * @brief
      *

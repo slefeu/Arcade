@@ -187,8 +187,9 @@ void Core::handleMenuEvents()
 
 void Core::displayGame()
 {
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     handleGameEvents(); // des events à rajouter
-    chosenGame->exec(*usedLib);
+    usedLib = std::move(chosenGame->exec(std::move(usedLib)));
     //à la fin de la loop de jeu, appeller la méthode changeScore() pour
     // checker si le score du joueur peut aller dans le scoreboard;
 }

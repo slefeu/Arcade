@@ -36,17 +36,18 @@ class Snake
     Snake& operator=(const Snake& rhs) noexcept = default;
     Snake& operator=(Snake&& rhs) noexcept = default;
 
-    void updateMove(std::vector<Obstacle>&, int, int) noexcept;
-    std::vector<Point> getBodyPoint() const noexcept;
-    void split(std::vector<Snake>&, vec2int&) noexcept;
-    std::vector<vec2int> getBody() const noexcept;
-    void dead(std::vector<Snake>&) noexcept;
-
     enum Direction {
         Left,
         Right,
         Start,
     };
+
+    void updateMove(std::vector<Obstacle>&, int, int) noexcept;
+    std::vector<Point> getBodyPoint() const noexcept;
+    void split(std::vector<Snake>&, vec2int&) noexcept;
+    std::vector<vec2int> getBody() const noexcept;
+    void dead(std::vector<Snake>&) noexcept;
+    Direction getDirection() const noexcept;
 
   private:
     std::vector<vec2int> body;
@@ -64,15 +65,15 @@ class Centipede final : public IGame
     Centipede& operator=(const Centipede& rhs) noexcept = default;
     Centipede& operator=(Centipede&& rhs) noexcept = default;
 
-    void exec(IWindow&);
+    std::unique_ptr<IWindow> exec(std::unique_ptr<IWindow>) noexcept final;
     Status getStatus();
 
   protected:
   private:
-    void start(IWindow&) noexcept;
-    void displayObstacle(IWindow&) const noexcept;
-    void displayFire(IWindow&) const noexcept;
-    void updatePlayer(IWindow&) noexcept;
+    void start(void) noexcept;
+    void displayObstacle(void) const noexcept;
+    void displayFire(void) const noexcept;
+    void updatePlayer(void) noexcept;
     void movePlayer(Events&) noexcept;
     void tryShoot(Events&) noexcept;
     void updateShoot() noexcept;
@@ -87,6 +88,7 @@ class Centipede final : public IGame
     bool isStartingPos(const vec2int&) const noexcept;
 
     // attributes
+    std::unique_ptr<IWindow> window;
     std::vector<Snake> snakeList = {};
     std::vector<Obstacle> obstacleList = {};
     int tick = 0;
