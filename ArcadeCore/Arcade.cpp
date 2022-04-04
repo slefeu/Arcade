@@ -14,7 +14,7 @@ Arcade::Arcade(int ac, char** av)
     std::vector<std::string> allLibs = setLibraries(allFiles);
     if (allLibs.empty())
         throw Error("No libraries found in folder lib");
-    if (allLibs.size() < 2)
+    if (allLibs.size() < 3)
         throw Error("Not enough graphic libraries found in folder lib");
     std::vector<std::string> allGames = setGames(allFiles);
     if (allGames.empty())

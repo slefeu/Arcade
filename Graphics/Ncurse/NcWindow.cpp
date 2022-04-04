@@ -86,7 +86,6 @@ short NcWindow::addPair(short color, short backColor)
 void NcWindow::clear()
 {
     werase(window);
-    //::clear();
 }
 
 bool insertkey(Key key, Events& event)

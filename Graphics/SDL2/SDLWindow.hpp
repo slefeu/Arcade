@@ -1,6 +1,9 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <chrono>
+#include <thread>
 
 #include "IWindow.hpp"
 
@@ -38,8 +41,12 @@ class SDLWindow : public IWindow
   private:
     SDL_Window* window;
     SDL_Renderer* renderer;
-    SDL_Surface* screenSurface;
+    TTF_Font* font;
     std::string title = "Arcade";
     vec2int size_ = {50, 35};
+    int framerate = 120;
+    std::chrono::milliseconds lastDisplay{0};
+
+    bool insertkey(Key, Events&) noexcept;
 };
 }
