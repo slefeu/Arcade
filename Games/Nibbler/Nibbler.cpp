@@ -23,7 +23,7 @@ void Nibbler::start(IWindow& window) noexcept
     }
     initDefault();
     window.setSize({WindowX, WindowY + 3});
-    window.setFramerate(60);
+    window.setFramerate(30);
 }
 
 void Nibbler::restart() noexcept
@@ -175,6 +175,7 @@ void Nibbler::exec(IWindow& window, Events& event) noexcept
     updatePlayer(window);
     displayStat(window);
     displayEndText(window);
+    window.setFramerate(30 + body.size());
     tick++;
 }
 
@@ -265,22 +266,22 @@ bool Nibbler::didCollideWall(const vec2int& loc) noexcept
 
 void Nibbler::changeDirection(void)
 {
-    if (event.isPressed(Up)) {
+    if (event.isPressed(Up) && direction != NbDown) {
         if (!didCollideWall({body.at(0).x, body.at(0).y - 1}))
             direction = NbUp;
         return;
     }
-    if (event.isPressed(Down)) {
+    if (event.isPressed(Down) && direction != NbUp) {
         if (!didCollideWall({body.at(0).x, body.at(0).y + 1}))
             direction = NbDown;
         return;
     }
-    if (event.isPressed(Right)) {
+    if (event.isPressed(Right) && direction != NbLeft) {
         if (!didCollideWall({body.at(0).x + 1, body.at(0).y}))
             direction = NbRight;
         return;
     }
-    if (event.isPressed(Left)) {
+    if (event.isPressed(Left) && direction != NbRight) {
         if (!didCollideWall({body.at(0).x - 1, body.at(0).y}))
             direction = NbLeft;
         return;
