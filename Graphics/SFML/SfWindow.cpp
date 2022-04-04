@@ -42,18 +42,22 @@ void SfWindow::setTitle(const std::string& title)
 void SfWindow::setSize(const vec2int& size)
 {
     size_ = size;
-    window_.setSize(sf::Vector2u(size.x * charSize, size.y * charSize));
+    window_.create(
+        sf::VideoMode(size_.x * charSize, size_.y * charSize, 32), "Arcade");
+    //window_.setSize(sf::Vector2u(size.x * charSize, size.y * charSize));
 }
 
 void SfWindow::draw(const Line& infoLine)
 {
+    sf::Color color(
+        infoLine.getColor().r, infoLine.getColor().g, infoLine.getColor().b);
     sf::Vertex line[] = {
         sf::Vertex(sf::Vector2f(infoLine.getPosition().x * charSize,
             infoLine.getPosition().y * charSize)),
         sf::Vertex(sf::Vector2f(infoLine.getLineEnd().x * charSize,
             infoLine.getLineEnd().y * charSize))};
-
-    window_.draw(line, 2, sf::Lines);
+    line->color = color;
+    window_.draw(line, charSize, sf::Lines);
 }
 
 void SfWindow::draw(const Point& infoPoint)

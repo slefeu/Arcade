@@ -48,7 +48,7 @@ void Centipede::start(IWindow& window) noexcept
         newObstacleList.push_back({5, {x, y}});
     }
     obstacleList = newObstacleList;
-    window.setSize({WindowX, WindowY + 3});
+    window.setSize({WindowX, WindowY + 4});
     window.setFramerate(120);
 }
 
@@ -170,7 +170,7 @@ void Centipede::updatePlayer(IWindow& window) noexcept
 void Centipede::displayEndText(IWindow& window) noexcept
 {
     Text endText;
-    endText.setPosition({(WindowX / 2) - 8, WindowY / 2});
+    endText.setPosition({(WindowX / 2) - 2, WindowY / 2});
     if (isDead) {
         endText.setString("You Lose !");
         endText.setColor({255, 1, 1});
@@ -187,10 +187,17 @@ void Centipede::displayStat(IWindow& window) noexcept
 {
     Text scoreText;
     Text waveText;
+    Line border;
+    border.setPosition({0, WindowY + 1});
+    border.setLineEnd({WindowX, WindowY + 1});
+    border.setColor({1, 30, 255});
     scoreText.setPosition({5, WindowY + 3});
     waveText.setPosition({5, WindowY + 2});
     scoreText.setString("Score: " + std::to_string(score));
+    if (nbSnake > 20)
+        nbSnake = 20;
     waveText.setString("Wave: " + std::to_string(nbSnake) + " (" + std::to_string(20 - nbSnake) + " remaining)");
+    window.draw(border);
     window.draw(scoreText);
     window.draw(waveText);
 }
