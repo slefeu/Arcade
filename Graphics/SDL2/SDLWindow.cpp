@@ -16,7 +16,8 @@ SDLWindow::SDLWindow()
     window = SDL_CreateWindow("Arcade",
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        size_.x * charSize, size_.y * charSize,
+        size_.x * charSize,
+        size_.y * charSize,
         SDL_WINDOW_SHOWN);
     if (window == nullptr)
         throw Error("Failed to create SDL Renderer");

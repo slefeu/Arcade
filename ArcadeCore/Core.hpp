@@ -72,7 +72,7 @@ class Core
     std::vector<std::pair<std::string, int>> getScores();
     std::string findPlayerinLine(const std::string&) const noexcept;
     int findScoreinLine(const std::string&) noexcept;
-    void resetEvent(Events &) noexcept;
+    void resetEvent(Events&) noexcept;
     std::string isStorableStr(
         const std::string&, const std::string&) const noexcept;
     unsigned int isDigitEvent(const Key& key) const noexcept;

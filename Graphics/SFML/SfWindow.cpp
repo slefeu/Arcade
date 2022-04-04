@@ -44,7 +44,7 @@ void SfWindow::setSize(const vec2int& size)
     size_ = size;
     window_.create(
         sf::VideoMode(size_.x * charSize, size_.y * charSize, 32), "Arcade");
-    //window_.setSize(sf::Vector2u(size.x * charSize, size.y * charSize));
+    // window_.setSize(sf::Vector2u(size.x * charSize, size.y * charSize));
 }
 
 void SfWindow::draw(const Line& infoLine)

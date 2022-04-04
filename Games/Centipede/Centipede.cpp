@@ -196,7 +196,8 @@ void Centipede::displayStat(IWindow& window) noexcept
     scoreText.setString("Score: " + std::to_string(score));
     if (nbSnake > 20)
         nbSnake = 20;
-    waveText.setString("Wave: " + std::to_string(nbSnake) + " (" + std::to_string(20 - nbSnake) + " remaining)");
+    waveText.setString("Wave: " + std::to_string(nbSnake) + " ("
+                       + std::to_string(20 - nbSnake) + " remaining)");
     window.draw(border);
     window.draw(scoreText);
     window.draw(waveText);
