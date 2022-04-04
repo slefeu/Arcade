@@ -52,6 +52,7 @@ void NcWindow::display()
 
 void NcWindow::clear()
 {
+    erase();
     //::clear();
 }
 
