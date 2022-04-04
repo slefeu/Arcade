@@ -74,7 +74,7 @@ void Core::displayGame(Events& event)
         return;
     }
     chosenGame->exec(*usedLib, event);
-    if (chosenGame->getStatus() == Exit) {
+    if (chosenGame->getStatus() == Exit) {  //quitter le jeu
         scoreInfos.score = chosenGame->getScore();
         changeScore();
         isMenu = true;
@@ -158,6 +158,7 @@ void Core::loadGameLib(std::string& libName)
     auto a = gameLoader.loadLibrary(path, "createGame");
     createGame = reinterpret_cast<std::unique_ptr<IGame> (*)()>(a);
     chosenGame = createGame();
+    prevGameName = gameName;
     gameName = libName;
 }
 

@@ -9,6 +9,11 @@
 
 #include "Error.hpp"
 
+Loader::~Loader()
+{
+    closeLibrary();
+}
+
 void* Loader::loadLibrary(const std::string& filename, const char* functionName)
 {
     void* createLib = nullptr;
@@ -35,6 +40,8 @@ void* Loader::openShared(const std::string& filename)
 
 void Loader::closeLibrary()
 {
+    if (openedLib == nullptr)
+        return;
     if (dlclose(openedLib) != 0)
         throw(Error(dlerror()));
     openedLib = nullptr;
