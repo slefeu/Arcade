@@ -29,7 +29,8 @@ SfWindow::~SfWindow()
         window_.close();
 }
 
-void SfWindow::setFramerate(int framerate) noexcept {
+void SfWindow::setFramerate(int framerate) noexcept
+{
     window_.setFramerateLimit(framerate);
 }
 

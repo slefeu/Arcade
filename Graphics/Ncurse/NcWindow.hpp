@@ -8,6 +8,7 @@
 #pragma once
 #include <ncurses.h>
 #include <sys/time.h>
+
 #include <chrono>
 #include <ctime>
 #include <thread>
@@ -44,7 +45,7 @@ class NcWindow : public IWindow
     Status status = Nothing;
 
   private:
-    std::chrono::milliseconds lastDisplay {0};
+    std::chrono::milliseconds lastDisplay{0};
     int framerate = 120;
     WINDOW* window;
     std::string title = "";

@@ -17,7 +17,7 @@ Arcade::Arcade(int ac, char** av)
     if (allLibs.size() < 2)
         throw Error("Not enough graphic libraries found in folder lib");
     std::vector<std::string> allGames = setGames(allFiles);
-      if (allGames.empty())
+    if (allGames.empty())
         throw Error("No games found in folder lib");
     std::string libStart = getFirstLibName(av[1]);
     arcadeCore = std::make_unique<Core>(allLibs, allGames, libStart);

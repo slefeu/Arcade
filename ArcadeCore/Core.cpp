@@ -190,6 +190,12 @@ void Core::displayGame()
 {
     Events event = handleGameEvents(); // des events à rajouter
     chosenGame->exec(*usedLib, event);
+    if (chosenGame->getStatus() == Exit) {
+        scoreInfos.score = chosenGame->getScore();
+        changeScore();
+        isMenu = true;
+        usedLib->setSize({50, 35});
+    }
     //à la fin de la loop de jeu, appeller la méthode changeScore() pour
     // checker si le score du joueur peut aller dans le scoreboard;
 }

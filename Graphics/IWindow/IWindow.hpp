@@ -58,7 +58,7 @@ class IWindow
     virtual Status getStatus() = 0;
     /**
      * @brief Set the Framerate object
-     * 
+     *
      */
     virtual void setFramerate(int framerate) noexcept = 0;
     /**

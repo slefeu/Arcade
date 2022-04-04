@@ -7,10 +7,11 @@
 
 #pragma once
 
-#include "IGame.hpp"
-#include "Utils.hpp"
 #include <chrono>
 #include <thread>
+
+#include "IGame.hpp"
+#include "Utils.hpp"
 
 namespace arcade
 {
@@ -86,6 +87,7 @@ class Centipede final : public IGame
     bool obstacleContain(
         const std::vector<Obstacle>&, const Obstacle&) const noexcept;
     bool isStartingPos(const vec2int&) const noexcept;
+    void displayEndText(IWindow& window) noexcept;
 
     // attributes
     Events event;
@@ -95,6 +97,7 @@ class Centipede final : public IGame
     vec2int player = {WindowX / 2, WindowY - 1};
     bool isDead = false;
     bool hasWin = false;
+    bool isFinish = false;
     bool hasMoved = false;
     int nbSnake = 0;
     vec2int fire = {-1, -1};
