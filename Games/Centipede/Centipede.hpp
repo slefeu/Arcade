@@ -69,6 +69,7 @@ class Centipede final : public IGame
     void exec(IWindow&, Events& event) noexcept final;
     void restart() noexcept final;
     Status getStatus();
+    int getScore() const noexcept final;
 
   protected:
   private:
@@ -84,7 +85,6 @@ class Centipede final : public IGame
     bool didPlayerCollide(const vec2int&) noexcept;
     bool isPlayerHit() const noexcept;
     void damageObstacle(Obstacle&) noexcept;
-    int getScore() const noexcept;
     bool obstacleContain(
         const std::vector<Obstacle>&, const Obstacle&) const noexcept;
     bool isStartingPos(const vec2int&) const noexcept;
