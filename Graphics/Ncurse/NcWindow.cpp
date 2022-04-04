@@ -46,13 +46,14 @@ void NcWindow::display()
         std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch());
     if (millisec_since_epoch.count() - lastDisplay.count()
-        < (int)((double)1000 / (double)60)) {
-            /*printf("Going to wait :%ld\n", (int)(((double)((double)60 / (double)framerate)) * 1000)
-            - (millisec_since_epoch.count() - lastDisplay.count()));*/
-            std::this_thread::sleep_for(std::chrono::milliseconds(
-                (int)((double)1000 / (double)60)
-                - (millisec_since_epoch.count() - lastDisplay.count())));
-        }
+        < (int)((double)1000 / (double)framerate)) {
+        /*printf("Going to wait :%ld\n", (int)(((double)((double)60 /
+        (double)framerate)) * 1000)
+        - (millisec_since_epoch.count() - lastDisplay.count()));*/
+        std::this_thread::sleep_for(std::chrono::milliseconds(
+            (int)((double)1000 / (double)framerate)
+            - (millisec_since_epoch.count() - lastDisplay.count())));
+    }
     /*printf("Ecart: %ld, framerate : %d, timeToSleep: %ld \n",
         millisec_since_epoch.count() - lastDisplay.count(),
         framerate,
@@ -75,7 +76,8 @@ short NcWindow::addColors(unsigned char r, unsigned char g, unsigned char b)
     return (nbColors - 1);
 }
 
-short NcWindow::addPair(short color, short backColor) {
+short NcWindow::addPair(short color, short backColor)
+{
     short tempColor;
     short tempBackColor;
     for (short i = 0; i < nbPair; i++) {
@@ -256,9 +258,8 @@ void NcWindow::draw(const Rectangle& infoRectangle)
 
 void NcWindow::draw(const Point& infoPoint)
 {
-    short color = addColors(infoPoint.getColor().r,
-        infoPoint.getColor().g,
-        infoPoint.getColor().b);
+    short color = addColors(
+        infoPoint.getColor().r, infoPoint.getColor().g, infoPoint.getColor().b);
     short pair = addPair(color, color);
     wattron(window, COLOR_PAIR(pair));
     mvaddch(infoPoint.getPosition().y, infoPoint.getPosition().x, ' ');

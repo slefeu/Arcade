@@ -40,9 +40,9 @@ void Core::executeLoop()
             displayMenu(event);
         else
             displayGame(event);
-        //printf("Before display\n");
+        // printf("Before display\n");
         usedLib->display();
-        //printf("After display\n");
+        // printf("After display\n");
         resetEvent(event);
     }
     storeScore();
