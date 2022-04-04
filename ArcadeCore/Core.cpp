@@ -74,7 +74,7 @@ void Core::displayGame(Events& event)
         return;
     }
     chosenGame->exec(*usedLib, event);
-    if (chosenGame->getStatus() == Exit) {  //quitter le jeu
+    if (chosenGame->getStatus() == Exit) { // quitter le jeu
         scoreInfos.score = chosenGame->getScore();
         changeScore();
         isMenu = true;
@@ -125,18 +125,16 @@ void Core::handleGameEvents(Events& event)
             chosenGame->restart();
         }
         if (key == F2) { // next game
-            if (prevGameName == "")
-                int index = getLibIndex(allGames[0], allGames, false);
-            else
-                int index = getLibIndex(prevGameName, allGames, false);
-            // puis load le jeu
+            int index = getLibIndex(gameName, allGames, false);
+            if (index != -1)
+                loadGameLib(allGames[index]);
+            return;
         }
         if (key == F3) { // previous game
-            if (prevGameName == "")
-                int index = getLibIndex(allGames[0], allGames, false);
-            else
-                int index = getLibIndex(prevGameName, allGames, false);
-            // puis load le jeu
+            int index = getLibIndex(gameName, allGames, true);
+            if (index != -1)
+                loadGameLib(allGames[index]);
+            return;
         }
         if (key == F6) {
             scoreInfos.score = chosenGame->getScore();
