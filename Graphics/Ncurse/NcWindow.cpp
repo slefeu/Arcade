@@ -209,6 +209,8 @@ void NcWindow::setTitle(const std::string& newTitle)
 
 void NcWindow::setSize(const vec2int& newSize)
 {
+    werase(window);
+    wrefresh(window);
     this->size_ = newSize;
     wresize(window, newSize.y, newSize.x);
 }
