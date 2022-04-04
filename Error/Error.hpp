@@ -16,7 +16,7 @@ class Error : public std::exception
     explicit Error(std::string const&) noexcept;
     Error(const Error& other) noexcept = default;
     Error(Error&& other) noexcept = default;
-    ~Error() noexcept = default;
+    virtual ~Error() noexcept = default;
 
     Error& operator=(const Error&) noexcept = default;
     Error& operator=(Error&&) noexcept = default;
@@ -33,7 +33,7 @@ class ArgumentError : public Error
     ArgumentError(std::string const& message);
     ArgumentError(const ArgumentError& other) noexcept = default;
     ArgumentError(ArgumentError&& other) noexcept = default;
-    ~ArgumentError() noexcept = default;
+    virtual ~ArgumentError() noexcept = default;
 
     ArgumentError& operator=(const ArgumentError& rhs) noexcept = default;
     ArgumentError& operator=(ArgumentError&& rhs) noexcept = default;
