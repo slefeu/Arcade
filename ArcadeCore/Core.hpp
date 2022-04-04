@@ -53,9 +53,11 @@ class Core
     std::string prevGameName = "";
 
     // methods
-    void displayMenu();
-    void displayGame();
-    void handleMenuEvents();
+    void displayMenu(Events&);
+    void displayGame(Events&);
+    void handleMenuEvents(Events&);
+    void handleGameEvents(Events&);
+    void handleCoreEvents(Events& event);
     Events handleGameEvents();
     bool changePlayerName(Key&) noexcept;
     bool isLetter(Key&) const noexcept;
