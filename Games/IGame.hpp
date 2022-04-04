@@ -23,6 +23,11 @@ class IGame
      */
     virtual void exec(IWindow&, Events& event) = 0;
     /**
+     * @brief Restart the game
+     * 
+     */
+    virtual void restart() = 0;
+    /**
      * @brief
      *
      * @return The curent status of the game and the window

@@ -52,6 +52,22 @@ void Centipede::start(IWindow& window) noexcept
     window.setFramerate(120);
 }
 
+void Centipede::restart() noexcept
+{
+    event = Events();
+    snakeList = {};
+    obstacleList = {};
+    tick = 0;
+    player = {WindowX / 2, WindowY - 1};
+    isDead = false;
+    hasWin = false;
+    isFinish = false;
+    hasMoved = false;
+    nbSnake = 0;
+    fire = {-1, -1};
+    score = 0;
+}
+
 void Centipede::displayObstacle(IWindow& window) const noexcept
 {
     for (Obstacle obs : obstacleList) {
@@ -293,9 +309,14 @@ void Centipede::movePlayer(Events& event) noexcept
 
 Status Centipede::getStatus()
 {
-    if (isFinish) {
+    if (isFinish && isDead) {
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));
         return Exit;
+    }
+    if (isFinish && hasWin) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        restart();
+        return Nothing;
     }
     if (isDead || hasWin) {
         isFinish = true;

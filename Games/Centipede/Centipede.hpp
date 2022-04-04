@@ -67,6 +67,7 @@ class Centipede final : public IGame
     Centipede& operator=(Centipede&& rhs) noexcept = default;
 
     void exec(IWindow&, Events& event) noexcept final;
+    void restart() noexcept final;
     Status getStatus();
 
   protected:
