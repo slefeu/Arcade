@@ -69,6 +69,10 @@ void Core::displayMenu(Events& event)
 void Core::displayGame(Events& event)
 {
     handleGameEvents(event); // des events à rajouter
+    if (chosenGame == nullptr) {
+        usedLib->setSize({50, 35});
+        return;
+    }
     chosenGame->exec(*usedLib, event);
     if (chosenGame->getStatus() == Exit) {
         scoreInfos.score = chosenGame->getScore();
@@ -117,6 +121,9 @@ void Core::handleMenuEvents(Events& event)
 void Core::handleGameEvents(Events& event)
 {
     for (Key key : event.key_pressed) {
+        if (key == F1) {
+            chosenGame->restart();
+        }
         if (key == F2) { // next game
             if (prevGameName == "")
                 int index = getLibIndex(allGames[0], allGames, false);
@@ -130,6 +137,14 @@ void Core::handleGameEvents(Events& event)
             else
                 int index = getLibIndex(prevGameName, allGames, false);
             // puis load le jeu
+        }
+        if (key == F6) {
+            scoreInfos.score = chosenGame->getScore();
+            changeScore();
+            isMenu = true;
+            chosenGame = nullptr;
+            gameName = "";
+            return;
         }
     }
 }

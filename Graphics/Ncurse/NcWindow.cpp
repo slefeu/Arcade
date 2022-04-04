@@ -192,6 +192,8 @@ bool NcWindow::pollEvent(Events& event)
         case KEY_F(3): return insertkey(F3, event);
         case KEY_F(4): return insertkey(F4, event);
         case KEY_F(5): return insertkey(F5, event);
+        case KEY_F(6): return insertkey(F6, event);
+        case KEY_F(7): return insertkey(F7, event);
         default: return false;
     }
     return false;
