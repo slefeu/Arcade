@@ -39,12 +39,7 @@ class Nibbler : public IGame
     Status getStatus() final;
     int getScore() const noexcept final;
 
-    enum Direction {
-      NbRight,
-      NbLeft,
-      NbDown,
-      NbUp
-    };
+    enum Direction { NbRight, NbLeft, NbDown, NbUp };
 
   protected:
   private:

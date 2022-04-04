@@ -59,7 +59,7 @@ void Nibbler::displayEndText(IWindow& window) noexcept
     endText.setPosition({(WindowX / 2) - 2, WindowY / 2});
     if (isDead) {
         endText.setString("You Lose !");
-        endText.setColor({255, 1, 1});
+        endText.setColor({1, 1, 255});
     }
     if (hasWin) {
         endText.setString("Victory !");
@@ -266,19 +266,23 @@ bool Nibbler::didCollideWall(const vec2int& loc) noexcept
 void Nibbler::changeDirection(void)
 {
     if (event.isPressed(Up)) {
-        direction = NbUp;
+        if (!didCollideWall({body.at(0).x, body.at(0).y - 1}))
+            direction = NbUp;
         return;
     }
     if (event.isPressed(Down)) {
-        direction = NbDown;
+        if (!didCollideWall({body.at(0).x, body.at(0).y + 1}))
+            direction = NbDown;
         return;
     }
     if (event.isPressed(Right)) {
-        direction = NbRight;
+        if (!didCollideWall({body.at(0).x + 1, body.at(0).y}))
+            direction = NbRight;
         return;
     }
     if (event.isPressed(Left)) {
-        direction = NbLeft;
+        if (!didCollideWall({body.at(0).x - 1, body.at(0).y}))
+            direction = NbLeft;
         return;
     }
 }
