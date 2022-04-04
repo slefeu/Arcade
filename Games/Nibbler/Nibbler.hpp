@@ -21,8 +21,8 @@
 
 namespace arcade
 {
-constexpr int WindowX = 20;
-constexpr int WindowY = 20;
+constexpr int WindowX = 19;
+constexpr int WindowY = 19;
 class Nibbler : public IGame
 {
   public:
@@ -63,7 +63,7 @@ class Nibbler : public IGame
     void updatePlayer(IWindow& window) noexcept;
     bool isPlayerHit(void) const noexcept;
     void tryEat(void) noexcept;
-    void respawnApple(void) noexcept;
+    void respawnApple(int nbApple) noexcept;
     void displayEndText(IWindow& window) noexcept;
     void displayStat(IWindow& window) noexcept;
     std::vector<vec2int> getValidPos(void) noexcept;
@@ -76,7 +76,6 @@ class Nibbler : public IGame
     bool isFinish = false;
     int score = 0;
     int tick = 0;
-    int nbApple = 0;
     Direction direction = NbRight;
 };
 }
