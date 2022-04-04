@@ -344,7 +344,7 @@ std::vector<Point> Snake::getBodyPoint() const noexcept
 {
     Point bodyFragment;
     std::vector<Point> newBody;
-    bodyFragment.setColor({200, 10, 10});
+    bodyFragment.setColor({200, 10, 200});
     for (int i = 0; i < body.size(); i++) {
         bodyFragment.setPosition(body.at(i));
         if (i == 1)
