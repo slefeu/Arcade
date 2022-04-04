@@ -41,8 +41,18 @@ void Core::executeLoop()
         else
             displayGame(event);
         usedLib->display();
+        resetEvent(event);
     }
     storeScore();
+}
+
+void Core::resetEvent(Events& event) noexcept
+{
+    event.key_pressed = {};
+    event.mouse.left = false;
+    event.mouse.middle = false;
+    event.mouse.right = false;
+    event.mouse.pos = {0, 0};
 }
 
 void Core::displayMenu(Events& event)
