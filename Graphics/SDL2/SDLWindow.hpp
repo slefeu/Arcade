@@ -6,13 +6,15 @@
 
 namespace arcade
 {
+constexpr int charSize = 21;
+
 class SDLWindow : public IWindow
 {
   public:
     SDLWindow();
     SDLWindow(const SDLWindow&) noexcept = default;
     SDLWindow(SDLWindow&&) noexcept = default;
-    virtual ~SDLWindow() noexcept = default;
+    virtual ~SDLWindow() noexcept;
 
     SDLWindow& operator=(const SDLWindow&) noexcept = default;
     SDLWindow& operator=(SDLWindow&&) noexcept = default;
@@ -36,6 +38,7 @@ class SDLWindow : public IWindow
   private:
     SDL_Window* window;
     SDL_Renderer* renderer;
+    SDL_Surface* screenSurface;
     std::string title = "Arcade";
     vec2int size_ = {50, 35};
 };

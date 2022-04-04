@@ -12,11 +12,19 @@ extern "C" std::unique_ptr<IWindow> createLib()
 SDLWindow::SDLWindow()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
-        throw(Error("Failed to init SDL2 lib"));
-    if (SDL_CreateWindowAndRenderer(size_.x, size_.y, 0, &window, &renderer)
-        < 0)
-        throw(Error("Failed to create SDL Renderer"));
-    SDL_SetWindowTitle(window, "Titre");
+        throw Error("Failed to init SDL2 lib");
+    window = SDL_CreateWindow("Arcade",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        size_.x * charSize, size_.y * charSize,
+        SDL_WINDOW_SHOWN);
+    if (window == nullptr)
+        throw Error("Failed to create SDL Renderer");
+    screenSurface = SDL_GetWindowSurface(window);
+    SDL_FillRect(screenSurface,
+        NULL,
+        SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
+    SDL_UpdateWindowSurface(window);
     SDL_ShowCursor(SDL_DISABLE);
 }
 
@@ -24,12 +32,22 @@ void SDLWindow::setFramerate(int framerate) noexcept
 {
 }
 
+SDLWindow::~SDLWindow()
+{
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
 void SDLWindow::display()
 {
+    // SDL_RenderPresent(renderer);
 }
 
 void SDLWindow::clear()
 {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
 }
 
 bool SDLWindow::pollEvent(Events&)
@@ -37,8 +55,9 @@ bool SDLWindow::pollEvent(Events&)
     return (false);
 }
 
-void SDLWindow::setTitle(const std::string&)
+void SDLWindow::setTitle(const std::string& newTitle)
 {
+    SDL_SetWindowTitle(window, newTitle.c_str());
 }
 
 void SDLWindow::setSize(const vec2int&)
