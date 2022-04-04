@@ -77,8 +77,8 @@ class Centipede final : public IGame
     void displayObstacle(IWindow& window) const noexcept;
     void displayFire(IWindow& window) const noexcept;
     void updatePlayer(IWindow& window) noexcept;
-    void movePlayer(Events&) noexcept;
-    void tryShoot(Events&) noexcept;
+    void movePlayer() noexcept;
+    void tryShoot() noexcept;
     void updateShoot() noexcept;
     bool collideSnake() noexcept;
     bool collideObstacle() noexcept;

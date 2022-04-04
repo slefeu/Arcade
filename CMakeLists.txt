@@ -25,6 +25,7 @@ add_subdirectory(Graphics/SDL2)
 add_subdirectory(Loader)
 add_subdirectory(ArcadeCore)
 add_subdirectory(Games/Centipede)
+add_subdirectory(Games/Nibbler)
 
 add_executable(${PROJECT_NAME}
     main.cpp

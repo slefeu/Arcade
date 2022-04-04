@@ -85,7 +85,7 @@ bool Centipede::isStartingPos(const vec2int& pos) const noexcept
     return (pos.x == -1 && pos.y == -1);
 }
 
-void Centipede::tryShoot(Events& event) noexcept
+void Centipede::tryShoot() noexcept
 {
     if (event.isPressed(Space) && isStartingPos(fire)) {
         fire.x = player.x;
@@ -172,9 +172,9 @@ bool Centipede::isPlayerHit(void) const noexcept
 
 void Centipede::updatePlayer(IWindow& window) noexcept
 {
-    movePlayer(event);
+    movePlayer();
     isDead = isPlayerHit();
-    tryShoot(event);
+    tryShoot();
     if (tick % 10 == 0)
         hasMoved = false;
     Point playerPoint;
@@ -269,7 +269,7 @@ bool Centipede::didPlayerCollide(const vec2int& loc) noexcept
     return false;
 }
 
-void Centipede::movePlayer(Events& event) noexcept
+void Centipede::movePlayer() noexcept
 {
     if (hasMoved)
         return;

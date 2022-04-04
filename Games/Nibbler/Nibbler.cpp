@@ -9,13 +9,81 @@
 
 namespace arcade
 {
-void Nibbler::start(void) noexcept
+extern "C" std::unique_ptr<IGame> createGame()
+{
+    return (std::make_unique<Nibbler>());
+}
+
+void Nibbler::start(IWindow& window) noexcept
 {
     try {
         parseList();
     } catch (Error const& error) {
         initDefault();
     }
+    window.setSize({WindowX, WindowY + 4});
+    window.setFramerate(120);
+}
+
+void Nibbler::restart() noexcept
+{
+    body = {};
+    obstacleList = {};
+    appleList = {};
+    hasMoved = false;
+    isDead = false;
+    isFinish = false;
+    hasWin = false;
+    score = 0;
+    tick = 0;
+    nbApple = 0;
+    direction = NbRight;
+}
+
+Status Nibbler::getStatus()
+{
+    if (isFinish) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+        return Exit;
+    }
+    if (isDead || hasWin) {
+        isFinish = true;
+        return Nothing;
+    }
+    return Nothing;
+}
+
+void Nibbler::displayEndText(IWindow& window) noexcept
+{
+    Text endText;
+    endText.setPosition({(WindowX / 2) - 2, WindowY / 2});
+    if (isDead) {
+        endText.setString("You Lose !");
+        endText.setColor({255, 1, 1});
+    }
+    if (hasWin) {
+        endText.setString("Victory !");
+        endText.setColor({1, 255, 1});
+    }
+    endText.setBackColor({0, 0, 0});
+    window.draw(endText);
+}
+
+void Nibbler::displayStat(IWindow& window) noexcept
+{
+    Text scoreText;
+    Text waveText;
+    Line border;
+    border.setPosition({0, WindowY + 1});
+    border.setLineEnd({WindowX, WindowY + 1});
+    border.setColor({1, 30, 255});
+    scoreText.setPosition({5, WindowY + 3});
+    waveText.setPosition({5, WindowY + 2});
+    scoreText.setString("Score: " + std::to_string(score));
+    waveText.setString("Size: " + std::to_string(body.size()));
+    window.draw(border);
+    window.draw(scoreText);
+    window.draw(waveText);
 }
 
 void Nibbler::initBody(vec2int pos) noexcept
@@ -26,13 +94,13 @@ void Nibbler::initBody(vec2int pos) noexcept
     body.push_back({pos.x - 3, pos.y});
 }
 
-void Nibbler::initDefault()
+void Nibbler::initDefault() noexcept
 {
     obstacleList = {};
     appleList = {};
     initBody({WindowX / 2, WindowY / 2});
-    for (int y = 0; y <= WindowY; y++) {
-        for (int x = 0; x <= WindowX; x++) {
+    for (int y = 0; y < WindowY; y++) {
+        for (int x = 0; x < WindowX; x++) {
             if (y == 0 || y == WindowY) {
                 obstacleList.push_back({x, y});
                 continue;
@@ -60,11 +128,13 @@ void Nibbler::parseList()
 
     if (file) {
         for (std::string line; getline(file, line);) {
-            for (int x = 0; x < line.size() && x <= WindowX; x++) {
+            for (int x = 0; x < line.size() && x < WindowX; x++) {
                 if (line.at(x) == 'w')
                     obstacleList.push_back({x, y});
-                if (line.at(x) == 'a')
+                if (line.at(x) == 'a') {
+                    nbApple++;
                     appleList.push_back({x, y});
+                }
                 if (line.at(x) == 's')
                     initBody({x, y});
             }
@@ -92,7 +162,199 @@ std::vector<std::string> Nibbler::listMap()
     return (allFiles);
 }
 
-void Nibbler::exec(IWindow&, Events& event) noexcept
+int Nibbler::getScore() const noexcept
 {
+    return (score);
+}
+
+void Nibbler::exec(IWindow& window, Events& event) noexcept
+{
+    this->event = event;
+    if (tick == 0)
+        start(window);
+    displayObstacle(window);
+    displayApple(window);
+    updatePlayer(window);
+    displayStat(window);
+    displayEndText(window);
+}
+
+void Nibbler::updatePlayer(IWindow& window) noexcept
+{
+    changeDirection();
+    movePlayer();
+    isDead = isPlayerHit();
+    if (tick % 10 == 0)
+        hasMoved = false;
+    tryEat();
+    displayPlayer(window);
+}
+
+bool Nibbler::isPlayerHit() const noexcept {
+    for (vec2int fragment : body) {
+        if (fragment.x == body.at(0).x && fragment.y == body.at(0).y)
+            return true;
+    }
+    return false;
+}
+
+std::vector<vec2int> Nibbler::getValidPos(void) noexcept
+{
+    std::vector<vec2int> validList = {};
+    for (int y = 0; y < WindowY; y++) {
+        for (int x = 0; x < WindowX; x++) {
+            if (didCollideWall({x, y}))
+                continue;
+            for (vec2int fragment : body) {
+                if (fragment.x == x && fragment.y == y)
+                    continue;
+            }
+            validList.push_back({x, y});
+        }
+    }
+    return validList;
+}
+
+void Nibbler::respawnApple(void) noexcept {
+    std::vector<vec2int> validPos = getValidPos();
+    if (validPos.size() == 0)
+        hasWin = true;
+    int validSize = validPos.size();
+    for (int i = 0; i < nbApple && validSize > 0; i++) {
+        int pos = rand() % validSize;
+        appleList.push_back(validPos.at(pos));
+        validPos.erase(validPos.begin() + pos);
+        validSize--;
+    }
+}
+
+void Nibbler::tryEat(void) noexcept
+{
+    int appleSize = appleList.size();
+    for (int i = 0; i < appleSize; i++) {
+        if (appleList.at(i).x == body.at(0).x && appleList.at(i).y == body.at(0).y) {
+            body.push_back(
+                {body.at(body.size() - 1).x, body.at(body.size() - 1).y});
+            appleList.erase(appleList.begin() + i);
+            score = score + 20;
+            return;
+        }
+    }
+    if (appleList.size() == 0)
+        respawnApple();
+}
+
+bool Nibbler::didCollideWall(const vec2int& loc) noexcept
+{
+    for (vec2int obstacle : obstacleList) {
+        if (obstacle.x != loc.x)
+            continue;
+        if (obstacle.y == loc.y) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Nibbler::changeDirection(void)
+{
+    if (event.isPressed(Up)) {
+        direction = NbUp;
+        return;
+    }
+    if (event.isPressed(Down)) {
+        direction = NbDown;
+        return;
+    }
+    if (event.isPressed(Right)) {
+        direction = NbRight;
+        return;
+    }
+    if (event.isPressed(Left)) {
+        direction = NbLeft;
+        return;
+    }
+}
+
+void Nibbler::movePlayer() noexcept
+{
+    if (hasMoved)
+        return;
+    if (direction == NbUp) {
+        if(body.at(0).y - 1 < 0)
+            isDead = true;
+        if (body.at(0).y - 1 < 0
+            && !didCollideWall({body.at(0).x, body.at(0).y - 1})) {
+            body.emplace(body.begin(), vec2int{body.at(0).x, body.at(0).y - 1});
+            body.pop_back();
+            hasMoved = true;
+            return;
+        }
+    }
+    if (direction == NbDown) {
+        if (body.at(0).y + 1 >= WindowY)
+            isDead = true;
+        if (body.at(0).y + 1 < WindowY
+            && !didCollideWall({body.at(0).x, body.at(0).y + 1})) {
+            body.emplace(body.begin(), vec2int{body.at(0).x, body.at(0).y + 1});
+            body.pop_back();
+            hasMoved = true;
+            return;
+        }
+    }
+    if (direction == NbLeft) {
+        if (body.at(0).x - 1 < 0)
+            isDead = true;
+        if (body.at(0).x - 1 >= 0
+            && !didCollideWall({body.at(0).x - 1, body.at(0).y})) {
+            body.emplace(body.begin(), vec2int{body.at(0).x - 1, body.at(0).y});
+            body.pop_back();
+            hasMoved = true;
+            return;
+        }
+    }
+    if (direction == NbRight) {
+        if (body.at(0).x + 1 >= WindowX)
+            isDead = true;
+        if (body.at(0).x + 1 < WindowX
+            && !didCollideWall({body.at(0).x + 1, body.at(0).y})) {
+            body.emplace(body.begin(), vec2int{body.at(0).x + 1, body.at(0).y});
+            body.pop_back();
+            hasMoved = true;
+            return;
+        }
+    }
+}
+
+void Nibbler::displayObstacle(IWindow& window) noexcept
+{
+    for (vec2int obs : obstacleList) {
+        Point point;
+        point.setPosition(obs);
+        point.setColor({0, 200, 200});
+        window.draw(point);
+    }
+}
+
+void Nibbler::displayPlayer(IWindow& window) noexcept
+{
+    Point bodyFragment;
+    bodyFragment.setColor({200, 200, 20});
+    for (int i = 0; i < body.size(); i++) {
+        bodyFragment.setPosition(body.at(i));
+        if (i == 1)
+            bodyFragment.setColor({250, 10, 10});
+        window.draw(bodyFragment);
+    }
+}
+
+void Nibbler::displayApple(IWindow& window) noexcept
+{
+    for (vec2int apple : appleList) {
+        Point point;
+        point.setPosition(apple);
+        point.setColor({255, 0, 0});
+        window.draw(point);
+    }
 }
 }

@@ -10,9 +10,11 @@
 
 #include <dirent.h>
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <thread>
 
 #include "Error.hpp"
 #include "IGame.hpp"
@@ -34,21 +36,48 @@ class Nibbler : public IGame
 
     void exec(IWindow&, Events& event) noexcept final;
     void restart() noexcept final;
-    Status getStatus();
+    Status getStatus() final;
     int getScore() const noexcept final;
+
+    enum Direction {
+      NbRight,
+      NbLeft,
+      NbDown,
+      NbUp
+    };
 
   protected:
   private:
-    void start() noexcept;
+    Events event;
+    void start(IWindow&) noexcept;
     std::vector<std::string> listMap(void);
     void parseList(void);
     void initDefault(void) noexcept;
     void initBody(vec2int pos) noexcept;
+    void displayPlayer(IWindow&) noexcept;
+    void displayObstacle(IWindow&) noexcept;
+    void displayApple(IWindow&) noexcept;
+    bool didCollideWall(const vec2int&) noexcept;
+    void movePlayer(void) noexcept;
+    void changeDirection(void);
+    void updatePlayer(IWindow& window) noexcept;
+    bool isPlayerHit(void) const noexcept;
+    void tryEat(void) noexcept;
+    void respawnApple(void) noexcept;
+    void displayEndText(IWindow& window) noexcept;
+    void displayStat(IWindow& window) noexcept;
+    std::vector<vec2int> getValidPos(void) noexcept;
     std::vector<vec2int> body = {};
     std::vector<vec2int> obstacleList = {};
     std::vector<vec2int> appleList = {};
+    bool hasMoved = false;
+    bool isDead = false;
+    bool hasWin = false;
+    bool isFinish = false;
     int score = 0;
     int tick = 0;
+    int nbApple = 0;
+    Direction direction = NbRight;
 };
 }
 
