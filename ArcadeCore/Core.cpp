@@ -30,15 +30,98 @@ Core::Core(std::vector<std::string>& libs,
 
 void Core::executeLoop()
 {
+    Events event;
+
     while (!isEnd) {
         usedLib->clear();
+        usedLib->pollEvent(event);
+        handleCoreEvents(event);
         if (isMenu)
-            displayMenu();
+            displayMenu(event);
         else
-            displayGame();
+            displayGame(event);
         usedLib->display();
     }
     storeScore();
+}
+
+void Core::displayMenu(Events& event)
+{
+    handleMenuEvents(event);
+    usedLib->draw(Text({23, 0}, "MENU: "));
+    usedLib->draw(Text({30, 5}, "Player Name: "));
+    if (playerName != "")
+        usedLib->draw(Text({30, 7}, playerName));
+    displayAvailableLibs();
+    displayScore();
+}
+
+void Core::displayGame(Events& event)
+{
+    handleGameEvents(event); // des events à rajouter
+    chosenGame->exec(*usedLib, event);
+    if (chosenGame->getStatus() == Exit) {
+        scoreInfos.score = chosenGame->getScore();
+        changeScore();
+        isMenu = true;
+        usedLib->setSize({50, 35});
+    }
+}
+
+void Core::handleCoreEvents(Events& event)
+{
+    if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
+        isEnd = true;
+        return;
+    }
+    for (Key key : event.key_pressed) {
+        if (key == F4) { // next_graphics
+            int index = getLibIndex(usedLibName, allLibs, false);
+            if (index != -1)
+                loadGraphicLib(allLibs[index]);
+            return;
+        }
+        if (key == F5) { // previous_graphics
+            int index = getLibIndex(usedLibName, allLibs, true);
+            if (index != -1)
+                loadGraphicLib(allLibs[index]);
+            return;
+        }
+    }
+}
+
+void Core::handleMenuEvents(Events& event)
+{
+    for (Key key : event.key_pressed) {
+        if (changePlayerName(key))
+            return;
+        int j = isDigitEvent(key); // load un jeu
+        if (j != -1) {
+            isMenu = false;
+            loadGameLib(allGames[j]);
+            return;
+        }
+    }
+}
+
+void Core::handleGameEvents(Events& event)
+{
+    for (Key key : event.key_pressed) {
+        if (key == F2) { // next game
+            if (prevGameName == "")
+                int index = getLibIndex(allGames[0], allGames, false);
+            else
+                int index = getLibIndex(prevGameName, allGames, false);
+            // puis load le jeu
+        }
+        if (key == F3) { // previous game
+            if (prevGameName == "")
+                int index = getLibIndex(allGames[0], allGames, false);
+            else
+                int index = getLibIndex(prevGameName, allGames, false);
+            // puis load le jeu
+        }
+    }
 }
 
 void Core::loadGameLib(std::string& libName)
@@ -110,34 +193,6 @@ bool Core::changePlayerName(Key& key_pressed) noexcept
     return false;
 }
 
-Events Core::handleGameEvents()
-{
-    Events event;
-
-    usedLib->pollEvent(event);
-    if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
-        isEnd = true;
-        return event;
-    }
-    for (int i = 0; i < event.key_pressed.size(); i++) {
-        if (event.key_pressed[i] == F2) { // next game
-            if (prevGameName == "")
-                int index = getLibIndex(allGames[0], allGames, false);
-            else
-                int index = getLibIndex(prevGameName, allGames, false);
-            // puis load le jeu
-        }
-        if (event.key_pressed[i] == F3) { // previous game
-            if (prevGameName == "")
-                int index = getLibIndex(allGames[0], allGames, false);
-            else
-                int index = getLibIndex(prevGameName, allGames, false);
-            // puis load le jeu
-        }
-    }
-    return event;
-}
-
 unsigned int Core::isDigitEvent(const Key& key) const noexcept
 {
     const std::vector<Key> digits = {
@@ -151,64 +206,6 @@ unsigned int Core::isDigitEvent(const Key& key) const noexcept
         }
     }
     return (-1);
-}
-
-void Core::handleMenuEvents()
-{
-    Events event;
-
-    usedLib->pollEvent(event);
-    if (event.getStatus() == Exit || usedLib->getStatus() == Exit) {
-        isEnd = true;
-        return;
-    }
-    for (int i = 0; i < event.key_pressed.size(); i++) {
-        if (event.key_pressed.at(i) == F4) { // next_graphics
-            int index = getLibIndex(usedLibName, allLibs, false);
-            if (index != -1)
-                loadGraphicLib(allLibs[index]);
-            return;
-        }
-        if (event.key_pressed.at(i) == F5) { // previous_graphics
-            int index = getLibIndex(usedLibName, allLibs, true);
-            if (index != -1)
-                loadGraphicLib(allLibs[index]);
-            return;
-        }
-        if (changePlayerName(event.key_pressed.at(i)))
-            return;
-        int j = isDigitEvent(event.key_pressed.at(i));
-        if (j != -1) {
-            isMenu = false;
-            loadGameLib(allGames[j]);
-            return;
-        }
-    }
-}
-
-void Core::displayGame()
-{
-    Events event = handleGameEvents(); // des events à rajouter
-    chosenGame->exec(*usedLib, event);
-    if (chosenGame->getStatus() == Exit) {
-        scoreInfos.score = chosenGame->getScore();
-        changeScore();
-        isMenu = true;
-        usedLib->setSize({50, 35});
-    }
-    //à la fin de la loop de jeu, appeller la méthode changeScore() pour
-    // checker si le score du joueur peut aller dans le scoreboard;
-}
-
-void Core::displayMenu()
-{
-    handleMenuEvents();
-    usedLib->draw(Text({23, 0}, "MENU: "));
-    usedLib->draw(Text({30, 5}, "Player Name: "));
-    if (playerName != "")
-        usedLib->draw(Text({30, 7}, playerName));
-    displayAvailableLibs();
-    displayScore();
 }
 
 void Core::displayAvailableLibs() const noexcept
@@ -225,7 +222,7 @@ void Core::displayAvailableLibs() const noexcept
     for (int i = 0; i < allGames.size(); i++) {
         position += 2;
         usedLib->draw(
-            Text({0, position}, allGames[i] + " press " + std::to_string(i)));
+            Text({0, position}, allGames[i] + "  press " + std::to_string(i)));
     }
 }
 
