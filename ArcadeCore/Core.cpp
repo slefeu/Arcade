@@ -33,14 +33,16 @@ void Core::executeLoop()
     Events event;
 
     while (!isEnd) {
-        usedLib->clear();
         usedLib->pollEvent(event);
+        usedLib->clear();
         handleCoreEvents(event);
         if (isMenu)
             displayMenu(event);
         else
             displayGame(event);
+        //printf("Before display\n");
         usedLib->display();
+        //printf("After display\n");
         resetEvent(event);
     }
     storeScore();

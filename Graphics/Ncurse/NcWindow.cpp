@@ -24,6 +24,9 @@ NcWindow::NcWindow() noexcept
     curs_set(0);
     nodelay(window, 1);
     start_color();
+    short color = addColors(0, 0, 0);
+    short pair = addPair(color, color);
+    wbkgd(window, COLOR_PAIR(pair));
 }
 
 NcWindow::~NcWindow()
@@ -38,21 +41,55 @@ void NcWindow::setFramerate(int newFramerate) noexcept
 
 void NcWindow::display()
 {
+    wrefresh(window);
     std::chrono::milliseconds millisec_since_epoch =
         std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch());
     if (millisec_since_epoch.count() - lastDisplay.count()
-        < (60 / framerate) * 1000)
-        std::this_thread::sleep_for(std::chrono::milliseconds(
-            ((60 / framerate) * 1000)
-            - (millisec_since_epoch.count() - lastDisplay.count())));
-    refresh();
+        < (int)((double)1000 / (double)60)) {
+            /*printf("Going to wait :%ld\n", (int)(((double)((double)60 / (double)framerate)) * 1000)
+            - (millisec_since_epoch.count() - lastDisplay.count()));*/
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds((int)((double)1000 / (double)60)));
+        }
+    /*printf("Ecart: %ld, framerate : %d, timeToSleep: %ld \n",
+        millisec_since_epoch.count() - lastDisplay.count(),
+        framerate,
+        (int)(((double)((double)60 / (double)framerate)) * 1000));*/
     lastDisplay = millisec_since_epoch;
+}
+
+short NcWindow::addColors(unsigned char r, unsigned char g, unsigned char b)
+{
+    short tempR;
+    short tempB;
+    short tempG;
+    for (short i = 0; i < nbColors; i++) {
+        color_content(i, &tempR, &tempG, &tempB);
+        if (tempR == r && tempB == b && tempG == g)
+            return i;
+    }
+    init_color(nbColors, r, g, b);
+    nbColors++;
+    return (nbColors - 1);
+}
+
+short NcWindow::addPair(short color, short backColor) {
+    short tempColor;
+    short tempBackColor;
+    for (short i = 0; i < nbPair; i++) {
+        pair_content(i, &tempColor, &tempBackColor);
+        if (tempColor == color && backColor == tempBackColor)
+            return i;
+    }
+    init_pair(nbPair, color, backColor);
+    nbPair++;
+    return (nbPair - 1);
 }
 
 void NcWindow::clear()
 {
-    erase();
+    werase(window);
     //::clear();
 }
 
@@ -74,7 +111,7 @@ Status NcWindow::getStatus()
 bool NcWindow::pollEvent(Events& event)
 {
     int ch = 0;
-    ch = getch();
+    ch = wgetch(window);
     switch (ch) {
         case KEY_DOWN: return insertkey(Down, event);
         case KEY_UP: return insertkey(Up, event);
@@ -182,21 +219,15 @@ void NcWindow::draw(const Line& infoLine)
     int lengthy = abs(infoLine.getPosition().y - infoLine.getLineEnd().y);
     int length = lengthx + lengthy;
 
-    init_color(COLOR_RED,
-        infoLine.getColor().r,
-        infoLine.getColor().g,
-        infoLine.getColor().b);
-    init_color(COLOR_BLUE,
-        infoLine.getColor().r,
-        infoLine.getColor().g,
-        infoLine.getColor().b);
-    init_pair(2, COLOR_BLUE, COLOR_RED);
-    attron(COLOR_PAIR(2));
+    short color = addColors(
+        infoLine.getColor().r, infoLine.getColor().g, infoLine.getColor().b);
+    short pair = addPair(color, color);
+    wattron(window, COLOR_PAIR(pair));
     for (int i = 0; i < length; i++)
         mvaddch(infoLine.getPosition().y + i * (lengthy / length),
             infoLine.getPosition().x + i * (lengthx / length),
             ' ');
-    attroff(COLOR_PAIR(2));
+    wattroff(window, COLOR_PAIR(pair));
 }
 
 void NcWindow::draw(const Rectangle& infoRectangle)
@@ -207,57 +238,44 @@ void NcWindow::draw(const Rectangle& infoRectangle)
         abs(infoRectangle.getPosition().y - infoRectangle.getSize().y);
     int length = lengthx * lengthy;
 
-    init_color(COLOR_RED,
-        infoRectangle.getColor().r,
+    short color = addColors(infoRectangle.getColor().r,
         infoRectangle.getColor().g,
         infoRectangle.getColor().b);
-    init_color(COLOR_BLUE,
-        infoRectangle.getColor().r,
-        infoRectangle.getColor().g,
-        infoRectangle.getColor().b);
-    init_pair(2, COLOR_BLUE, COLOR_RED);
-    attron(COLOR_PAIR(2));
+    short pair = addPair(color, color);
+    wattron(window, COLOR_PAIR(pair));
     for (int i = 0; i < length; i++) {
         mvaddch(infoRectangle.getPosition().y + (i / lengthx),
             infoRectangle.getPosition().x + (i % lengthx),
             ' ');
     }
-    attroff(COLOR_PAIR(2));
+    wattroff(window, COLOR_PAIR(pair));
 }
 
 void NcWindow::draw(const Point& infoPoint)
 {
-    init_color(COLOR_RED,
-        infoPoint.getColor().r,
+    short color = addColors(infoPoint.getColor().r,
         infoPoint.getColor().g,
         infoPoint.getColor().b);
-    init_color(COLOR_BLUE,
-        infoPoint.getColor().r,
-        infoPoint.getColor().g,
-        infoPoint.getColor().b);
-    init_pair(2, COLOR_BLUE, COLOR_RED);
-    attron(COLOR_PAIR(2));
+    short pair = addPair(color, color);
+    wattron(window, COLOR_PAIR(pair));
     mvaddch(infoPoint.getPosition().y, infoPoint.getPosition().x, ' ');
-    attroff(COLOR_PAIR(2));
+    wattroff(window, COLOR_PAIR(pair));
 }
 
 void NcWindow::draw(const Text& infoText)
 {
-    init_color(COLOR_RED,
-        infoText.getBackColor().r,
+    short backColor = addColors(infoText.getBackColor().r,
         infoText.getBackColor().g,
         infoText.getBackColor().b);
-    init_color(COLOR_BLUE,
-        infoText.getColor().r,
-        infoText.getColor().g,
-        infoText.getColor().b);
-    init_pair(2, COLOR_BLUE, COLOR_RED);
-    attron(COLOR_PAIR(2));
+    short color = addColors(
+        infoText.getColor().r, infoText.getColor().g, infoText.getColor().b);
+    short pair = addPair(color, backColor);
+    wattron(window, COLOR_PAIR(pair));
     for (int i = 0; i < infoText.getString().size(); i++)
         mvaddch(infoText.getPosition().y,
             infoText.getPosition().x + i,
             infoText.getString().at(i));
-    attroff(COLOR_PAIR(2));
+    wattroff(window, COLOR_PAIR(pair));
 }
 
 void NcWindow::play(const ASound&)

@@ -45,6 +45,10 @@ class NcWindow : public IWindow
     Status status = Nothing;
 
   private:
+    short addColors(unsigned char r, unsigned char g, unsigned char b);
+    short addPair(short color, short backColor);
+    short nbColors = 0;
+    short nbPair = 0;
     std::chrono::milliseconds lastDisplay{0};
     int framerate = 120;
     WINDOW* window;
