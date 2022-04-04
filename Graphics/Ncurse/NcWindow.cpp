@@ -47,17 +47,10 @@ void NcWindow::display()
             std::chrono::system_clock::now().time_since_epoch());
     if (millisec_since_epoch.count() - lastDisplay.count()
         < (int)((double)1000 / (double)framerate)) {
-        /*printf("Going to wait :%ld\n", (int)(((double)((double)60 /
-        (double)framerate)) * 1000)
-        - (millisec_since_epoch.count() - lastDisplay.count()));*/
         std::this_thread::sleep_for(std::chrono::milliseconds(
             (int)((double)1000 / (double)framerate)
             - (millisec_since_epoch.count() - lastDisplay.count())));
     }
-    /*printf("Ecart: %ld, framerate : %d, timeToSleep: %ld \n",
-        millisec_since_epoch.count() - lastDisplay.count(),
-        framerate,
-        (int)(((double)((double)60 / (double)framerate)) * 1000));*/
     lastDisplay = millisec_since_epoch;
 }
 
