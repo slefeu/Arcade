@@ -22,6 +22,7 @@ SDLWindow::SDLWindow()
     if (window == nullptr)
         throw Error("Failed to create SDL Window");
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    setTitle("Arcade");
     SDL_ShowCursor(SDL_DISABLE);
     font = TTF_OpenFont("Font/Minecraft.ttf", 21);
 }
@@ -162,6 +163,8 @@ bool SDLWindow::pollEvent(Events& event)
                 case SDLK_F3: return insertkey(F3, event);
                 case SDLK_F4: return insertkey(F4, event);
                 case SDLK_F5: return insertkey(F5, event);
+                case SDLK_F6: return insertkey(F5, event);
+                case SDLK_F7: return insertkey(F5, event);
                 default: return false;
             }
         }

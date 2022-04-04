@@ -136,8 +136,4 @@ void Arcade::launchGame()
     arcadeCore->executeLoop();
 }
 
-Arcade::~Arcade()
-{
-    // doit close toutes nos libraires en faisant une boucle sur allLibraries
-}
 } // namespace arcade

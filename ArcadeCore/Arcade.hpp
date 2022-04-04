@@ -12,7 +12,7 @@ class Arcade
 {
   public:
     Arcade(int ac, char** av);
-    ~Arcade();
+    ~Arcade() = default;
 
     void launchGame();
 
