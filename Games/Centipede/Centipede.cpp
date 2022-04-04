@@ -48,7 +48,7 @@ void Centipede::start(IWindow& window) noexcept
         newObstacleList.push_back({5, {x, y}});
     }
     obstacleList = newObstacleList;
-    window.setSize({WindowX, WindowY});
+    window.setSize({WindowX, WindowY + 3});
     window.setFramerate(120);
 }
 
@@ -183,6 +183,18 @@ void Centipede::displayEndText(IWindow& window) noexcept
     window.draw(endText);
 }
 
+void Centipede::displayStat(IWindow& window) noexcept
+{
+    Text scoreText;
+    Text waveText;
+    scoreText.setPosition({5, WindowY + 3});
+    waveText.setPosition({5, WindowY + 2});
+    scoreText.setString("Score: " + std::to_string(score));
+    waveText.setString("Wave: " + std::to_string(nbSnake) + " (" + std::to_string(20 - nbSnake) + " remaining)");
+    window.draw(scoreText);
+    window.draw(waveText);
+}
+
 void Centipede::exec(IWindow& window, Events& newEvent) noexcept
 {
     this->event = newEvent;
@@ -217,6 +229,7 @@ void Centipede::exec(IWindow& window, Events& newEvent) noexcept
     displayFire(window);
     updatePlayer(window);
     displayEndText(window);
+    displayStat(window);
     tick++;
 }
 

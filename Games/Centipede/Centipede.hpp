@@ -88,6 +88,7 @@ class Centipede final : public IGame
         const std::vector<Obstacle>&, const Obstacle&) const noexcept;
     bool isStartingPos(const vec2int&) const noexcept;
     void displayEndText(IWindow& window) noexcept;
+    void displayStat(IWindow& window) noexcept;
 
     // attributes
     Events event;
