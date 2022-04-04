@@ -14,6 +14,7 @@ find_package(SFML 2.5
     system window graphics network audio)
 
 set_property(TARGET arcade_sfml PROPERTY CXX_STANDARD 20)
+
 target_include_directories(arcade_sfml PUBLIC
 ${CMAKE_CURRENT_SOURCE_DIR}
 "${CMAKE_SOURCE_DIR}/Graphics/IWindow"

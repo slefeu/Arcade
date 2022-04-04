@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
 
-# set the project name
 project(arcade VERSION 0.1 LANGUAGES CXX)
 
 #set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
@@ -19,10 +18,10 @@ endif()
 set(HEADER_FILES ${PROJECT_SOURCE_DIR}/ArcadeCore/Arcade.hpp)
 
 add_subdirectory(Graphics/IWindow)
+add_subdirectory(Error)
 add_subdirectory(Graphics/SFML)
 add_subdirectory(Graphics/Ncurse)
 add_subdirectory(Graphics/SDL2)
-add_subdirectory(Error)
 add_subdirectory(Loader)
 add_subdirectory(ArcadeCore)
 add_subdirectory(Games/Centipede)
@@ -44,7 +43,5 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-#add_executable (${PROJECT_NAME} main.cpp)
-#target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-audio)
 
 target_compile_options(${PROJECT_NAME} PUBLIC ${CXX_FLAGS})
