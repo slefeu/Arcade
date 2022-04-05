@@ -14,7 +14,7 @@ extern "C" std::unique_ptr<IGame> createGame()
     return (std::make_unique<Nibbler>());
 }
 
-void Nibbler::start(IWindow& window) noexcept
+void Nibbler::start(IWindow& window)
 {
     try {
         parseList();

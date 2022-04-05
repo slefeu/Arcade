@@ -43,7 +43,7 @@ std::vector<std::string> Arcade::getLibFiles()
     const std::string path = "lib";
     auto allFiles = std::vector<std::string>();
     DIR* dir = opendir(path.c_str());
-    struct dirent* ent;
+    struct dirent* ent = nullptr;
 
     if (dir != nullptr) {
         while ((ent = readdir(dir)) != nullptr) {
@@ -57,9 +57,9 @@ std::vector<std::string> Arcade::getLibFiles()
     return (allFiles);
 }
 
-bool Arcade::isGraphicLibrary(std::string& filename) noexcept
+bool Arcade::isGraphicLibrary(const std::string& filename) noexcept
 {
-    std::vector<std::string> possibleNames{"arcade_ndk++.so",
+    std::vector<std::string> possibleNames = {"arcade_ndk++.so",
         "arcade_aalib.so",
         "arcade_libcaca.so",
         "arcade_allegro5.so",
@@ -73,23 +73,23 @@ bool Arcade::isGraphicLibrary(std::string& filename) noexcept
         "arcade_vulkan.so",
         "arcade_qt5.so"};
 
-    for (int i = 0; i < possibleNames.size(); i++) {
-        if (filename == possibleNames[i])
+    for (auto const &i : possibleNames) {
+        if (filename == i)
             return (true);
     }
     return (false);
 }
 
-bool Arcade::isGameLibrary(std::string& filename) noexcept
+bool Arcade::isGameLibrary(const std::string& filename) noexcept
 {
-    std::vector<std::string> possibleNames{"arcade_nibbler.so",
+    std::vector<std::string> possibleNames = {"arcade_nibbler.so",
         "arcade_pacman.so",
         "arcade_qix.so",
         "arcade_centipede.so",
         "arcade_solarfox.so"};
 
-    for (int i = 0; i < possibleNames.size(); i++) {
-        if (filename == possibleNames[i])
+    for (auto const &i : possibleNames) {
+        if (filename == i)
             return (true);
     }
     return (false);
@@ -100,9 +100,9 @@ std::vector<std::string> Arcade::setLibraries(
 {
     auto allLibs = std::vector<std::string>();
 
-    for (int i = 0; i < allFiles.size(); i++) {
-        if (isGraphicLibrary(allFiles[i])) {
-            allLibs.push_back(allFiles[i]);
+    for (auto const &i : allFiles) {
+        if (isGraphicLibrary(i)) {
+            allLibs.push_back(i);
         }
     }
     return (allLibs);
@@ -112,9 +112,9 @@ std::vector<std::string> Arcade::setGames(std::vector<std::string>& allFiles)
 {
     auto allGames = std::vector<std::string>();
 
-    for (int i = 0; i < allFiles.size(); i++) {
-        if (isGameLibrary(allFiles[i])) {
-            allGames.push_back(allFiles[i]);
+    for (auto const &i : allFiles) {
+        if (isGameLibrary(i)) {
+            allGames.push_back(i);
         }
     }
     return (allGames);

@@ -29,6 +29,6 @@ class Loader
 
   protected:
   private:
-    void* openShared(const std::string&);
+    static void* openShared(const std::string&);
     void* openedLib = nullptr;
 };

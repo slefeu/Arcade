@@ -19,14 +19,14 @@ class Arcade
   protected:
   private:
     // methods
-    void usage() noexcept;
-    std::vector<std::string> setGames(std::vector<std::string>& allFiles);
-    std::vector<std::string> setLibraries(std::vector<std::string>& allFiles);
-    bool isLibFile(const std::string&) noexcept;
-    std::vector<std::string> getLibFiles();
-    bool isGraphicLibrary(std::string&) noexcept;
-    bool isGameLibrary(std::string&) noexcept;
-    std::string getFirstLibName(const std::string&) noexcept;
+    static void usage() noexcept;
+    static std::vector<std::string> setGames(std::vector<std::string>& allFiles);
+    static std::vector<std::string> setLibraries(std::vector<std::string>& allFiles);
+    static bool isLibFile(const std::string&) noexcept;
+    static std::vector<std::string> getLibFiles();
+    static bool isGraphicLibrary(const std::string&) noexcept;
+    static bool isGameLibrary(const std::string&) noexcept;
+    static std::string getFirstLibName(const std::string&) noexcept;
 
     // attributes
     std::unique_ptr<Core> arcadeCore;

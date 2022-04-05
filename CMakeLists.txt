@@ -2,18 +2,17 @@ cmake_minimum_required(VERSION 3.6)
 
 project(arcade VERSION 0.1 LANGUAGES CXX)
 
-#set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
 option(OPTIMIZE_ACADE "Optimize arcade" ON)
 
 if(OPTIMIZE_ACADE)
-    set(CXX_FLAGS "-fconcepts-ts" "-fno-gnu-unique" "-lSDL2_ttf")
+    set(CXX_FLAGS "-fconcepts-ts" "-fno-gnu-unique")
 else ()
     set(CXX_FLAGS "-ggdb3")
 endif()
-
 
 set(HEADER_FILES ${PROJECT_SOURCE_DIR}/ArcadeCore/Arcade.hpp)
 

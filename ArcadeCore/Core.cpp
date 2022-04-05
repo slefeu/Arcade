@@ -52,7 +52,7 @@ void Core::displayMenu(Events& event)
     handleMenuEvents(event);
     usedLib->draw(Text({23, 0}, "MENU: ", {255, 0, 0}));
     usedLib->draw(Text({32, 3}, "Player Name: ", {0, 0, 255}));
-    if (playerName != "")
+    if (playerName.empty())
         usedLib->draw(Text({32, 5}, playerName, {255, 0, 0}));
     displayAvailableLibs();
     displayScore();
@@ -141,12 +141,12 @@ void Core::handleGameEvents(Events& event)
 
 void Core::loadGameLib(std::string& libName)
 {
-    std::unique_ptr<IGame> (*createGame)();
+    std::unique_ptr<IGame> (*createGame)() = nullptr;
     const std::string path = "lib/" + libName;
 
     chosenGame.reset(nullptr);
-    auto a = gameLoader.loadLibrary(path, "createGame");
-    createGame = reinterpret_cast<std::unique_ptr<IGame> (*)()>(a);
+    auto* a = gameLoader.loadLibrary(path, "createGame");
+    createGame = reinterpret_cast<std::unique_ptr<IGame> (*)()>(a); // NOLINT
     chosenGame = createGame();
     prevGameName = gameName;
     gameName = libName;
@@ -154,12 +154,12 @@ void Core::loadGameLib(std::string& libName)
 
 void Core::loadGraphicLib(std::string& libName)
 {
-    std::unique_ptr<IWindow> (*createLib)();
+    std::unique_ptr<IWindow> (*createLib)() = nullptr;
     const std::string path = "lib/" + libName;
 
     usedLib.reset(nullptr);
-    auto a = libLoader.loadLibrary(path, "createLib");
-    createLib = reinterpret_cast<std::unique_ptr<IWindow> (*)()>(a);
+    auto* a = libLoader.loadLibrary(path, "createLib");
+    createLib = reinterpret_cast<std::unique_ptr<IWindow> (*)()>(a); // NOLINT
     usedLib = createLib();
     usedLibName = libName;
 }
@@ -180,11 +180,10 @@ int Core::findIndexPrevious(
         if (i == 0)
             return (sizeLib - 1);
         return (i - 1);
-    } else {
-        if (i == sizeLib - 1)
-            return (0);
-        return (i + 1);
     }
+    if (i == sizeLib - 1)
+        return (0);
+    return (i + 1);
 }
 
 int Core::getLibIndex(std::string& libName,
@@ -193,12 +192,13 @@ int Core::getLibIndex(std::string& libName,
 {
     auto iterator = std::find(begin(allLib), end(allLib), libName);
     if (iterator != std::end(allLib))
-        return (findIndexPrevious(
-            (iterator - begin(allLib)), isPrevious, allLib.size()));
+        return (findIndexPrevious(static_cast<int>((iterator - begin(allLib))),
+            isPrevious,
+            static_cast<int>(allLib.size())));
     return (-1);
 }
 
-bool Core::isLetter(Key& key) const noexcept
+bool Core::isLetter(Key& key) noexcept
 {
     if (key >= A && key <= Z)
         return (true);
@@ -208,7 +208,7 @@ bool Core::isLetter(Key& key) const noexcept
 bool Core::changePlayerName(Key& key_pressed) noexcept
 {
     if (isLetter(key_pressed) && playerName.size() < 10) {
-        playerName += key_pressed + 'A';
+        playerName += static_cast<char>(key_pressed + 'A');
         return true;
     }
     if (key_pressed == Backspace && !playerName.empty()) {
@@ -218,7 +218,7 @@ bool Core::changePlayerName(Key& key_pressed) noexcept
     return false;
 }
 
-unsigned int Core::isDigitEvent(const Key& key) const noexcept
+int Core::isDigitEvent(const Key& key) noexcept
 {
     const std::vector<Key> digits = {
         Num0, Num1, Num2, Num3, Num4, Num5, Num6, Num7, Num8, Num9};
@@ -238,9 +238,9 @@ void Core::displayAvailableLibs() noexcept
     int position = 3;
 
     usedLib->draw(Text({0, position}, "Graphic libraries :", {0, 0, 255}));
-    for (int i = 0; i < allLibs.size(); i++) {
+    for (auto const& i : allLibs) {
         position += 2;
-        usedLib->draw(Text({0, position}, allLibs[i]));
+        usedLib->draw(Text({0, position}, i));
     }
     position = position + 6;
     usedLib->draw(Text({0, position}, "Games :", {0, 0, 255}));
@@ -258,10 +258,11 @@ void Core::changeScore() noexcept
         if (scoreInfos.score > scoreInfos.scoreboard[i].second) {
             if (i == scoreBoardSize - 1) {
                 scoreInfos.scoreboard[i].second = scoreInfos.score;
-                if (playerName == "")
+                if (playerName.empty())
                     scoreInfos.scoreboard[i].first = "UNKNOWN";
+                scoreInfos.scoreboard[i].first = playerName;
             } else {
-                if (playerName == "")
+                if (playerName.empty())
                     playerName = "UNKNOWN";
                 scoreInfos.scoreboard.insert(scoreInfos.scoreboard.begin() + i,
                     std::make_pair(playerName, scoreInfos.score));
@@ -277,19 +278,17 @@ void Core::displayScore() const noexcept
     int playerPos = 10;
 
     usedLib->draw(Text({32, playerPos}, "Scoreboard :", {0, 0, 255}));
-    for (int i = 0; i < scoreInfos.scoreboard.size(); i++) {
+    for (auto const& i : scoreInfos.scoreboard) {
         playerPos += 2;
-        usedLib->draw(Text({32, playerPos}, scoreInfos.scoreboard[i].first));
-        usedLib->draw(Text(
-            {45, playerPos}, std::to_string(scoreInfos.scoreboard[i].second)));
+        usedLib->draw(Text({32, playerPos}, i.first));
+        usedLib->draw(Text({45, playerPos}, std::to_string(i.second)));
     }
 }
 
 void Core::displayBindings(int infosPos) noexcept
 {
     if (infosPos < 24)
-        ;
-    infosPos = 24;
+        infosPos = 24;
     usedLib->draw(Text({0, infosPos}, "Bindings availables:", {0, 0, 255}));
     usedLib->draw(Text({0, infosPos + 2}, "F4: next graphic lib"));
     usedLib->draw(Text({0, infosPos + 4}, "F5: previous graphic lib"));
@@ -301,12 +300,11 @@ void Core::displayBindings(int infosPos) noexcept
 }
 
 std::string Core::isStorableStr(
-    const std::string& toCompare, const std::string& defaultStr) const noexcept
+    const std::string& toCompare, const std::string& defaultStr) noexcept
 {
     if (toCompare == defaultStr)
         return ("");
-    else
-        return (toCompare);
+    return (toCompare);
 }
 
 void Core::storeScore()
@@ -315,27 +313,24 @@ void Core::storeScore()
     std::ofstream file(scorePath);
 
     if (file) {
-        for (int i = 0; i < scoreInfos.scoreboard.size(); i++) {
-            std::string line =
-                isStorableStr(scoreInfos.scoreboard[i].first, "UNKNOWN")
-                + isStorableStr(
-                    std::to_string(scoreInfos.scoreboard[i].second), "0")
-                + '\n';
+        for (auto const& i : scoreInfos.scoreboard) {
+            std::string line = isStorableStr(i.first, "UNKNOWN")
+                               + isStorableStr(std::to_string(i.second), "0")
+                               + '\n';
             file << line;
         }
     } else
         throw(Error("Score file could not be opened correctly"));
 }
 
-std::string Core::findPlayerinLine(const std::string& line) const noexcept
+std::string Core::findPlayerinLine(const std::string& line) noexcept
 {
     const char* letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const std::size_t lastName = line.find_first_not_of(letters);
 
     if (lastName == -1 || lastName == 0)
         return ("UNKNOWN");
-    else
-        return (line.substr(0, lastName));
+    return (line.substr(0, lastName));
 }
 
 int Core::findScoreinLine(const std::string& line) noexcept
@@ -347,9 +342,10 @@ int Core::findScoreinLine(const std::string& line) noexcept
         std::size_t lastNumber = line.find_first_not_of(digits, firstNumber);
         if (lastNumber != std::string::npos)
             lastNumber -= firstNumber;
-        return (atoi((line.substr(firstNumber, lastNumber)).c_str()));
-    } else
-        return (0);
+        return (static_cast<int>(strtol(
+            (line.substr(firstNumber, lastNumber)).c_str(), nullptr, 10)));
+    }
+    return (0);
 }
 
 std::vector<std::pair<std::string, int>> Core::getScores()
@@ -360,10 +356,10 @@ std::vector<std::pair<std::string, int>> Core::getScores()
 
     if (file) {
         for (std::string line; getline(file, line);)
-            scoreboard.push_back(
+            scoreboard.emplace_back(
                 std::make_pair(findPlayerinLine(line), findScoreinLine(line)));
         return (scoreboard);
-    } else
-        throw(Error("Score file could not be opened correctly"));
+    }
+    throw(Error("Score file could not be opened correctly"));
 }
 } // namespace arcade

@@ -44,20 +44,19 @@ void SfWindow::setSize(const vec2int& size)
     size_ = size;
     window_.create(
         sf::VideoMode(size_.x * charSize, size_.y * charSize, 32), "Arcade");
-    // window_.setSize(sf::Vector2u(size.x * charSize, size.y * charSize));
 }
 
 void SfWindow::draw(const Line& infoLine)
 {
     sf::Color color(
         infoLine.getColor().r, infoLine.getColor().g, infoLine.getColor().b);
-    sf::Vertex line[] = {
-        sf::Vertex(sf::Vector2f(infoLine.getPosition().x * charSize,
-            infoLine.getPosition().y * charSize)),
-        sf::Vertex(sf::Vector2f(infoLine.getLineEnd().x * charSize,
-            infoLine.getLineEnd().y * charSize))};
-    line->color = color;
-    window_.draw(line, charSize, sf::Lines);
+    std::array<sf::Vertex, 2> line = {
+        sf::Vertex(sf::Vector2f(static_cast<float>(infoLine.getPosition().x * charSize),
+            static_cast<float>(infoLine.getPosition().y * charSize))),
+        sf::Vertex(sf::Vector2f(static_cast<float>(infoLine.getLineEnd().x * charSize),
+            static_cast<float>(infoLine.getLineEnd().y * charSize)))};
+    line[0].color = color;
+    window_.draw(line.data(), charSize, sf::Lines);
 }
 
 void SfWindow::draw(const Point& infoPoint)
@@ -73,8 +72,8 @@ void SfWindow::draw(const Point& infoPoint)
 void SfWindow::draw(const Rectangle& infoRectangle)
 {
     sf::RectangleShape rectangle(
-        sf::Vector2f(infoRectangle.getSize().x * charSize,
-            infoRectangle.getSize().y * charSize));
+        sf::Vector2f(static_cast<float>(infoRectangle.getSize().x * charSize),
+            static_cast<float>(infoRectangle.getSize().y * charSize)));
     sf::Color color(infoRectangle.getColor().r,
         infoRectangle.getColor().g,
         infoRectangle.getColor().b);
@@ -85,8 +84,8 @@ void SfWindow::draw(const Rectangle& infoRectangle)
     else {
         rectangle.setFillColor(color);
     }
-    rectangle.setPosition(sf::Vector2f(infoRectangle.getPosition().x * charSize,
-        infoRectangle.getPosition().y * charSize));
+    rectangle.setPosition(sf::Vector2f(static_cast<float>(infoRectangle.getPosition().x * charSize),
+        static_cast<float>(infoRectangle.getPosition().y * charSize)));
     window_.draw(rectangle);
 }
 
@@ -98,9 +97,9 @@ void SfWindow::draw(const Text& infoText)
     sf::Color backColor(infoText.getBackColor().r,
         infoText.getBackColor().g,
         infoText.getBackColor().b);
-    text.setPosition(sf::Vector2f(infoText.getPosition().x * charSize,
-        infoText.getPosition().y * charSize));
-    text.setFont(this->font);
+    text.setPosition(sf::Vector2f(static_cast<float>(infoText.getPosition().x * charSize),
+        static_cast<float>(infoText.getPosition().y * charSize)));
+    text.setFont(font);
     text.setString(infoText.getString());
     text.setFillColor(color);
     text.setOutlineColor(backColor);
@@ -133,7 +132,7 @@ Status SfWindow::getStatus()
 
 bool SfWindow::pollEvent(Events& rEvent)
 {
-    sf::Event event;
+    auto event = sf::Event{};
 
     while (window_.pollEvent(event)) {
         switch (event.type) {

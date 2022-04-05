@@ -44,7 +44,7 @@ class Nibbler : public IGame
   protected:
   private:
     Events event;
-    void start(IWindow&) noexcept;
+    void start(IWindow&);
     std::vector<std::string> listMap(void);
     void parseList(void);
     void initDefault(void) noexcept;

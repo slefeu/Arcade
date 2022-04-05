@@ -17,19 +17,19 @@ extern "C" std::unique_ptr<IWindow> createLib()
 }
 
 NcWindow::NcWindow() noexcept
+    : window(initscr())
 {
-    window = initscr();
     keypad(stdscr, TRUE);
     noecho();
     curs_set(0);
-    nodelay(window, 1);
+    nodelay(window, true);
     start_color();
     short color = addColors(0, 0, 0);
     short pair = addPair(color, color);
     wbkgd(window, COLOR_PAIR(pair));
 }
 
-NcWindow::~NcWindow()
+NcWindow::~NcWindow() noexcept
 {
     endwin();
 }
@@ -46,10 +46,11 @@ void NcWindow::display()
         std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch());
     if (millisec_since_epoch.count() - lastDisplay.count()
-        < (int)((double)1000 / (double)framerate)) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(
-            (int)((double)1000 / (double)framerate)
-            - (millisec_since_epoch.count() - lastDisplay.count())));
+        < static_cast<int>(1000.0 / static_cast<double>(framerate))) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(
+            (1000.0 / static_cast<double>(framerate))
+            - static_cast<double>(
+                (millisec_since_epoch.count() - lastDisplay.count())))));
     }
     lastDisplay = millisec_since_epoch;
 }
@@ -62,25 +63,24 @@ short NcWindow::addColors(unsigned char r, unsigned char g, unsigned char b)
             return i;
     }
     init_color(nbColors,
-        r * 1000 / 255,
-        g * 1000 / 255,
-        b * 1000 / 255);
+        static_cast<short>(r * 1000 / 255),
+        static_cast<short>(g * 1000 / 255),
+        static_cast<short>(b * 1000 / 255));
     colorsList.push_back({r, g, b});
     nbColors++;
-    return (nbColors - 1);
+    return (static_cast<short>(nbColors - 1));
 }
 
 short NcWindow::addPair(short color, short backColor)
 {
     for (short i = 0; i < nbPair; i++) {
-        if (pairList.at(i).first == color
-            && backColor == pairList.at(i).second)
+        if (pairList.at(i).first == color && backColor == pairList.at(i).second)
             return i;
     }
     init_pair(nbPair, color, backColor);
-    pairList.push_back({color, backColor});
+    pairList.emplace_back(color, backColor);
     nbPair++;
-    return (nbPair - 1);
+    return (static_cast<short>(nbPair - 1));
 }
 
 void NcWindow::clear()
@@ -276,7 +276,7 @@ void NcWindow::draw(const Text& infoText)
     wattroff(window, COLOR_PAIR(pair));
 }
 
-void NcWindow::play(const ASound&)
+void NcWindow::play(const ASound& /*sound*/)
 {
 }
 }

@@ -9,7 +9,8 @@
 
 #include <chrono>
 #include <thread>
-
+#include <ctime>
+#include <cstdlib>
 #include "IGame.hpp"
 #include "Utils.hpp"
 
@@ -28,7 +29,7 @@ class Snake
 {
   public:
     Snake() noexcept;
-    Snake(const std::vector<vec2int>&) noexcept;
+    Snake(std::vector<vec2int>) noexcept;
     Snake(const Snake& other) noexcept = default;
     Snake(Snake&& other) noexcept = default;
 
@@ -43,11 +44,11 @@ class Snake
         Start,
     };
 
-    void updateMove(std::vector<Obstacle>&, int, int) noexcept;
+    void updateMove(std::vector<Obstacle>&, int) noexcept;
     std::vector<Point> getBodyPoint() const noexcept;
     void split(std::vector<Snake>&, vec2int&) noexcept;
     std::vector<vec2int> getBody() const noexcept;
-    bool dead(std::vector<Snake>&) noexcept;
+    static bool dead(std::vector<Snake>&) noexcept;
     Direction getDirection() const noexcept;
 
   private:
@@ -85,10 +86,10 @@ class Centipede final : public IGame
     bool didPlayerCollide(const vec2int&) noexcept;
     bool isPlayerHit() const noexcept;
     void damageObstacle(Obstacle&) noexcept;
-    bool obstacleContain(
-        const std::vector<Obstacle>&, const Obstacle&) const noexcept;
-    bool isStartingPos(const vec2int&) const noexcept;
-    void displayEndText(IWindow& window) noexcept;
+    static bool obstacleContain(
+        const std::vector<Obstacle>&, const Obstacle&) noexcept;
+    static bool isStartingPos(const vec2int&) noexcept;
+    void displayEndText(IWindow& window) const noexcept;
     void displayStat(IWindow& window) noexcept;
 
     // attributes

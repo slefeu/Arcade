@@ -39,14 +39,14 @@ class SDLWindow : public IWindow
     Status status = Nothing;
 
   private:
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    SDL_Window* window = nullptr;
+    SDL_Renderer* renderer = nullptr;
     TTF_Font* font;
     std::string title = "Arcade";
     vec2int size_ = {50, 35};
     int framerate = 120;
     std::chrono::milliseconds lastDisplay{0};
 
-    bool insertkey(Key, Events&) noexcept;
+    static bool insertkey(Key, Events&) noexcept;
 };
 }

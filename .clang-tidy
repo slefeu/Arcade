@@ -44,6 +44,12 @@ Checks: '
   -readability-convert-member-functions-to-static
   -readability-else-after-return,
   -readability-uppercase-literal-suffix,
+  -concurrency-mt-unsafe,
+  -clang-diagnostic-return-type-c-linkage,
+  -cert-msc30-c,
+  -cert-msc50-cpp,
+  -cert-msc32-c,
+  -cert-msc51-cpp,
 '
 CheckOptions:
   - key:             cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor

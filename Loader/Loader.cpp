@@ -11,7 +11,11 @@
 
 Loader::~Loader()
 {
-    closeLibrary();
+    try {
+        closeLibrary();
+    } catch (std::exception const &error) {
+        std::cerr << error.what() << std::endl;
+    }
 }
 
 void* Loader::loadLibrary(const std::string& filename, const char* functionName)
@@ -33,7 +37,7 @@ void* Loader::openShared(const std::string& filename)
 {
     void* myLibrary = dlopen(filename.c_str(), RTLD_NOW);
 
-    if (!myLibrary)
+    if (myLibrary == nullptr)
         throw Error(dlerror());
     return (myLibrary);
 }

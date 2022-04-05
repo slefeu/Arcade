@@ -60,9 +60,9 @@ class Core
     void handleCoreEvents(Events& event);
     Events handleGameEvents();
     bool changePlayerName(Key&) noexcept;
-    bool isLetter(Key&) const noexcept;
-    int findIndexPrevious(const int, const bool, const int) noexcept;
-    int getLibIndex(std::string&, std::vector<std::string>&, bool) noexcept;
+    static bool isLetter(Key&) noexcept;
+    static int findIndexPrevious(const int, const bool, const int) noexcept;
+    static int getLibIndex(std::string&, std::vector<std::string>&, bool) noexcept;
     void loadGraphicLib(std::string&);
     void loadGameLib(std::string&);
     void displayBindings(int) noexcept;
@@ -70,13 +70,13 @@ class Core
     void storeScore();
     void changeScore() noexcept;
     void displayScore() const noexcept;
-    std::vector<std::pair<std::string, int>> getScores();
-    std::string findPlayerinLine(const std::string&) const noexcept;
-    int findScoreinLine(const std::string&) noexcept;
-    void resetEvent(Events&) noexcept;
-    std::string isStorableStr(
-        const std::string&, const std::string&) const noexcept;
-    unsigned int isDigitEvent(const Key& key) const noexcept;
+    static std::vector<std::pair<std::string, int>> getScores();
+    static std::string findPlayerinLine(const std::string&) noexcept;
+    static int findScoreinLine(const std::string&) noexcept;
+    static void resetEvent(Events&) noexcept;
+    static std::string isStorableStr(
+        const std::string&, const std::string&) noexcept;
+    static int isDigitEvent(const Key&) noexcept;
 };
 
 } // namespace arcade

@@ -4,8 +4,8 @@ namespace arcade
 {
 bool Events::isPressed(const Key key) const noexcept
 {
-    for (std::size_t i = 0; i < key_pressed.size(); i++)
-        if (key_pressed[i] == key)
+    for (auto const& i : key_pressed)
+        if (i == key)
             return (true);
     return (false);
 };
@@ -36,8 +36,8 @@ Events& Events::operator<<(const Events& event)
     mouse.middle |= event.mouse.middle;
     mouse.pos = event.mouse.pos;
 
-    for (std::size_t i = 0; i < event.key_pressed.size(); i++) {
-        key_pressed.push_back(event.key_pressed[i]);
+    for (auto const& i : event.key_pressed) {
+        key_pressed.push_back(i);
     }
     return *this;
 }

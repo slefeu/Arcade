@@ -32,7 +32,7 @@ void SDLWindow::setFramerate(int newFramerate) noexcept
     framerate = newFramerate;
 }
 
-SDLWindow::~SDLWindow()
+SDLWindow::~SDLWindow() noexcept
 {
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
@@ -48,10 +48,11 @@ void SDLWindow::display()
         std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now().time_since_epoch());
     if (millisec_since_epoch.count() - lastDisplay.count()
-        < (int)((double)1000 / (double)framerate)) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(
-            (int)((double)1000 / (double)framerate)
-            - (millisec_since_epoch.count() - lastDisplay.count())));
+        < static_cast<int>(1000.0 / static_cast<double>(framerate))) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(
+            (1000.0 / static_cast<double>(framerate))
+            - static_cast<double>(
+                (millisec_since_epoch.count() - lastDisplay.count())))));
     }
     lastDisplay = millisec_since_epoch;
 }
@@ -71,7 +72,7 @@ bool SDLWindow::insertkey(Key key, Events& event) noexcept
 bool SDLWindow::pollEvent(Events& event)
 {
     SDL_Event sdlEvent;
-    if (SDL_PollEvent(&sdlEvent)) {
+    if (SDL_PollEvent(&sdlEvent) != 0) {
         if (sdlEvent.type == SDL_WINDOWEVENT
             && sdlEvent.window.event == SDL_WINDOWEVENT_CLOSE) {
             status = Exit;
@@ -88,7 +89,7 @@ bool SDLWindow::pollEvent(Events& event)
                 case SDLK_DELETE: return insertkey(Delete, event);
                 case SDLK_INSERT: return insertkey(Insert, event);
                 case SDLK_END: return insertkey(End, event);
-                case SDL_QUIT: status = Exit; return insertkey(Escape, event);
+                case SDL_QUIT:
                 case SDLK_ESCAPE:
                     status = Exit;
                     return insertkey(Escape, event);
@@ -163,8 +164,8 @@ bool SDLWindow::pollEvent(Events& event)
                 case SDLK_F3: return insertkey(F3, event);
                 case SDLK_F4: return insertkey(F4, event);
                 case SDLK_F5: return insertkey(F5, event);
-                case SDLK_F6: return insertkey(F5, event);
-                case SDLK_F7: return insertkey(F5, event);
+                case SDLK_F6: return insertkey(F6, event);
+                case SDLK_F7: return insertkey(F7, event);
                 default: return false;
             }
         }
@@ -228,7 +229,7 @@ void SDLWindow::draw(const Point& infoPoint)
 
 void SDLWindow::draw(const Text& infoText)
 {
-    int stringSize = infoText.getString().size();
+    unsigned long stringSize = infoText.getString().size();
     SDL_Color foregroundColor = {
         infoText.getColor().r, infoText.getColor().g, infoText.getColor().b};
     SDL_Color backgroundColor = {infoText.getBackColor().r,
@@ -239,14 +240,14 @@ void SDLWindow::draw(const Text& infoText)
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_Rect dstrect = {infoText.getPosition().x * charSize,
         infoText.getPosition().y * charSize,
-        stringSize * 10,
+        static_cast<int>(stringSize * 10),
         charSize};
-    SDL_RenderCopy(renderer, texture, NULL, &dstrect);
+    SDL_RenderCopy(renderer, texture, nullptr, &dstrect);
     SDL_FreeSurface(surface);
     SDL_DestroyTexture(texture);
 }
 
-void SDLWindow::play(const ASound&)
+void SDLWindow::play(const ASound& /*sound*/)
 {
 }
 

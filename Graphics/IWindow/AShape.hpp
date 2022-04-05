@@ -130,11 +130,11 @@ class Line : public AShape
      * @brief Construct a new Line object
      *
      * @param firstPosition
-     * @param LastPosition
+     * @param lastPosition
      * @param color
      */
     Line(const vec2int& firstPosition,
-        const vec2int& LastPosition,
+        const vec2int& lastPosition,
         const color_uint8& color = {255, 255, 255});
     Line(const Line& other) noexcept = default;
     Line(Line&& other) noexcept = default;

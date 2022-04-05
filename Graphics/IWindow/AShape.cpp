@@ -64,11 +64,11 @@ bool Rectangle::getFillValue() const
 Point::Point(const vec2int& position, const color_uint8& color)
     : AShape(position, color){};
 
-Line::Line(const vec2int& positionStart,
-    const vec2int& positionEnd,
+Line::Line(const vec2int& firstPosition,
+    const vec2int& lastPosition,
     const color_uint8& color)
-    : AShape(positionStart, color)
-    , endLinePosition(positionEnd){};
+    : AShape(firstPosition, color)
+    , endLinePosition(lastPosition){};
 
 void Line::setLineEnd(const vec2int& newPosition)
 {

@@ -13,10 +13,10 @@
 class Error : public std::exception
 {
   public:
-    explicit Error(std::string const&) noexcept;
+    explicit Error(std::string) noexcept;
     Error(const Error& other) noexcept = default;
     Error(Error&& other) noexcept = default;
-    virtual ~Error() noexcept = default;
+    ~Error() noexcept override = default;
 
     Error& operator=(const Error&) noexcept = default;
     Error& operator=(Error&&) noexcept = default;
@@ -30,10 +30,10 @@ class Error : public std::exception
 class ArgumentError : public Error
 {
   public:
-    ArgumentError(std::string const& message);
+    explicit ArgumentError(std::string) noexcept;
     ArgumentError(const ArgumentError& other) noexcept = default;
     ArgumentError(ArgumentError&& other) noexcept = default;
-    virtual ~ArgumentError() noexcept = default;
+    ~ArgumentError() noexcept override = default;
 
     ArgumentError& operator=(const ArgumentError& rhs) noexcept = default;
     ArgumentError& operator=(ArgumentError&& rhs) noexcept = default;
