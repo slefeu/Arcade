@@ -33,7 +33,8 @@ void Core::executeLoop()
     Events event;
 
     while (!isEnd) {
-        while (usedLib->pollEvent(event));
+        while (usedLib->pollEvent(event))
+            ;
         usedLib->clear();
         handleCoreEvents(event);
         if (isMenu)
@@ -236,8 +237,7 @@ void Core::displayAvailableLibs() noexcept
 {
     int position = 3;
 
-    usedLib->draw(
-        Text({0, position}, "Graphic libraries :", {0, 0, 255}));
+    usedLib->draw(Text({0, position}, "Graphic libraries :", {0, 0, 255}));
     for (int i = 0; i < allLibs.size(); i++) {
         position += 2;
         usedLib->draw(Text({0, position}, allLibs[i]));
@@ -258,8 +258,11 @@ void Core::changeScore() noexcept
         if (scoreInfos.score > scoreInfos.scoreboard[i].second) {
             if (i == scoreBoardSize - 1) {
                 scoreInfos.scoreboard[i].second = scoreInfos.score;
-                scoreInfos.scoreboard[i].first = playerName;
+                if (playerName == "")
+                    scoreInfos.scoreboard[i].first = "UNKNOWN";
             } else {
+                if (playerName == "")
+                    playerName = "UNKNOWN";
                 scoreInfos.scoreboard.insert(scoreInfos.scoreboard.begin() + i,
                     std::make_pair(playerName, scoreInfos.score));
                 scoreInfos.scoreboard.pop_back();
@@ -284,10 +287,10 @@ void Core::displayScore() const noexcept
 
 void Core::displayBindings(int infosPos) noexcept
 {
-    if (infosPos < 24);
-        infosPos = 24;
-    usedLib->draw(
-        Text({0, infosPos}, "Bindings availables:", {0, 0, 255}));
+    if (infosPos < 24)
+        ;
+    infosPos = 24;
+    usedLib->draw(Text({0, infosPos}, "Bindings availables:", {0, 0, 255}));
     usedLib->draw(Text({0, infosPos + 2}, "F4: next graphic lib"));
     usedLib->draw(Text({0, infosPos + 4}, "F5: previous graphic lib"));
     usedLib->draw(Text({32, infosPos}, "Bindings in game:", {0, 0, 255}));
