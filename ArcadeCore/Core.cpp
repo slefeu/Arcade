@@ -49,10 +49,10 @@ void Core::executeLoop()
 void Core::displayMenu(Events& event)
 {
     handleMenuEvents(event);
-    usedLib->draw(Text({23, 0}, "MENU: "));
-    usedLib->draw(Text({30, 3}, "Player Name: ", {0, 0, 255}));
+    usedLib->draw(Text({23, 0}, "MENU: ", {255, 0, 0}));
+    usedLib->draw(Text({32, 3}, "Player Name: ", {0, 0, 255}));
     if (playerName != "")
-        usedLib->draw(Text({30, 5}, playerName, {0, 0, 255}));
+        usedLib->draw(Text({32, 5}, playerName, {255, 0, 0}));
     displayAvailableLibs();
     displayScore();
 }
@@ -237,13 +237,13 @@ void Core::displayAvailableLibs() noexcept
     int position = 3;
 
     usedLib->draw(
-        Text({0, position}, "Graphic libraries availables :", {0, 0, 255}));
+        Text({0, position}, "Graphic libraries :", {0, 0, 255}));
     for (int i = 0; i < allLibs.size(); i++) {
         position += 2;
         usedLib->draw(Text({0, position}, allLibs[i]));
     }
     position = position + 6;
-    usedLib->draw(Text({0, position}, "Games availables :", {0, 0, 255}));
+    usedLib->draw(Text({0, position}, "Games :", {0, 0, 255}));
     for (int i = 0; i < allGames.size(); i++) {
         position += 2;
         usedLib->draw(
@@ -273,10 +273,10 @@ void Core::displayScore() const noexcept
 {
     int playerPos = 10;
 
-    usedLib->draw(Text({30, playerPos}, "Scoreboard :", {0, 0, 255}));
+    usedLib->draw(Text({32, playerPos}, "Scoreboard :", {0, 0, 255}));
     for (int i = 0; i < scoreInfos.scoreboard.size(); i++) {
         playerPos += 2;
-        usedLib->draw(Text({30, playerPos}, scoreInfos.scoreboard[i].first));
+        usedLib->draw(Text({32, playerPos}, scoreInfos.scoreboard[i].first));
         usedLib->draw(Text(
             {45, playerPos}, std::to_string(scoreInfos.scoreboard[i].second)));
     }
@@ -287,14 +287,14 @@ void Core::displayBindings(int infosPos) noexcept
     if (infosPos < 24);
         infosPos = 24;
     usedLib->draw(
-        Text({0, infosPos}, "Bindings availables all the time:", {0, 0, 255}));
+        Text({0, infosPos}, "Bindings availables:", {0, 0, 255}));
     usedLib->draw(Text({0, infosPos + 2}, "F4: next graphic lib"));
     usedLib->draw(Text({0, infosPos + 4}, "F5: previous graphic lib"));
-    usedLib->draw(Text({30, infosPos}, "Bindings in game:", {0, 0, 255}));
-    usedLib->draw(Text({30, infosPos + 2}, "F1: next graphic lib"));
-    usedLib->draw(Text({30, infosPos + 4}, "F2: next game"));
-    usedLib->draw(Text({30, infosPos + 6}, "F3: previous game"));
-    usedLib->draw(Text({30, infosPos + 8}, "F6: go back to the menu"));
+    usedLib->draw(Text({32, infosPos}, "Bindings in game:", {0, 0, 255}));
+    usedLib->draw(Text({32, infosPos + 2}, "F1: next graphic lib"));
+    usedLib->draw(Text({32, infosPos + 4}, "F2: next game"));
+    usedLib->draw(Text({32, infosPos + 6}, "F3: previous game"));
+    usedLib->draw(Text({32, infosPos + 8}, "F6: go back to the menu"));
 }
 
 std::string Core::isStorableStr(
@@ -337,7 +337,7 @@ std::string Core::findPlayerinLine(const std::string& line) const noexcept
 
 int Core::findScoreinLine(const std::string& line) noexcept
 {
-    const char* digits = "0123456789";
+    const char* digits = "0123256789";
     const std::size_t firstNumber = line.find_first_of(digits);
 
     if (firstNumber != std::string::npos) {
