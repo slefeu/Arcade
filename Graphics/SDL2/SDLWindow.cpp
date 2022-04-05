@@ -24,7 +24,7 @@ SDLWindow::SDLWindow()
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     setTitle("Arcade");
     SDL_ShowCursor(SDL_DISABLE);
-    font = TTF_OpenFont("Font/Minecraft.ttf", 21);
+    font = TTF_OpenFont("assets/font.ttf", 21);
 }
 
 void SDLWindow::setFramerate(int newFramerate) noexcept

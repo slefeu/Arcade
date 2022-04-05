@@ -20,7 +20,7 @@ SfWindow::SfWindow()
 {
     window_.create(
         sf::VideoMode(size_.x * charSize, size_.y * charSize, 32), "Arcade");
-    font.loadFromFile("Font/Minecraft.ttf");
+    font.loadFromFile("assets/font.ttf");
 }
 
 SfWindow::~SfWindow()
