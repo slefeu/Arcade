@@ -19,7 +19,7 @@ class Loader
     Loader() noexcept = default;
     Loader(const Loader&) noexcept = delete; // copy constructor
     Loader(Loader&&) noexcept = default;     // move constructor
-    ~Loader() noexcept = default;
+    ~Loader();
 
     Loader& operator=(const Loader&) noexcept = delete; //= par copy
     Loader& operator=(Loader&&) noexcept = default;     //= par move

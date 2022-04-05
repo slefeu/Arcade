@@ -30,7 +30,7 @@ class Core
     Core(std::vector<std::string>&, std::vector<std::string>&, std::string&);
     Core(const Core& other) noexcept = default;
     Core(Core&& other) noexcept = default;
-    ~Core() noexcept = default;
+    ~Core() = default;
 
     Core& operator=(const Core& rhs) noexcept = default;
     Core& operator=(Core&& rhs) noexcept = default;
@@ -38,6 +38,8 @@ class Core
 
   protected:
   private:
+    Loader libLoader;
+    Loader gameLoader;
     std::unique_ptr<IWindow> usedLib;
     std::string usedLibName;
     std::vector<std::string> allLibs;
@@ -48,8 +50,6 @@ class Core
     std::string playerName = "";
     std::string gameName = "";
     score scoreInfos;
-    Loader libLoader;
-    Loader gameLoader;
     std::string prevGameName = "";
 
     // methods
