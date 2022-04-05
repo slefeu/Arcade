@@ -65,7 +65,8 @@ class Core
     int getLibIndex(std::string&, std::vector<std::string>&, bool) noexcept;
     void loadGraphicLib(std::string&);
     void loadGameLib(std::string&);
-    void displayAvailableLibs() const noexcept;
+    void displayBindings(int) noexcept;
+    void displayAvailableLibs() noexcept;
     void storeScore();
     void changeScore() noexcept;
     void displayScore() const noexcept;
