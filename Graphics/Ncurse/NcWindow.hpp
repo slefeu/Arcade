@@ -47,6 +47,8 @@ class NcWindow : public IWindow
   private:
     short addColors(unsigned char r, unsigned char g, unsigned char b);
     short addPair(short color, short backColor);
+    std::vector<color_uint8> colorsList = {};
+    std::vector<std::pair<short, short>> pairList = {};
     short nbColors = 0;
     short nbPair = 0;
     std::chrono::milliseconds lastDisplay{0};

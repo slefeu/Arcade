@@ -56,29 +56,29 @@ void NcWindow::display()
 
 short NcWindow::addColors(unsigned char r, unsigned char g, unsigned char b)
 {
-    short tempR;
-    short tempB;
-    short tempG;
     for (short i = 0; i < nbColors; i++) {
-        color_content(i, &tempR, &tempG, &tempB);
-        if (tempR == r && tempB == b && tempG == g)
+        if (colorsList.at(i).r == r && colorsList.at(i).b == b
+            && colorsList.at(i).g == g)
             return i;
     }
-    init_color(nbColors, r, g, b);
+    init_color(nbColors,
+        r * 1000 / 255,
+        g * 1000 / 255,
+        b * 1000 / 255);
+    colorsList.push_back({r, g, b});
     nbColors++;
     return (nbColors - 1);
 }
 
 short NcWindow::addPair(short color, short backColor)
 {
-    short tempColor;
-    short tempBackColor;
     for (short i = 0; i < nbPair; i++) {
-        pair_content(i, &tempColor, &tempBackColor);
-        if (tempColor == color && backColor == tempBackColor)
+        if (pairList.at(i).first == color
+            && backColor == pairList.at(i).second)
             return i;
     }
     init_pair(nbPair, color, backColor);
+    pairList.push_back({color, backColor});
     nbPair++;
     return (nbPair - 1);
 }
