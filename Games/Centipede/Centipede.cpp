@@ -425,10 +425,7 @@ void Snake::split(std::vector<Snake>& snakeList, vec2int& pos) noexcept
         body.pop_back();
     body.pop_back(); // remove fragment who was hit
     Snake newSnake = Snake(newBody);
-    if (direction == Right)
-        newSnake.direction == Left;
-    else
-        newSnake.direction == Right;
+    newSnake.direction = direction;
     if (newSnake.getBody().size() > 0)
         snakeList.push_back(newSnake);
 }
