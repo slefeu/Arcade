@@ -9,7 +9,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 option(OPTIMIZE_ACADE "Optimize arcade" ON)
 
 if(OPTIMIZE_ACADE)
-    set(CXX_FLAGS "-ggdb3")
+    set(CXX_FLAGS "-fconcepts-ts" "-fno-gnu-unique")
 else ()
     set(CXX_FLAGS "-ggdb3")
 endif()

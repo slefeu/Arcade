@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-OOP-400-BDX-4-1-arcade-solene.lefeu
 ** File description:
-** AShape
+** Shape
 */
 
 #pragma once
@@ -10,18 +10,18 @@
 
 namespace arcade
 {
-class AShape
+class Shape
 {
   public:
-    AShape() noexcept = default;
-    AShape(const vec2int&, const color_uint8&);
+    Shape() noexcept = default;
+    Shape(const vec2int&, const color_uint8&);
 
-    AShape(const AShape&) noexcept = default;
-    AShape(AShape&&) noexcept = default;
-    ~AShape() noexcept = default;
+    Shape(const Shape&) noexcept = default;
+    Shape(Shape&&) noexcept = default;
+    ~Shape() noexcept = default;
 
-    AShape& operator=(const AShape& rhs) noexcept = default;
-    AShape& operator=(AShape&& rhs) noexcept = default;
+    Shape& operator=(const Shape& rhs) noexcept = default;
+    Shape& operator=(Shape&& rhs) noexcept = default;
 
     /**
      * @brief Set the Position
@@ -51,7 +51,7 @@ class AShape
     color_uint8 shapeColor = {0, 0, 0};
 };
 
-class Rectangle : public AShape
+class Rectangle : public Shape
 {
   public:
     Rectangle() noexcept = default;
@@ -103,7 +103,7 @@ class Rectangle : public AShape
     vec2int size = {0, 0};
 };
 
-class Point : public AShape
+class Point : public Shape
 {
   public:
     Point() = default;
@@ -122,7 +122,7 @@ class Point : public AShape
     Point& operator=(Point&& rhs) noexcept = default;
 };
 
-class Line : public AShape
+class Line : public Shape
 {
   public:
     Line() = default;

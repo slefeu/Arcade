@@ -9,7 +9,7 @@
 
 #include <memory>
 
-#include "AShape.hpp"
+#include "Shape.hpp"
 #include "ASound.hpp"
 #include "Text.hpp"
 

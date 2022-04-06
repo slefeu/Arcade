@@ -300,10 +300,10 @@ void Core::displayBindings(int infosPos) noexcept
     usedLib->draw(Text({0, infosPos + 2}, "F4: next graphic lib"));
     usedLib->draw(Text({0, infosPos + 4}, "F5: previous graphic lib"));
     usedLib->draw(Text({32, infosPos}, "Bindings in game:", {0, 0, 255}));
-    usedLib->draw(Text({32, infosPos + 2}, "F1: next graphic lib"));
+    usedLib->draw(Text({32, infosPos + 2}, "F1: restart"));
     usedLib->draw(Text({32, infosPos + 4}, "F2: next game"));
     usedLib->draw(Text({32, infosPos + 6}, "F3: previous game"));
-    usedLib->draw(Text({32, infosPos + 8}, "F6: go back to the menu"));
+    usedLib->draw(Text({32, infosPos + 8}, "F6: go to menu"));
 }
 
 std::string Core::isStorableStr(

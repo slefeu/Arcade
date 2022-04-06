@@ -1,7 +1,7 @@
 add_library(
     Graphics
     Utils.cpp
-    AShape.cpp
+    Shape.cpp
     Text.cpp
 )
 

@@ -230,7 +230,7 @@ void Nibbler::respawnApple(int nbApple) noexcept
     std::vector<vec2int> validPos = getValidPos();
     if (validPos.empty())
         hasWin = true;
-    int validSize = validPos.size();
+    int validSize = static_cast<int>(validPos.size());
     for (int i = 0; i < nbApple && validSize > 0; i++) {
         int pos = rand() % validSize;
         appleList.push_back(validPos.at(pos));
@@ -241,7 +241,7 @@ void Nibbler::respawnApple(int nbApple) noexcept
 
 void Nibbler::tryEat() noexcept
 {
-    int appleSize = appleList.size();
+    int appleSize = static_cast<int>(appleList.size());
     for (int i = 0; i < appleSize; i++) {
         if (appleList.at(i).x == body.at(0).x
             && appleList.at(i).y == body.at(0).y) {
