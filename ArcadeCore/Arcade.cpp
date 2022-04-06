@@ -23,10 +23,13 @@ Arcade::Arcade(int ac, char** av)
     arcadeCore = std::make_unique<Core>(allLibs, allGames, libStart);
 }
 
-std::string Arcade::getFirstLibName(const std::string& name) noexcept
+std::string Arcade::getFirstLibName(const std::string& name)
 {
-    std::string filename = name.substr(name.find("arcade_"));
-    return (filename);
+    if (isGraphicLibrary(name)) {
+        std::string filename = name.substr(name.find("arcade_"));
+        return (filename);
+    }
+    throw(ArgumentError("Wrong library used to start the arcade"));
 }
 
 bool Arcade::isLibFile(const std::string& file) noexcept

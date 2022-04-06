@@ -26,7 +26,7 @@ class Arcade
     static std::vector<std::string> getLibFiles();
     static bool isGraphicLibrary(const std::string&) noexcept;
     static bool isGameLibrary(const std::string&) noexcept;
-    static std::string getFirstLibName(const std::string&) noexcept;
+    static std::string getFirstLibName(const std::string&);
 
     // attributes
     std::unique_ptr<Core> arcadeCore;
