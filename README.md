@@ -17,8 +17,8 @@
 ## Usage:
 
 - `How to start the program`:
-    * `\t./arcade ./lib/library.so`
-    => you have to choose from the folder `lib/` which graphic library you want to use
+    * `./arcade ./lib/library.so`
+    => you have to choose from the folder `lib/` which graphic library you want to use\
     => It must be located in the lib folder
 
 - `Key bindings available while the program is running:`
