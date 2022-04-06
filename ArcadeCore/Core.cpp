@@ -32,8 +32,10 @@ void Core::executeLoop()
 {
     Events event;
 
+    usedLib->setSize({50, 35});
     while (!isEnd) {
-        while (usedLib->pollEvent(event));
+        while (usedLib->pollEvent(event))
+            ;
         usedLib->clear();
         handleCoreEvents(event);
         if (isMenu)
@@ -84,7 +86,8 @@ void Core::handleCoreEvents(Events& event)
             int index = getLibIndex(usedLibName, allLibs, false);
             if (index != -1) {
                 loadGraphicLib(allLibs[index]);
-                usedLib->setSize(chosenGame->getSize());
+                if (!isMenu)
+                    usedLib->setSize(chosenGame->getSize());
             }
             return;
         }
@@ -92,7 +95,8 @@ void Core::handleCoreEvents(Events& event)
             int index = getLibIndex(usedLibName, allLibs, true);
             if (index != -1) {
                 loadGraphicLib(allLibs[index]);
-                usedLib->setSize(chosenGame->getSize());
+                if (!isMenu)
+                    usedLib->setSize(chosenGame->getSize());
             }
             return;
         }

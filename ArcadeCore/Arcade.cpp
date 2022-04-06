@@ -40,6 +40,8 @@ bool Arcade::isLibFile(const std::string& file) noexcept
 {
     if (file == "." || file == "..")
         return (false);
+    if (file.find_last_of('.') == std::string::npos)
+        return false;
     if (file.substr(file.find_last_of('.')) != ".so")
         return (false);
     return (true);

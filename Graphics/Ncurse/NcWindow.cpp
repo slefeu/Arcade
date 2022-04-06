@@ -124,6 +124,7 @@ bool NcWindow::pollEvent(Events& event)
         case KEY_PPAGE: return insertkey(PageUp, event);
         case KEY_ENTER: return insertkey(Enter, event);
         case 27: return insertkey(Escape, event);
+        case '\n': return insertkey(Enter, event);
         case '0': return insertkey(Num0, event);
         case '1': return insertkey(Num1, event);
         case '2': return insertkey(Num2, event);
@@ -242,10 +243,33 @@ void NcWindow::draw(const Rectangle& infoRectangle)
         infoRectangle.getColor().b);
     short pair = addPair(color, color);
     wattron(window, COLOR_PAIR(pair));
-    for (int i = 0; i < length; i++) {
-        mvaddch(infoRectangle.getPosition().y + (i / lengthx),
-            infoRectangle.getPosition().x + (i % lengthx),
-            ' ');
+    if (infoRectangle.getFillValue()) {
+        for (int i = 0; i < length; i++) {
+            mvaddch(infoRectangle.getPosition().y + (i / lengthx),
+                infoRectangle.getPosition().x + (i % lengthx),
+                ' ');
+        }
+    } else {
+        Line line;
+        line.setColor(infoRectangle.getColor());
+        line.setPosition(infoRectangle.getPosition());
+        line.setLineEnd({infoRectangle.getPosition().x,
+            infoRectangle.getPosition().y + infoRectangle.getSize().y});
+        draw(line);
+        line.setLineEnd(
+            {infoRectangle.getPosition().x + infoRectangle.getSize().x,
+                infoRectangle.getPosition().y});
+        draw(line);
+        line.setLineEnd(
+            {infoRectangle.getPosition().x + infoRectangle.getSize().x,
+                infoRectangle.getPosition().y + infoRectangle.getSize().y});
+        line.setPosition(
+            {infoRectangle.getPosition().x + infoRectangle.getSize().x,
+                infoRectangle.getPosition().y});
+        draw(line);
+        line.setPosition({infoRectangle.getPosition().x,
+            infoRectangle.getPosition().y + infoRectangle.getSize().y});
+        draw(line);
     }
     wattroff(window, COLOR_PAIR(pair));
 }
