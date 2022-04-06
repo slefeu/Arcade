@@ -9,25 +9,25 @@ For each class that you want to add that herit from the `Shape` class, you must 
 ## Shape's methods :
 
 This is the list of methods that your new shape will have by heriting the Shape class.
-```c+
+```c++
 void setPosition(const vec2int& newPosition)
 ```
 - Sets a new position for the shape.
 
-```c+
+```c++
 vec2int getPosition() const
 ```
 - Returns the shape's position in the `vect2int` format.
 - The `vec2int` structure contains a pair of int `x` and `y`.
 
-```c+
+```c++
 void setColor(const color_uint8& color)
 ```
 - Sets the new color for the shape.
 - It takes a reference to a `color_unit8` structure in parameter.
 - It contains three `unsigned char` named `r`, `g` and `b` in order to handle colors with RGB.
 
-```c+
+```c++
 color_uint8 getColor() const
 ```
 - Gets the shape's color in the `color_uint8` format.
@@ -35,11 +35,11 @@ color_uint8 getColor() const
 ## Shape's attributes:
 
 This is the list of attributes that your new shape will have by heriting the Shape class.
-```c+
+```c++
 vec2int shapePosition
 ```
 - The initial position of your shape, stored as a `vec2int`. By default the value is set to `{-1, -1}`.
-```c+
+```c++
 color_uint8 shapeColor = {0, 0, 0};
 ```
 - The initial color of your shape, stored as a `color_uint8`. By default the value is set to `{0, 0, 0}` (black).
