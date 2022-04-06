@@ -1,8 +1,6 @@
 # CORE MANAGEMENT
 
-![structure](./assets/project_structure.png)
-
-The `Core` part of the project is, as shown in the below image, the gate between our graphic libraries and our game libraries.
+The `Core` part of the project is the gate between our graphic libraries and our game libraries.
 
 This class is contained in the `arcade` namespace, and is initialized inside the `Arcade` class. The latter will parse the lib folder and the user arguments and create the `Core` class.
 
