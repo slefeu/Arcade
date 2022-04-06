@@ -40,7 +40,7 @@ void Nibbler::restart() noexcept
     direction = NbRight;
 }
 
-Status Nibbler::getStatus()
+Status Nibbler::getStatus() noexcept
 {
     if (isFinish) {
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));

@@ -94,7 +94,7 @@ bool insertkey(Key key, Events& event)
     return true;
 }
 
-Status NcWindow::getStatus()
+Status NcWindow::getStatus() noexcept
 {
     Status tmp = status;
 

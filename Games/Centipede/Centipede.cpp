@@ -307,7 +307,7 @@ void Centipede::movePlayer() noexcept
     }
 }
 
-Status Centipede::getStatus()
+Status Centipede::getStatus() noexcept
 {
     if (isFinish && isDead) {
         std::this_thread::sleep_for(std::chrono::milliseconds(5000));

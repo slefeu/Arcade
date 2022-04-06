@@ -252,7 +252,7 @@ void SDLWindow::play(const ASound& /*sound*/)
 {
 }
 
-Status SDLWindow::getStatus()
+Status SDLWindow::getStatus() noexcept
 {
     Status tmp = status;
 

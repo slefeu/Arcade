@@ -126,7 +126,7 @@ void SfWindow::clear()
     window_.clear();
 }
 
-Status SfWindow::getStatus()
+Status SfWindow::getStatus() noexcept
 {
     Status tmp = status;
 

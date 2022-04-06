@@ -14,14 +14,14 @@ class IGame
     IGame(IGame&&) noexcept = delete;
     virtual ~IGame() noexcept = default;
 
-    IGame& operator=(const IGame& rhs) noexcept = delete;
-    IGame& operator=(IGame&& rhs) noexcept = delete;
+    IGame& operator=(const IGame&) noexcept = delete;
+    IGame& operator=(IGame&&) noexcept = delete;
 
     /**
      * @brief Execute one tick of the game
-     * (Call the setWindow function before calling that function)
+     *
      */
-    virtual void exec(IWindow&, Events& event) = 0;
+    virtual void exec(IWindow&, Events&) = 0;
     /**
      * @brief Restart the game
      *
@@ -30,9 +30,9 @@ class IGame
     /**
      * @brief
      *
-     * @return The curent status of the game and the window
+     * @return The current status of the game and the window
      */
-    virtual Status getStatus(void) = 0;
+    virtual Status getStatus() noexcept = 0;
     /**
      * @brief Get the Score object
      *

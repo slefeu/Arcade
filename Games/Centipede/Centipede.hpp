@@ -70,7 +70,7 @@ class Centipede final : public IGame
 
     void exec(IWindow&, Events& event) noexcept final;
     void restart() noexcept final;
-    Status getStatus();
+    Status getStatus() noexcept final;
     int getScore() const noexcept final;
     vec2int getSize() const noexcept final;
 

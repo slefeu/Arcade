@@ -53,9 +53,9 @@ class IWindow
     /**
      * @brief
      *
-     * @return Status The curent status of the window
+     * @return Status The current status of the window
      */
-    virtual Status getStatus() = 0;
+    virtual Status getStatus() noexcept = 0;
     /**
      * @brief Set the Framerate object
      *

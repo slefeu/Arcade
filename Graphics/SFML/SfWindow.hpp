@@ -33,7 +33,7 @@ class SfWindow : public IWindow
     void draw(const Text&) final;
     void play(const ASound&) final;
     void setFramerate(int framerate) noexcept final;
-    Status getStatus() final;
+    Status getStatus() noexcept final;
 
   protected:
     Status status = Nothing;
