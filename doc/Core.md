@@ -2,19 +2,15 @@
 
 ![structure](./assets/project_strucure.png)
 
-The `Core` part of the project is, as shown in the below image, the gate between our graphic libraries and our game libraries.\
-\
+The `Core` part of the project is, as shown in the below image, the gate between our graphic libraries and our game libraries.
 
-This class is contained in the `arcade` namespace, and is initialized inside the `Arcade` class.
+This class is contained in the `arcade` namespace, and is initialized inside the `Arcade` class. The latter will parse the lib folder and the user arguments and create the `Core` class.
 
-The latter will parse the lib folder and the user arguments and create the `Core` class.
-
-##Roles of the Core class
+## Roles of the Core class
 
 ### Load the libraries
 
-The game and graphic libraries are dynamic
-It will open, close and load them in the program
+The game and graphic libraries are dynamic, so that they can be changed during runtime. The `Core` class stores two `Loader` instances, so that it can open, close and load one graphic and one game library during the program's execution.
 
 ### Handle events during execution
 
