@@ -52,7 +52,7 @@ void Core::displayMenu(Events& event)
     handleMenuEvents(event);
     usedLib->draw(Text({23, 0}, "MENU: ", {255, 0, 0}));
     usedLib->draw(Text({32, 3}, "Player Name: ", {0, 0, 255}));
-    if (playerName.empty())
+    if (!playerName.empty())
         usedLib->draw(Text({32, 5}, playerName, {255, 0, 0}));
     displayAvailableLibs();
     displayScore();

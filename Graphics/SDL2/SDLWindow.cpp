@@ -240,7 +240,7 @@ void SDLWindow::draw(const Text& infoText)
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_Rect dstrect = {infoText.getPosition().x * charSize,
         infoText.getPosition().y * charSize,
-        static_cast<int>(stringSize * 10),
+        static_cast<int>(stringSize * 12),
         charSize};
     SDL_RenderCopy(renderer, texture, nullptr, &dstrect);
     SDL_FreeSurface(surface);
