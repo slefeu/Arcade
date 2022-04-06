@@ -51,10 +51,12 @@ void SfWindow::draw(const Line& infoLine)
     sf::Color color(
         infoLine.getColor().r, infoLine.getColor().g, infoLine.getColor().b);
     std::array<sf::Vertex, 2> line = {
-        sf::Vertex(sf::Vector2f(static_cast<float>(infoLine.getPosition().x * charSize),
+        sf::Vertex(sf::Vector2f(
+            static_cast<float>(infoLine.getPosition().x * charSize),
             static_cast<float>(infoLine.getPosition().y * charSize))),
-        sf::Vertex(sf::Vector2f(static_cast<float>(infoLine.getLineEnd().x * charSize),
-            static_cast<float>(infoLine.getLineEnd().y * charSize)))};
+        sf::Vertex(
+            sf::Vector2f(static_cast<float>(infoLine.getLineEnd().x * charSize),
+                static_cast<float>(infoLine.getLineEnd().y * charSize)))};
     line[0].color = color;
     window_.draw(line.data(), charSize, sf::Lines);
 }
@@ -84,7 +86,8 @@ void SfWindow::draw(const Rectangle& infoRectangle)
     else {
         rectangle.setFillColor(color);
     }
-    rectangle.setPosition(sf::Vector2f(static_cast<float>(infoRectangle.getPosition().x * charSize),
+    rectangle.setPosition(sf::Vector2f(
+        static_cast<float>(infoRectangle.getPosition().x * charSize),
         static_cast<float>(infoRectangle.getPosition().y * charSize)));
     window_.draw(rectangle);
 }
@@ -97,8 +100,9 @@ void SfWindow::draw(const Text& infoText)
     sf::Color backColor(infoText.getBackColor().r,
         infoText.getBackColor().g,
         infoText.getBackColor().b);
-    text.setPosition(sf::Vector2f(static_cast<float>(infoText.getPosition().x * charSize),
-        static_cast<float>(infoText.getPosition().y * charSize)));
+    text.setPosition(
+        sf::Vector2f(static_cast<float>(infoText.getPosition().x * charSize),
+            static_cast<float>(infoText.getPosition().y * charSize)));
     text.setFont(font);
     text.setString(infoText.getString());
     text.setFillColor(color);

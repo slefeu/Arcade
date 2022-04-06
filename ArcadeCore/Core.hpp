@@ -62,7 +62,8 @@ class Core
     bool changePlayerName(Key&) noexcept;
     static bool isLetter(Key&) noexcept;
     static int findIndexPrevious(const int, const bool, const int) noexcept;
-    static int getLibIndex(std::string&, std::vector<std::string>&, bool) noexcept;
+    static int getLibIndex(
+        std::string&, std::vector<std::string>&, bool) noexcept;
     void loadGraphicLib(std::string&);
     void loadGameLib(std::string&);
     void displayBindings(int) noexcept;

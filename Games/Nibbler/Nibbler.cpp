@@ -53,7 +53,7 @@ Status Nibbler::getStatus()
     return Nothing;
 }
 
-void Nibbler::displayEndText(IWindow& window) noexcept
+void Nibbler::displayEndText(IWindow& window) const noexcept
 {
     Text endText;
     endText.setPosition({(WindowX / 2) - 2, WindowY / 2});
@@ -118,9 +118,9 @@ void Nibbler::initDefault() noexcept
 
 void Nibbler::parseList()
 {
-    srand(time(NULL));
+    srand(time(nullptr));
     std::vector<std::string> listNameMap = listMap();
-    int choice = (rand() % listNameMap.size());
+    int choice = (rand() % static_cast<int>(listNameMap.size()));
     std::string path = "Games/Nibbler/map/" + listNameMap.at(choice);
     std::ifstream file(path.c_str());
     int y = 0;
@@ -146,7 +146,7 @@ std::vector<std::string> Nibbler::listMap()
     const std::string path = "Games/Nibbler/map";
     std::vector<std::string> allFiles = {};
     DIR* dir = opendir(path.c_str());
-    struct dirent* ent;
+    struct dirent* ent = nullptr;
 
     if (dir != nullptr) {
         while ((ent = readdir(dir)) != nullptr) {
@@ -165,6 +165,11 @@ int Nibbler::getScore() const noexcept
     return (score);
 }
 
+vec2int Nibbler::getSize() const noexcept
+{
+    return (vec2int{WindowX, WindowY + 3});
+}
+
 void Nibbler::exec(IWindow& window, Events& event) noexcept
 {
     this->event = event;
@@ -175,7 +180,7 @@ void Nibbler::exec(IWindow& window, Events& event) noexcept
     updatePlayer(window);
     displayStat(window);
     displayEndText(window);
-    window.setFramerate(30 + body.size());
+    window.setFramerate(30 + static_cast<int>(body.size()));
     tick++;
 }
 
@@ -200,7 +205,7 @@ bool Nibbler::isPlayerHit() const noexcept
     return false;
 }
 
-std::vector<vec2int> Nibbler::getValidPos(void) noexcept
+std::vector<vec2int> Nibbler::getValidPos() noexcept
 {
     bool isValid = true;
     std::vector<vec2int> validList = {};
@@ -223,7 +228,7 @@ std::vector<vec2int> Nibbler::getValidPos(void) noexcept
 void Nibbler::respawnApple(int nbApple) noexcept
 {
     std::vector<vec2int> validPos = getValidPos();
-    if (validPos.size() == 0)
+    if (validPos.empty())
         hasWin = true;
     int validSize = validPos.size();
     for (int i = 0; i < nbApple && validSize > 0; i++) {
@@ -234,7 +239,7 @@ void Nibbler::respawnApple(int nbApple) noexcept
     }
 }
 
-void Nibbler::tryEat(void) noexcept
+void Nibbler::tryEat() noexcept
 {
     int appleSize = appleList.size();
     for (int i = 0; i < appleSize; i++) {
@@ -248,7 +253,7 @@ void Nibbler::tryEat(void) noexcept
             return;
         }
     }
-    if (appleList.size() == 0)
+    if (appleList.empty())
         respawnApple(1);
 }
 
@@ -264,7 +269,7 @@ bool Nibbler::didCollideWall(const vec2int& loc) noexcept
     return false;
 }
 
-void Nibbler::changeDirection(void)
+void Nibbler::changeDirection()
 {
     if (event.isPressed(Up) && direction != NbDown) {
         if (!didCollideWall({body.at(0).x, body.at(0).y - 1}))

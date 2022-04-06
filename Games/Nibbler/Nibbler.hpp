@@ -38,6 +38,7 @@ class Nibbler : public IGame
     void restart() noexcept final;
     Status getStatus() final;
     int getScore() const noexcept final;
+    vec2int getSize() const noexcept final;
 
     enum Direction { NbRight, NbLeft, NbDown, NbUp };
 
@@ -45,7 +46,7 @@ class Nibbler : public IGame
   private:
     Events event;
     void start(IWindow&);
-    std::vector<std::string> listMap(void);
+    static std::vector<std::string> listMap(void);
     void parseList(void);
     void initDefault(void) noexcept;
     void initBody(vec2int pos) noexcept;
@@ -59,7 +60,7 @@ class Nibbler : public IGame
     bool isPlayerHit(void) const noexcept;
     void tryEat(void) noexcept;
     void respawnApple(int nbApple) noexcept;
-    void displayEndText(IWindow& window) noexcept;
+    void displayEndText(IWindow& window) const noexcept;
     void displayStat(IWindow& window) noexcept;
     std::vector<vec2int> getValidPos(void) noexcept;
     std::vector<vec2int> body = {};

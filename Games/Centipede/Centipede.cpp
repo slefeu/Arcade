@@ -19,6 +19,11 @@ int Centipede::getScore() const noexcept
     return (score);
 }
 
+vec2int Centipede::getSize() const noexcept
+{
+    return (vec2int{WindowX, WindowY + 4});
+}
+
 static bool isTheSamePos(const vec2int& first, const vec2int& two) noexcept
 {
     return (first.x == two.x && first.y == two.y);
@@ -252,6 +257,7 @@ void Centipede::exec(IWindow& window, Events& newEvent) noexcept
     updatePlayer(window);
     displayEndText(window);
     displayStat(window);
+    window.setFramerate(120);
     tick++;
 }
 
@@ -406,7 +412,7 @@ void Snake::split(std::vector<Snake>& snakeList, vec2int& pos) noexcept
 {
     std::vector<vec2int> newBody;
     bool found = false;
-    for (auto const &i : body) {
+    for (auto const& i : body) {
         if (isTheSamePos(i, pos)) {
             found = true;
             continue;

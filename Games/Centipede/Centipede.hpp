@@ -8,9 +8,10 @@
 #pragma once
 
 #include <chrono>
-#include <thread>
-#include <ctime>
 #include <cstdlib>
+#include <ctime>
+#include <thread>
+
 #include "IGame.hpp"
 #include "Utils.hpp"
 
@@ -71,6 +72,7 @@ class Centipede final : public IGame
     void restart() noexcept final;
     Status getStatus();
     int getScore() const noexcept final;
+    vec2int getSize() const noexcept final;
 
   protected:
   private:

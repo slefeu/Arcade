@@ -13,7 +13,7 @@ Loader::~Loader()
 {
     try {
         closeLibrary();
-    } catch (std::exception const &error) {
+    } catch (std::exception const& error) {
         std::cerr << error.what() << std::endl;
     }
 }

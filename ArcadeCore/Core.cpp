@@ -83,14 +83,18 @@ void Core::handleCoreEvents(Events& event)
     for (Key key : event.key_pressed) {
         if (key == F4) { // next_graphics
             int index = getLibIndex(usedLibName, allLibs, false);
-            if (index != -1)
+            if (index != -1) {
                 loadGraphicLib(allLibs[index]);
+                usedLib->setSize(chosenGame->getSize());
+            }
             return;
         }
         if (key == F5) { // previous_graphics
             int index = getLibIndex(usedLibName, allLibs, true);
-            if (index != -1)
+            if (index != -1) {
                 loadGraphicLib(allLibs[index]);
+                usedLib->setSize(chosenGame->getSize());
+            }
             return;
         }
     }

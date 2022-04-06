@@ -39,6 +39,12 @@ class IGame
      * @return int the value of the score
      */
     virtual int getScore() const noexcept = 0;
+    /**
+     * @brief Get the Size of the window
+     *
+     * @return vec2int size of the window
+     */
+    virtual vec2int getSize() const noexcept = 0;
 
   protected:
   private:
