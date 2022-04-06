@@ -40,7 +40,7 @@ vec2int shapePosition
 ```
 - The initial position of your shape, stored as a `vec2int`. By default the value is set to `{-1, -1}`.
 ```c++
-color_uint8 shapeColor = {0, 0, 0};
+color_uint8 shapeColor
 ```
 - The initial color of your shape, stored as a `color_uint8`. By default the value is set to `{0, 0, 0}` (black).
 
