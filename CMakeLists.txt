@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 
 project(arcade VERSION 0.1 LANGUAGES CXX)
 
-set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
+# set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
