@@ -216,7 +216,8 @@ void SDLWindow::draw(const Rectangle& infoRectangle)
         infoRectangle.getColor().g,
         infoRectangle.getColor().b,
         SDL_ALPHA_OPAQUE);
-    SDL_RenderFillRect(renderer, &r);
+    if (infoRectangle.getFillValue())
+        SDL_RenderFillRect(renderer, &r);
     SDL_RenderDrawRect(renderer, &r);
 }
 
