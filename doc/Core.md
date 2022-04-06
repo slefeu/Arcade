@@ -1,6 +1,6 @@
 # CORE MANAGEMENT
 
-![structure](./assets/project_strucure.png)
+![structure](./assets/project_structure.png)
 
 The `Core` part of the project is, as shown in the below image, the gate between our graphic libraries and our game libraries.
 
