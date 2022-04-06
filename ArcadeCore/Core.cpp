@@ -102,7 +102,7 @@ void Core::handleMenuEvents(Events& event)
         if (changePlayerName(key))
             return;
         int j = isDigitEvent(key); // load un jeu
-        if (j != -1) {
+        if (j != -1 && j < allGames.size()) {
             isMenu = false;
             loadGameLib(allGames[j]);
             return;
