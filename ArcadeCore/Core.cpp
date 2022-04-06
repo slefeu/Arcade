@@ -33,8 +33,7 @@ void Core::executeLoop()
     Events event;
 
     while (!isEnd) {
-        while (usedLib->pollEvent(event))
-            ;
+        while (usedLib->pollEvent(event));
         usedLib->clear();
         handleCoreEvents(event);
         if (isMenu)
