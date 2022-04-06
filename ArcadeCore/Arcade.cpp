@@ -2,6 +2,8 @@
 
 #include <dirent.h>
 
+#include <filesystem>
+
 namespace arcade
 {
 Arcade::Arcade(int ac, char** av)
@@ -25,9 +27,11 @@ Arcade::Arcade(int ac, char** av)
 
 std::string Arcade::getFirstLibName(const std::string& name)
 {
-    if (isGraphicLibrary(name)) {
-        std::string filename = name.substr(name.find("arcade_"));
-        return (filename);
+    auto filename = std::filesystem::path{name}.filename();
+
+    if (isGraphicLibrary(filename)) {
+        filename = name.substr(name.find("arcade_"));
+        return (static_cast<std::string>(filename));
     }
     throw(ArgumentError("Wrong library used to start the arcade"));
 }
@@ -76,7 +80,7 @@ bool Arcade::isGraphicLibrary(const std::string& filename) noexcept
         "arcade_vulkan.so",
         "arcade_qt5.so"};
 
-    for (auto const &i : possibleNames) {
+    for (auto const& i : possibleNames) {
         if (filename == i)
             return (true);
     }
@@ -91,7 +95,7 @@ bool Arcade::isGameLibrary(const std::string& filename) noexcept
         "arcade_centipede.so",
         "arcade_solarfox.so"};
 
-    for (auto const &i : possibleNames) {
+    for (auto const& i : possibleNames) {
         if (filename == i)
             return (true);
     }
@@ -103,7 +107,7 @@ std::vector<std::string> Arcade::setLibraries(
 {
     auto allLibs = std::vector<std::string>();
 
-    for (auto const &i : allFiles) {
+    for (auto const& i : allFiles) {
         if (isGraphicLibrary(i)) {
             allLibs.push_back(i);
         }
@@ -115,7 +119,7 @@ std::vector<std::string> Arcade::setGames(std::vector<std::string>& allFiles)
 {
     auto allGames = std::vector<std::string>();
 
-    for (auto const &i : allFiles) {
+    for (auto const& i : allFiles) {
         if (isGameLibrary(i)) {
             allGames.push_back(i);
         }
