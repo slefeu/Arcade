@@ -102,9 +102,9 @@ void setFramerate(int framerate) noexcept
 
 ## Draw methods:
 
-These are all the methods used to draw an element in the program. They all take a reference of a class herited from the `AShape` abstract class.
-For more details about this class and how it stores informations, please refer to the `AShape.pdf` file.
-For each class that herited from the `AShape` class, you must implement a `draw` method in your graphic library.
+These are all the methods used to draw an element in the program. They all take a reference of a class herited from the `Shape` class.
+For more details about this class and how it stores informations, please refer to the `Shape.pdf` file.
+For each class that herited from the `Shape` class, you must implement a `draw` method in your graphic library.
 
 ```c++
 void draw(const Line& line)
