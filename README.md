@@ -1,4 +1,4 @@
-# {EPITECH} | Object Oriented Programming | Video Game | Arcade
+# {EPITECH} | Object Oriented Programming | Video Games | Arcade
 
 ## Arcade project:
 
